@@ -11,7 +11,7 @@ export function buildSite(): string {
   const outDir = mkdtempSync(join(tmpdir(), 'phdtv-dist-'));
   // Vitest mirrors import.meta.env into process.env (BASE_URL, MODE, DEV, PROD, SSR); a child Astro build
   // must not inherit those or its own import.meta.env.BASE_URL is overridden.
-  const env = { ...process.env, SITE_URL: 'https://example.test', SITE_BASE: '/phdtv' };
+  const env: NodeJS.ProcessEnv = { ...process.env, SITE_URL: 'https://example.test', SITE_BASE: '/phdtv' };
   for (const key of ['BASE_URL', 'MODE', 'DEV', 'PROD', 'SSR', 'VITEST', 'NODE_ENV']) delete env[key];
   execFileSync('npx', ['astro', 'build', '--outDir', outDir], {
     stdio: ['ignore', 'pipe', 'pipe'],

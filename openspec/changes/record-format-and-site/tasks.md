@@ -49,5 +49,5 @@
 
 ## 8. Verification
 
-- [ ] 8.1 From a fresh clone run `npm ci`, `npm run typecheck`, `npm test`, `npm run schema:check`, `npm run validate` and `npm run build`; verify all succeed and the build output contains a page per published seed, both feed kinds and the JSON export
+- [x] 8.1 From a fresh clone run `npm ci`, `npm run typecheck`, `npm test`, `npm run schema:check`, `npm run validate` and `npm run build`; verify all succeed and the build output contains a page per published seed, both feed kinds and the JSON export
 - [ ] 8.2 Subscribe to the deployed `feeds/all.ics` in a calendar application and add a stream link to one seed by pull request; verify the event appears at the correct local time and updates in place rather than duplicating after the next deploy
