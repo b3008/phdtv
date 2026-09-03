@@ -13,7 +13,12 @@ const { values } = parseArgs({
   allowNegative: true,
 });
 
-const findings = await validateProject({ rootDir: resolve(values.root), checkLinks: values.links });
+const findings = await validateProject({
+  rootDir: resolve(values.root),
+  checkLinks: values.links,
+  ...(values.base ? { base: values.base } : {}),
+  ...(values.author ? { author: values.author } : {}),
+});
 
 for (const finding of findings) console.log(formatFinding(finding));
 
