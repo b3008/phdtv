@@ -7,8 +7,8 @@
 ## 2. Schema and vocabulary
 
 - [x] 2.1 Write `disciplines.yaml` with the 42 OECD Frascati minor fields as slugs, display names and major-field parents; verify a test asserts 42 entries with unique slugs and valid parents
-- [ ] 2.2 Implement the university Zod schema in `src/schema/university.ts` (slug, name, ISO 3166-1 alpha-2 country, IANA timezone, optional website, agenda_url, aliases); verify unit tests cover a valid entry and each missing or malformed required field
-- [ ] 2.3 Implement the record Zod schema in `src/schema/record.ts` with strict keys and refinements for offset-matches-timezone, published-requires-verified_by, scraped-requires-source.url, submitted-requires-submitted_at, recording as url-or-status-none, disciplines from the vocabulary and BCP 47 language; verify a unit test per refinement passes on a valid record and fails with a named field on an invalid one
+- [x] 2.2 Implement the university Zod schema in `src/schema/university.ts` (slug, name, ISO 3166-1 alpha-2 country, IANA timezone, optional website, agenda_url, aliases); verify unit tests cover a valid entry and each missing or malformed required field
+- [x] 2.3 Implement the record Zod schema in `src/schema/record.ts` with strict keys and refinements for offset-matches-timezone, published-requires-verified_by, scraped-requires-source.url, submitted-requires-submitted_at, recording as url-or-status-none, disciplines from the vocabulary and BCP 47 language; verify a unit test per refinement passes on a valid record and fails with a named field on an invalid one
 - [ ] 2.4 Add `scripts/schema.ts` that emits `schema/record.schema.json` and `schema/university.schema.json` from the Zod objects, plus an `npm run schema:check` mode; verify the check passes after generation and fails when a committed JSON file is edited by hand
 
 ## 3. Validator
