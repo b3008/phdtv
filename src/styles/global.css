@@ -31,3 +31,45 @@ a { color: var(--accent); }
 .shell-nav a:hover { color: var(--fg); }
 .shell-main { padding-top: 1.5rem; }
 .shell-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+
+/* pages */
+.page-intro { margin-bottom: 1.5rem; }
+.page-title { font-size: 1.75rem; line-height: 1.2; margin: 0 0 0.5rem; }
+.page-lede { color: var(--muted); margin: 0; max-width: 40rem; }
+.empty { color: var(--muted); padding: 2rem 0; }
+
+/* filters */
+.filters { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: end; margin: 0 0 1.5rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 0.5rem; background: var(--card); }
+.filters label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--muted); }
+.filters select { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 0.375rem; padding: 0.35rem 0.5rem; min-width: 12rem; }
+.filters-check { flex-direction: row !important; align-items: center; gap: 0.5rem !important; }
+
+/* day groups and cards */
+.day-heading, .live-heading { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 1.75rem 0 0.75rem; }
+.live { padding: 0.25rem 1rem 0.75rem; border: 2px solid var(--live); border-radius: 0.5rem; margin-bottom: 1rem; }
+.live-heading { color: var(--live); margin-top: 0.75rem; }
+.card { padding: 1rem 0; border-top: 1px solid var(--line); }
+.card-head { display: flex; align-items: center; gap: 0.75rem; }
+.card-candidate { margin: 0; font-size: 1.1rem; }
+.card-candidate a { color: var(--fg); text-decoration: none; }
+.card-candidate a:hover { text-decoration: underline; }
+.card-title { margin: 0.25rem 0 0.35rem; }
+.card-meta, .card-time { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.card-action { margin: 0.5rem 0 0; }
+.badge-live { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: var(--live); border-radius: 999px; padding: 0.15rem 0.6rem; }
+.action { font-weight: 600; }
+.action-secondary { font-weight: 400; margin-left: 1rem; }
+.action-note, .status-muted { color: var(--muted); }
+.time-viewer { color: var(--fg); }
+abbr[title] { text-decoration: none; }
+
+/* defense page */
+.defense-head { margin-bottom: 1.25rem; }
+.defense-candidate { margin: 0; color: var(--muted); font-size: 1rem; }
+.defense-title { margin: 0.25rem 0 0.5rem; font-size: 1.6rem; line-height: 1.25; }
+.defense-facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1.25rem; margin: 0 0 1.25rem; }
+.defense-facts dt { color: var(--muted); }
+.defense-facts dd { margin: 0; }
+.defense-actions { margin: 0 0 1.5rem; }
+.defense-abstract h2 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+.attribution { color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); padding-top: 1rem; }

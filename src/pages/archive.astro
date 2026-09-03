@@ -10,12 +10,12 @@ const defenses = await loadPublishedDefenses(base);
 const renderedAt = new Date().toISOString();
 ---
 
-<Document title="PhD TV" description="A calendar of PhD defenses that are livestreamed for free.">
+<Document title="PhD TV: archive" description="Past PhD defenses, with recordings where they exist.">
   <Shell base={base}>
     <PageIntro
-      title="PhD defenses you can watch live"
-      lede="Public defenses streamed for free by universities, shown in your local time. Subscribe to the calendar feed to get them in your own calendar."
+      title="Past defenses"
+      lede="Recordings where a university published one. Where none exists, we say so rather than showing a dead link."
     />
-    <DefenseSchedule client:load mode="upcoming" defenses={defenses} renderedAt={renderedAt} />
+    <DefenseSchedule client:load mode="archive" defenses={defenses} renderedAt={renderedAt} />
   </Shell>
 </Document>

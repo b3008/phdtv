@@ -1,0 +1,25 @@
+---
+import Document from '../../layouts/Document.astro';
+import { DefensePage } from '../../components/DefensePage.tsx';
+import { Shell } from '../../components/Shell.tsx';
+import type { Defense } from '../../lib/defense.ts';
+import { loadPublishedDefenses } from '../../lib/site-data.ts';
+
+export async function getStaticPaths() {
+  const defenses = await loadPublishedDefenses(import.meta.env.BASE_URL);
+  return defenses.map((defense) => ({ params: { id: defense.key }, props: { defense } }));
+}
+
+interface Props {
+  defense: Defense;
+}
+const { defense } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const renderedAt = new Date().toISOString();
+---
+
+<Document title={`${defense.candidate}: ${defense.title}`} description={`PhD defense at ${defense.university.name}.`}>
+  <Shell base={base}>
+    <DefensePage client:load defense={defense} base={base} renderedAt={renderedAt} />
+  </Shell>
+</Document>
