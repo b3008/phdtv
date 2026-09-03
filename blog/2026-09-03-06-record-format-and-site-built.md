@@ -1,6 +1,6 @@
 ---
 type: "Devlog Entry"
-title: "record-format-and-site built: 27 of 30 tasks, waiting on a GitHub repository"
+title: "record-format-and-site built: 26 of 30 tasks, waiting on a GitHub repository"
 date: 2026-09-03
 timestamp: 2026-09-03T15:26:12
 tags: [feature, infrastructure, testing]
@@ -29,7 +29,7 @@ A fresh clone installs, typechecks, tests, validates and builds cleanly (task 8.
 
 ## What's left
 
-Three tasks need a GitHub repository that does not exist yet: verifying the two workflows on a real pull request and deployment (7.1, 7.2), creating the repository itself (7.4), and subscribing to the deployed feed from a calendar app (8.2). Task 7.4 is flagged in the plan as needing the user's decision on repository name and visibility, so implementation paused there.
+Four tasks need a GitHub repository that does not exist yet: verifying the two workflows on a real pull request and deployment (7.1, 7.2), creating the repository itself (7.4), and subscribing to the deployed feed from a calendar app (8.2). Task 7.4 is flagged in the plan as needing the user's decision on repository name and visibility, so implementation paused there.
 
 ## Surprises
 

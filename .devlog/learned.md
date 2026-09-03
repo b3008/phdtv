@@ -45,7 +45,7 @@
 
 ## Open threads
 
-- `record-format-and-site`: 27/30 tasks done. Remaining 7.1/7.2 verification, 7.4 and 8.2 all need a GitHub repository; waiting for the user to confirm repository name and visibility (defaults assumed in `astro.config.ts`: owner `b3008`, base `/phdtv`).
+- `record-format-and-site`: 26/30 tasks done. Remaining 7.1/7.2 verification, 7.4 and 8.2 all need a GitHub repository; waiting for the user to confirm repository name and visibility (defaults assumed in `astro.config.ts`: owner `b3008`, base `/phdtv`).
 - Deferred design questions: second taxonomy level in the UI, the 30-day recording window, the site domain name (must be settled before feeds are announced).
 - GitHub issue forms as the first submission path is still only a proposed default for the later submissions change.
 - Which universities to seed the first scraper with (Dutch agendas are the candidate, unconfirmed).
