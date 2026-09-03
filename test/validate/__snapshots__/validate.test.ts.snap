@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`validateProject: schema rules > reports one line per finding, naming file, rule and field 1`] = `
+[
+  "records/2026/2026-09-16-tudelft-no-title.md: schema: title is required",
+  "records/2026/2026-09-16-tudelft-no-title.md: schema: unknown field "mascot"",
+  "records/2026/2026-09-17-tudelft-unquoted-date.md: schema: starts_at must be a quoted ISO 8601 date-time with a UTC offset, e.g. "2026-09-15T12:30:00+02:00"",
+  "universities/broken.yaml: schema: timezone is required",
+]
+`;

@@ -18,3 +18,8 @@ export function parseOffsetMinutes(iso: string): number | null {
   const total = Number(match[3]) * 60 + Number(match[4]);
   return match[2] === '-' ? -total : total;
 }
+
+/** Calendar date (YYYY-MM-DD) of the instant in the given zone. */
+export function localDateString(timeZone: string, at: Date): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(at);
+}

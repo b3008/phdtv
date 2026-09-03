@@ -33,3 +33,11 @@ describe('parseOffsetMinutes', () => {
     expect(parseOffsetMinutes('2026-09-15T12:30:00')).toBeNull();
   });
 });
+
+describe('localDateString', () => {
+  it('gives the calendar date in the zone, not in UTC', async () => {
+    const { localDateString } = await import('../../src/lib/time.ts');
+    expect(localDateString('Europe/Amsterdam', new Date('2026-09-15T23:30:00Z'))).toBe('2026-09-16');
+    expect(localDateString('America/Los_Angeles', new Date('2026-09-16T05:30:00Z'))).toBe('2026-09-15');
+  });
+});

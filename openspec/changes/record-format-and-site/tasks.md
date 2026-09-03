@@ -13,8 +13,8 @@
 
 ## 3. Validator
 
-- [ ] 3.1 Implement `scripts/validate.ts` core: load all records and registry files, run the schemas, print `path: rule: message` per finding, exit non-zero on blocking findings; verify fixture records under `test/fixtures/` produce the expected finding lines in a Vitest snapshot
-- [ ] 3.2 Add cross-file rules: record path must match frontmatter date, university and candidate slug; `university` must exist in the registry; record timezone differing from registry timezone emits a warning; verify one fixture per rule yields the expected finding and the warning does not affect the exit code
+- [x] 3.1 Implement `scripts/validate.ts` core: load all records and registry files, run the schemas, print `path: rule: message` per finding, exit non-zero on blocking findings; verify fixture records under `test/fixtures/` produce the expected finding lines in a Vitest snapshot
+- [x] 3.2 Add cross-file rules: record path must match frontmatter date, university and candidate slug; `university` must exist in the registry; record timezone differing from registry timezone emits a warning; verify one fixture per rule yields the expected finding and the warning does not affect the exit code
 - [ ] 3.3 Add the curator-ownership rule: given a base commit and an author login, for records that had `verified_by` in base, a non-empty non-`source` field changed by an author listed in `automation.json` is a blocking finding; verify tests using a temporary git repository fixture cover automation-changes-protected-field (fails), automation-fills-empty-field (passes) and human-changes-protected-field (passes)
 - [ ] 3.4 Add link liveness as warnings: HEAD with timeout, GET-with-range fallback, allowlist of bot-hostile hosts counted reachable on any response, skip entirely when offline; verify tests with a mocked fetch cover reachable, unreachable and allowlisted hosts and that no case changes the exit code
 - [ ] 3.5 Wire `npm run validate` with `--base <ref>` and `--author <login>` flags; verify running it against the seeded `records/` passes with zero blocking findings

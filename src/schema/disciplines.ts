@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { parse } from 'yaml';
+import { load } from 'js-yaml';
 import { z } from 'zod';
 
 const majorSchema = z.object({ slug: z.string(), code: z.string(), name: z.string() }).strict();
@@ -19,7 +19,7 @@ export interface Disciplines {
 
 /** Load `disciplines.yaml` from the project root (or `rootDir`). */
 export function loadDisciplines(rootDir: string = process.cwd()): Disciplines {
-  const raw = parse(readFileSync(resolve(rootDir, 'disciplines.yaml'), 'utf8')) as unknown;
+  const raw = load(readFileSync(resolve(rootDir, 'disciplines.yaml'), 'utf8')) as unknown;
   const { majors, minors } = fileSchema.parse(raw);
   return { majors, minors, slugs: new Set(minors.map((m) => m.slug)) };
 }
