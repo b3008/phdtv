@@ -1,7 +1,7 @@
 ## 1. Repository and toolchain
 
-- [ ] 1.1 Initialise the git repository with `.gitignore`, `.nvmrc` pinned to Node 24 LTS and a README stub; verify `git status` shows a clean initial commit containing the OpenSpec and devlog directories
-- [ ] 1.2 Create `package.json` with Astro, the Astro React integration, React, Zod, Vitest, React Testing Library and jsdom, plus a strict `tsconfig.json` (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `jsx: react-jsx`); verify `npm install`, `npm run typecheck` and `npm run build` succeed on an empty site whose index page renders one React component
+- [x] 1.1 Initialise the git repository with `.gitignore`, `.nvmrc` pinned to Node 24 LTS and a README stub; verify `git status` shows a clean initial commit containing the OpenSpec and devlog directories
+- [x] 1.2 Create `package.json` with Astro, the Astro React integration, React, Zod, Vitest, React Testing Library and jsdom, plus a strict `tsconfig.json` (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `jsx: react-jsx`); verify `npm install`, `npm run typecheck` and `npm run build` succeed on an empty site whose index page renders one React component
 - [ ] 1.3 Spike the content-layer glob loader reading a placeholder record from `records/` at the repository root; verify the placeholder renders on a page and hot reload picks up an edit, then delete the placeholder
 
 ## 2. Schema and vocabulary

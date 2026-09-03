@@ -1,0 +1,33 @@
+:root {
+  color-scheme: light dark;
+  --fg: #1a1a1a;
+  --bg: #fbfbf9;
+  --muted: #5f5f5a;
+  --line: #e2e1dc;
+  --accent: #1d4ed8;
+  --live: #b91c1c;
+  --card: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #ececea;
+    --bg: #161615;
+    --muted: #a3a39c;
+    --line: #2f2f2c;
+    --accent: #93b4ff;
+    --live: #f87171;
+    --card: #1f1f1d;
+  }
+}
+* { box-sizing: border-box; }
+html { font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--fg); background: var(--bg); }
+body { margin: 0; }
+a { color: var(--accent); }
+.shell { max-width: 60rem; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+.shell-header { display: flex; align-items: baseline; gap: 1.5rem; padding: 0.75rem 0 1rem; border-bottom: 1px solid var(--line); }
+.shell-brand { font-weight: 700; font-size: 1.25rem; color: var(--fg); text-decoration: none; }
+.shell-nav { display: flex; gap: 1rem; }
+.shell-nav a { color: var(--muted); text-decoration: none; }
+.shell-nav a:hover { color: var(--fg); }
+.shell-main { padding-top: 1.5rem; }
+.shell-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }

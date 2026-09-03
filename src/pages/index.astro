@@ -1,0 +1,11 @@
+---
+import Document from '../layouts/Document.astro';
+import { Shell } from '../components/Shell.tsx';
+const base = import.meta.env.BASE_URL;
+---
+
+<Document title="PhD TV">
+  <Shell base={base}>
+    <p>Upcoming defenses will appear here.</p>
+  </Shell>
+</Document>
