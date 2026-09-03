@@ -37,8 +37,8 @@
 
 - [x] 6.1 Implement `src/lib/ics.ts`: RFC 5545 serialisation with 75-octet line folding, text escaping, UTC `DTSTART`, `DURATION`, `UID`, `SEQUENCE`, `DTSTAMP`, `SUMMARY`, `DESCRIPTION`, `LOCATION`, `URL`; verify unit tests cover folding of a long description, escaping of commas and newlines, and a round-trip through an iCalendar parser
 - [x] 6.2 Implement `src/lib/git-meta.ts` that reads commit count and last commit date per record file from one `git log` invocation and throws when the checkout is shallow; verify a test on a temporary repository returns increasing sequence after a second commit and the shallow case throws
-- [ ] 6.3 Add the `feeds/all.ics` and `feeds/[discipline].ics` static endpoints containing published defenses that are upcoming or ended within 30 days; verify a test parses the built feeds, finds no hidden or unverified seed, and finds only matching disciplines in a per-discipline feed
-- [ ] 6.4 Add the `api/defenses.json` endpoint with `schemaVersion`, `generatedAt`, resolved institution name and page URL per record; verify a test parses the built file, checks `schemaVersion === 1` and confirms hidden and unverified seeds are absent
+- [x] 6.3 Add the `feeds/all.ics` and `feeds/[discipline].ics` static endpoints containing published defenses that are upcoming or ended within 30 days; verify a test parses the built feeds, finds no hidden or unverified seed, and finds only matching disciplines in a per-discipline feed
+- [x] 6.4 Add the `api/defenses.json` endpoint with `schemaVersion`, `generatedAt`, resolved institution name and page URL per record; verify a test parses the built file, checks `schemaVersion === 1` and confirms hidden and unverified seeds are absent
 
 ## 7. Continuous integration and deployment
 
