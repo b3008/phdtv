@@ -44,7 +44,7 @@
 
 - [ ] 7.1 Add `.github/workflows/validate.yml` running typecheck, tests, `schema:check` and `validate --base <pr base> --author <pr author>` on pull requests touching `records/`, `universities/`, `disciplines.yaml`, `schema/` or `src/`; verify a throwaway pull request with an invalid record fails the check with the file and rule in the log
 - [ ] 7.2 Add `.github/workflows/deploy.yml` on push to `main` and a daily schedule, with full-depth checkout, building and publishing to GitHub Pages; verify the site, `feeds/all.ics` and `api/defenses.json` are reachable at the Pages URL after the first run
-- [ ] 7.3 Write the README: what the project is, the record format with an annotated example, how to add or correct a record by pull request, the takedown path via `status: hidden`, and the automation ownership convention; verify every relative link in it resolves
+- [x] 7.3 Write the README: what the project is, the record format with an annotated example, how to add or correct a record by pull request, the takedown path via `status: hidden`, and the automation ownership convention; verify every relative link in it resolves
 - [ ] 7.4 Create the GitHub repository and push `main`, enabling Pages from the workflow (confirm the repository name and visibility with the user before creating it); verify `gh repo view` shows the repository and the first deploy workflow run succeeds
 
 ## 8. Verification

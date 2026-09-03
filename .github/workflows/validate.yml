@@ -1,0 +1,43 @@
+name: Validate
+
+on:
+  pull_request:
+    paths:
+      - 'records/**'
+      - 'universities/**'
+      - 'disciplines.yaml'
+      - 'automation.json'
+      - 'schema/**'
+      - 'src/**'
+      - 'scripts/**'
+      - 'test/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'astro.config.ts'
+      - 'tsconfig.json'
+      - 'vitest.config.ts'
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history: feed SEQUENCE numbers come from per-file commit counts, and the ownership rule diffs against the base branch.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run schema:check
+      - name: Validate records (pull request)
+        if: github.event_name == 'pull_request'
+        run: npm run validate -- --base "origin/${{ github.base_ref }}" --author "${{ github.event.pull_request.user.login }}"
+      - name: Validate records (push)
+        if: github.event_name != 'pull_request'
+        run: npm run validate
