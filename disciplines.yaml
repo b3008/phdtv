@@ -1,0 +1,53 @@
+# Controlled vocabulary for the `disciplines` field of a defense record.
+# Source: OECD Fields of Research and Development (FORD), Frascati Manual 2015.
+# Slugs are stable identifiers; do not rename them, since per-discipline feed URLs depend on them.
+majors:
+  - { slug: natural-sciences, code: "1", name: Natural sciences }
+  - { slug: engineering-and-technology, code: "2", name: Engineering and technology }
+  - { slug: medical-and-health-sciences, code: "3", name: Medical and health sciences }
+  - { slug: agricultural-and-veterinary-sciences, code: "4", name: Agricultural and veterinary sciences }
+  - { slug: social-sciences, code: "5", name: Social sciences }
+  - { slug: humanities-and-the-arts, code: "6", name: Humanities and the arts }
+minors:
+  - { slug: mathematics, code: "1.1", name: Mathematics, major: natural-sciences }
+  - { slug: computer-and-information-sciences, code: "1.2", name: Computer and information sciences, major: natural-sciences }
+  - { slug: physical-sciences, code: "1.3", name: Physical sciences, major: natural-sciences }
+  - { slug: chemical-sciences, code: "1.4", name: Chemical sciences, major: natural-sciences }
+  - { slug: earth-and-environmental-sciences, code: "1.5", name: Earth and related environmental sciences, major: natural-sciences }
+  - { slug: biological-sciences, code: "1.6", name: Biological sciences, major: natural-sciences }
+  - { slug: other-natural-sciences, code: "1.7", name: Other natural sciences, major: natural-sciences }
+  - { slug: civil-engineering, code: "2.1", name: Civil engineering, major: engineering-and-technology }
+  - { slug: electrical-electronic-and-information-engineering, code: "2.2", name: "Electrical, electronic and information engineering", major: engineering-and-technology }
+  - { slug: mechanical-engineering, code: "2.3", name: Mechanical engineering, major: engineering-and-technology }
+  - { slug: chemical-engineering, code: "2.4", name: Chemical engineering, major: engineering-and-technology }
+  - { slug: materials-engineering, code: "2.5", name: Materials engineering, major: engineering-and-technology }
+  - { slug: medical-engineering, code: "2.6", name: Medical engineering, major: engineering-and-technology }
+  - { slug: environmental-engineering, code: "2.7", name: Environmental engineering, major: engineering-and-technology }
+  - { slug: environmental-biotechnology, code: "2.8", name: Environmental biotechnology, major: engineering-and-technology }
+  - { slug: industrial-biotechnology, code: "2.9", name: Industrial biotechnology, major: engineering-and-technology }
+  - { slug: nanotechnology, code: "2.10", name: Nanotechnology, major: engineering-and-technology }
+  - { slug: other-engineering-and-technologies, code: "2.11", name: Other engineering and technologies, major: engineering-and-technology }
+  - { slug: basic-medicine, code: "3.1", name: Basic medicine, major: medical-and-health-sciences }
+  - { slug: clinical-medicine, code: "3.2", name: Clinical medicine, major: medical-and-health-sciences }
+  - { slug: health-sciences, code: "3.3", name: Health sciences, major: medical-and-health-sciences }
+  - { slug: medical-biotechnology, code: "3.4", name: Medical biotechnology, major: medical-and-health-sciences }
+  - { slug: other-medical-sciences, code: "3.5", name: Other medical sciences, major: medical-and-health-sciences }
+  - { slug: agriculture-forestry-and-fisheries, code: "4.1", name: "Agriculture, forestry and fisheries", major: agricultural-and-veterinary-sciences }
+  - { slug: animal-and-dairy-science, code: "4.2", name: Animal and dairy science, major: agricultural-and-veterinary-sciences }
+  - { slug: veterinary-science, code: "4.3", name: Veterinary science, major: agricultural-and-veterinary-sciences }
+  - { slug: agricultural-biotechnology, code: "4.4", name: Agricultural biotechnology, major: agricultural-and-veterinary-sciences }
+  - { slug: other-agricultural-sciences, code: "4.5", name: Other agricultural sciences, major: agricultural-and-veterinary-sciences }
+  - { slug: psychology-and-cognitive-sciences, code: "5.1", name: Psychology and cognitive sciences, major: social-sciences }
+  - { slug: economics-and-business, code: "5.2", name: Economics and business, major: social-sciences }
+  - { slug: education, code: "5.3", name: Education, major: social-sciences }
+  - { slug: sociology, code: "5.4", name: Sociology, major: social-sciences }
+  - { slug: law, code: "5.5", name: Law, major: social-sciences }
+  - { slug: political-science, code: "5.6", name: Political science, major: social-sciences }
+  - { slug: social-and-economic-geography, code: "5.7", name: Social and economic geography, major: social-sciences }
+  - { slug: media-and-communications, code: "5.8", name: Media and communications, major: social-sciences }
+  - { slug: other-social-sciences, code: "5.9", name: Other social sciences, major: social-sciences }
+  - { slug: history-and-archaeology, code: "6.1", name: History and archaeology, major: humanities-and-the-arts }
+  - { slug: languages-and-literature, code: "6.2", name: Languages and literature, major: humanities-and-the-arts }
+  - { slug: philosophy-ethics-and-religion, code: "6.3", name: "Philosophy, ethics and religion", major: humanities-and-the-arts }
+  - { slug: arts, code: "6.4", name: "Arts (arts, history of arts, performing arts, music)", major: humanities-and-the-arts }
+  - { slug: other-humanities, code: "6.5", name: Other humanities, major: humanities-and-the-arts }
