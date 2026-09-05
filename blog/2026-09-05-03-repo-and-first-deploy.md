@@ -9,7 +9,7 @@ description: "The project moved from a local-only repository to github.com/b3008
 
 ## What changed
 
-The user asked for a public GitHub repository named `phdtv`. It was created from the working directory with the GitHub CLI, `main` pushed, and GitHub Pages switched to deploy from Actions. The push triggered both workflows. Both passed on the first attempt, and the site has been live since about 14:08 local time.
+The user asked for a public GitHub repository named `phdtv`. It was created from the working directory with the GitHub CLI, `main` pushed, and GitHub Pages switched to deploy from Actions. The push triggered both workflows. Both passed on the first attempt, and the site has been live since 12:08 UTC.
 
 ```
 $ gh repo create phdtv --public --source=. --remote=origin --push
