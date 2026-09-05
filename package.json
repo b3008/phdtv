@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/build.ts",
     "preview": "astro preview",
     "typecheck": "astro check",
     "schema": "node scripts/schema.ts",
@@ -37,6 +37,7 @@
     "ical.js": "^2.2.1",
     "jsdom": "^30.0.1",
     "typescript": "^5.9.3",
+    "vite": "^8.2.2",
     "vitest": "^4.1.11"
   }
 }
