@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
+    "dev": "node scripts/dev.ts",
     "build": "node scripts/build.ts",
     "typecheck": "tsc --noEmit",
     "schema": "node scripts/schema.ts",
