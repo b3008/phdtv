@@ -67,8 +67,8 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 
 - The front page lists upcoming defenses in your local time, with the institution's time alongside, and surfaces the ones in progress.
 - The archive lists past defenses and says plainly whether a recording is available, pending, known not to exist, or simply not known.
-- `feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
-- `api/defenses.json` is the whole published dataset with a schema version.
+- `https://phdtv.net/feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
+- `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version.
 
 ## Development
 
@@ -76,12 +76,16 @@ Everything is TypeScript: the schemas, the validator, the site build, the React 
 
 ```sh
 npm install
-npm run dev          # build, serve at http://localhost:4321/phdtv/, rebuild on change
+npm run dev          # build, serve at http://localhost:4321/, rebuild on change
 npm test             # unit, component and build-level tests
 npm run typecheck
 npm run validate     # records and registry
 npm run schema       # regenerate schema/*.json after changing src/schema/
 npm run build        # static site into dist/
 ```
+
+## Deployment
+
+The site lives at [phdtv.net](https://phdtv.net/) on a VPS. Every push to `main` (and a daily rebuild at 03:17 UTC) runs `.github/workflows/deploy.yml`: it validates, builds with `SITE_URL=https://phdtv.net` and `SITE_BASE=/`, and rsyncs `dist/` to the server over SSH as a dedicated user whose key can only write that one directory. nginx serves the files with long caching for the hashed assets and revalidation for everything else; certbot keeps the certificate renewed. The repository secret `DEPLOY_SSH_KEY` holds the private key; the server's host key is pinned in `.github/known_hosts`.
 
 The development log lives in [`blog/`](blog/).

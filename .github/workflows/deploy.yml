@@ -3,6 +3,9 @@ name: Deploy
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'blog/**'
+      - '.devlog/**'
   schedule:
     # Daily rebuild so the no-script fallback for "upcoming" and "live" is at most a day old.
     - cron: '17 3 * * *'
@@ -10,19 +13,18 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          # Full history: feed SEQUENCE numbers come from per-file commit counts.
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
@@ -32,18 +34,21 @@ jobs:
       - run: npm run validate
       - run: npm run build
         env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io
-          SITE_BASE: /${{ github.event.repository.name }}
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          SITE_URL: https://phdtv.net
+          SITE_BASE: /
+      - name: Install the deploy key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          cp .github/known_hosts ~/.ssh/known_hosts
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      - name: Upload the site
+        # The key is restricted on the server to rsync into the site directory, so "/" here is that directory.
+        run: rsync -rlptz --delete-delay --delay-updates --chmod=D755,F644 -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" dist/ phdtv@51.254.129.115:/
+      - name: Smoke check
+        run: |
+          curl -fsS https://phdtv.net/ -o /dev/null
+          curl -fsS https://phdtv.net/feeds/all.ics | head -1 | grep -q BEGIN:VCALENDAR
+          curl -fsS https://phdtv.net/api/defenses.json | head -c 200; echo

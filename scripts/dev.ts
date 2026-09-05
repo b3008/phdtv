@@ -6,7 +6,7 @@ import { buildSite, normalizeBase } from '../src/site/build.ts';
 
 const rootDir = process.cwd();
 const outDir = resolve('dist');
-const base = process.env['SITE_BASE'] ?? '/phdtv';
+const base = process.env['SITE_BASE'] ?? '/';
 const port = Number(process.env['PORT'] ?? 4321);
 const site = process.env['SITE_URL'] ?? `http://localhost:${port}`;
 

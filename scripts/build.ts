@@ -9,9 +9,9 @@ const { values } = parseArgs({
   },
 });
 
-// GitHub Pages project sites live under /<repo>; the deploy workflow sets both from the repository name.
-const site = process.env['SITE_URL'] ?? 'https://b3008.github.io';
-const base = process.env['SITE_BASE'] ?? '/phdtv';
+// The canonical site is https://phdtv.net at the root; the deploy workflow sets both explicitly.
+const site = process.env['SITE_URL'] ?? 'https://phdtv.net';
+const base = process.env['SITE_BASE'] ?? '/';
 
 const started = Date.now();
 const files = await buildSite({ rootDir: values.root, outDir: values.out, site, base });
