@@ -84,4 +84,4 @@ npm run schema       # regenerate schema/*.json after changing src/schema/
 npm run build
 ```
 
-Planning lives in [`openspec/`](openspec/) and the development log in [`blog/`](blog/).
+The development log lives in [`blog/`](blog/).

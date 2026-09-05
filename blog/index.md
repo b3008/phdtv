@@ -1,5 +1,6 @@
 # phdtv — Development Blog
 
+- [OpenSpec removed](2026-09-05-01-openspec-removed.md) — planning artifacts and the /opsx commands deleted at the user's request; specs survive in git history, README, tests and code
 - [record-format-and-site built: 26 of 30 tasks, waiting on a GitHub repository](2026-09-03-06-record-format-and-site-built.md) — schemas, validator, 22 verified seeds, Astro+React site, feeds, export, CI; Astro 7.3.0 and js-yaml 5 surprises
 - [React for every UI component, inside Astro](2026-09-03-05-react-for-ui.md) — Astro keeps routing, collections and endpoints; all markup is React .tsx; one schedule component serves both no-script fallback and hydrated viewer-local view
 - [First OpenSpec change: record-format-and-site, TypeScript throughout](2026-09-03-04-first-change-scaffolded.md) — proposal, five specs, design and 30 tasks drafted and validated; Zod as schema source of truth, Astro, OECD disciplines, git-derived ICS SEQUENCE

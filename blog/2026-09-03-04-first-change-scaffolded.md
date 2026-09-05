@@ -9,6 +9,8 @@ description: "Scaffolded and fully drafted the foundational OpenSpec change (pro
 
 ## What changed
 
+> **Update 2026-09-05**: The change artifacts described here were deleted when OpenSpec was removed; they last exist at commit d884bb0. See [OpenSpec removed](2026-09-05-01-openspec-removed.md).
+
 The exploration from the [previous entries](2026-09-03-03-records-live-in-git.md) crystallised into the project's first OpenSpec change, `record-format-and-site`, scaffolded with `openspec new change` and drafted to completion:
 
 ```

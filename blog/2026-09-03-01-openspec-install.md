@@ -9,6 +9,8 @@ description: "Set up OpenSpec's spec-driven change workflow as the first tooling
 
 ## What changed
 
+> **Update 2026-09-05**: OpenSpec was removed from the project two days later; the `openspec/` directory and the `/opsx:*` commands no longer exist. See [OpenSpec removed](2026-09-05-01-openspec-removed.md).
+
 The `phdtv` directory was completely empty. This session installed [OpenSpec](https://github.com/Fission-AI/OpenSpec), a spec-driven development CLI, and initialized it for Claude Code:
 
 - Upgraded the global install from 1.8.0 to 1.12.0 (`npm install -g @fission-ai/openspec@latest`).
