@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "dev": "astro dev",
     "build": "node scripts/build.ts",
-    "preview": "astro preview",
-    "typecheck": "astro check",
+    "typecheck": "tsc --noEmit",
     "schema": "node scripts/schema.ts",
     "schema:check": "node scripts/schema.ts --check",
     "validate": "node scripts/validate.ts"
@@ -19,15 +17,12 @@
   "type": "module",
   "private": "true",
   "dependencies": {
-    "@astrojs/react": "^6.0.5",
-    "astro": "~7.2.10",
     "js-yaml": "^4.3.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "zod": "^4.5.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.3",
     "@types/js-yaml": "^4.0.9",

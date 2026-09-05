@@ -15,7 +15,7 @@ export interface SourceFile {
 
 const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)([\s\S]*)$/;
 
-/** Parse Markdown with YAML frontmatter the way Astro does (js-yaml default schema). */
+/** Parse Markdown with YAML frontmatter (js-yaml default schema). The validator and the site build share this parser. */
 export function parseRecordFile(text: string): { data: unknown; body: string; error?: string } {
   const match = FRONTMATTER.exec(text);
   if (!match) return { data: undefined, body: text, error: 'missing frontmatter block' };

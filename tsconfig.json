@@ -1,12 +1,25 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+    "types": ["node"],
+    "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "erasableSyntaxOnly": true,
-    "types": ["node"]
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true
   },
+  "include": ["src", "scripts", "test", "vitest.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

@@ -1,4 +1,4 @@
-// One function per page type. Each is a data-bearing header around one component tree, as the Astro pages were.
+// One function per page type: a data-bearing header around one component tree.
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
 import { DefensePage } from '../components/DefensePage.tsx';

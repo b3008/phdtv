@@ -13,7 +13,6 @@ on:
       - 'test/**'
       - 'package.json'
       - 'package-lock.json'
-      - 'astro.config.ts'
       - 'tsconfig.json'
       - 'vitest.config.ts'
   push:

@@ -21,7 +21,7 @@ function uniqueOptions(defenses: Defense[], pick: (d: Defense) => Array<{ slug: 
   return [...seen].map(([slug, name]) => ({ slug, name })).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/** The upcoming and archive views. Hydrated with client:load; static markup is the no-script fallback. */
+/** The upcoming and archive views. Hydrated by src/site/client/schedule.tsx; the static markup is the no-script fallback. */
 export function DefenseSchedule({ mode, defenses, renderedAt }: DefenseScheduleProps) {
   const clock = useViewerClock();
   const [filters, setFilters] = useState<Filters>({});

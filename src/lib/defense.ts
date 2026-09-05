@@ -10,7 +10,7 @@ export interface DefenseInput {
   record: DefenseRecord;
   university: University;
   disciplineNames: Record<string, string>;
-  /** Site base path (Astro's import.meta.env.BASE_URL). */
+  /** Site base path, e.g. /phdtv/. */
   base: string;
 }
 
