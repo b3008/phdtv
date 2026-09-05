@@ -72,16 +72,16 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 
 ## Development
 
-Everything is TypeScript: the schemas, the validator, the Astro site, the React components and the tests.
+Everything is TypeScript: the schemas, the validator, the site build, the React components and the tests. There is no site framework. `scripts/build.ts` renders the React pages to HTML, writes the calendar feeds and the JSON export, and uses Vite only to bundle the two components that run in the browser and the stylesheet.
 
 ```sh
 npm install
-npm run dev          # local site with hot reload
+npm run dev          # build, serve at http://localhost:4321/phdtv/, rebuild on change
 npm test             # unit, component and build-level tests
 npm run typecheck
 npm run validate     # records and registry
 npm run schema       # regenerate schema/*.json after changing src/schema/
-npm run build
+npm run build        # static site into dist/
 ```
 
 The development log lives in [`blog/`](blog/).
