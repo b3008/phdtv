@@ -39,6 +39,8 @@ Decisions fixed in `design.md`, each with alternatives recorded:
 
 - **Zod in TypeScript is the schema's source of truth**; JSON Schema files are generated from it and CI fails if they are stale. The site's content collections and the validator share the same objects, so format and enforcement cannot drift.
 - **Astro** for the site, chosen over the already-installed Hugo precisely because Hugo would force Go templates and a second toolchain, contradicting the TypeScript constraint.
+
+  > **Update 2026-09-05**: Astro was ruled out two days later; see [Astro is out; Vite and a build script take its place](2026-09-05-02-no-astro.md).
 - **One validator run twice**: as a readable CI step producing `path: rule: message` lines, and implicitly inside the build.
 - **Curator ownership enforced by diffing against the base branch** for pull-request authors in an automation allowlist, so the convention exists before the first scraper does.
 - **OECD Frascati minor fields** (42 of them) as the discipline vocabulary, a real standard rather than an invented tag list.

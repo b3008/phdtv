@@ -27,6 +27,7 @@
 
 ## Recurring themes
 
+- **No Astro** (user constraint, 2026-09-05): the site generator is being replaced. The lines below that name Astro describe the code as it still stands; until the migration lands the build still runs through Astro, and once it lands those lines get rewritten.
 - **TypeScript through and through** (user constraint, 2026-09-03): schema, validator, site, feeds, tests, future scrapers and submission tooling. No shell logic beyond npm script invocation, no second language. This is why Astro beat the already-installed Hugo.
 - **React for every UI component** (user constraint, 2026-09-03): anything that renders markup is a React `.tsx` under `src/components/`; Astro is confined to `src/pages/` for routing, collection loading, endpoints and the document shell. No `.astro` components.
 - **Stack**: Astro + React integration, content collections + Zod, Vitest + React Testing Library under jsdom, Node 24 LTS with native type stripping, GitHub Actions for validation and daily Pages deploys, single repository.
@@ -40,6 +41,7 @@
 
 ## Open threads
 
+- Replace Astro with Vite plus a TypeScript static build script (user chose this over Next.js static export, 2026-09-05). Design and plan in progress; until the migration lands the build still runs through Astro. Constraints that survive: TypeScript throughout, React for all UI, static Pages deploy, SSR no-script markup that hydrates, feed and export paths unchanged.
 - Remaining from the original plan: create the GitHub repository (name and visibility unconfirmed; `astro.config.ts` assumes owner `b3008`, base `/phdtv`), verify the validate and deploy workflows on a real pull request and deployment, then subscribe to the deployed `feeds/all.ics` from a calendar app and confirm an edited event updates in place.
 - Deferred design questions: second taxonomy level in the UI, the 30-day recording window, the site domain name (must be settled before feeds are announced).
 - GitHub issue forms as the first submission path is still only a proposed default for the later submissions change.
