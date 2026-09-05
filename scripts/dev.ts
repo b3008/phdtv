@@ -25,7 +25,7 @@ function rebuild(): Promise<void> {
 }
 
 await rebuild();
-const server = await preview({
+await preview({
   root: rootDir,
   configFile: false,
   logLevel: 'warn',
@@ -33,7 +33,8 @@ const server = await preview({
   build: { outDir },
   preview: { port, strictPort: true, open: false },
 });
-server.printUrls();
+// Printed here rather than through Vite's logger, which the warn level above keeps quiet.
+console.log(`Serving ${outDir} at http://localhost:${port}${normalizeBase(base)}`);
 
 let timer: NodeJS.Timeout | undefined;
 const schedule = () => {
