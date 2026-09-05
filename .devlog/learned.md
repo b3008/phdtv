@@ -41,7 +41,6 @@
 ## Open threads
 
 - Remaining from the original plan: create the GitHub repository (name and visibility unconfirmed; `astro.config.ts` assumes owner `b3008`, base `/phdtv`), verify the validate and deploy workflows on a real pull request and deployment, then subscribe to the deployed `feeds/all.ics` from a calendar app and confirm an edited event updates in place.
-
 - Deferred design questions: second taxonomy level in the UI, the 30-day recording window, the site domain name (must be settled before feeds are announced).
 - GitHub issue forms as the first submission path is still only a proposed default for the later submissions change.
 - Which universities to seed the first scraper with (Dutch agendas are the candidate, unconfirmed).
