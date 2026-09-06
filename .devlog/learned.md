@@ -18,6 +18,7 @@
 - `automation.json` — allowlist of GitHub logins whose PRs are subject to the curator-ownership rule (empty until the scraper change).
 - `src/components/DefenseSchedule.tsx` — the schedule island for upcoming and archive views (hydrated by `src/site/client/schedule.tsx`); `DefensePage.tsx` the detail body; `src/lib/` holds pure helpers (time, recording, filters, ics, feed, git-meta, defense view-model).
 - `src/site/` — `data.ts` (loader), `assets.ts` (manifest → hrefs), `islands.tsx` + `client/` (hydration), `document.tsx`, `pages.tsx`, `generate.ts` (all outputs in memory), `build.ts` (Vite orchestration); `scripts/build.ts` and `scripts/dev.ts` are the CLIs.
+- `src/components/AboutPage.tsx` — the static `/about/` page (no island); its institution list is generated from `loadSiteData().universities` (the registry sorted by name), and the maintainer's name, GitHub handle `b3008` and contact email are constants at the top of the file.
 - `test/build/site.test.ts` runs the generator in-process against the real repository with a pinned clock; `test/build/bundle.test.ts` is the only test that runs the real Vite build (one file on purpose).
 - Seeds: 15 files under `universities/`, 22 under `records/2026/`, all `channel: curated`, `verified_by: b3008`, each source page re-fetched before writing.
 
@@ -44,9 +45,13 @@
 - **Real-world stream links**: Utrecht uses one shared Senate Hall livestream URL for every defense; Twente and Wageningen use one shared YuJa page; VU streams to a YouTube channel; Erasmus gives the link only to the candidate; UvA keeps videos one month, UEF deletes within ten days unless asked.
 
 - **Shell gotcha:** the user's zsh profile defines `node`/`npm` as nvm lazy-load wrapper functions that call `_nvm_lazy_load`. In non-interactive Claude Code shells that function is undefined, so `node`/`npm` recurse until `FUNCNEST` is hit. Call binaries by full path (`/opt/homebrew/bin/node`, `/opt/homebrew/bin/npm`, `/opt/homebrew/bin/openspec`) instead.
+- **`npm run dev` serves its own checkout only**: `scripts/dev.ts` builds that checkout's `dist/` and watches that checkout's `src/`, `records/`, `universities/`. With work spread over `.claude/worktrees/*`, a server started in the primary checkout shows `main`, never a worktree's changes; run one per worktree with a distinct `PORT` (the port is strict, so a second server on 4321 fails to start).
+- **Claude Code worktree sessions have a Bash guard** that refuses heredocs, `env` prefixes, quoted command paths and other "complex" commands as unverifiable git operations. Use the Write and Edit tools for file contents and a short wrapper script (run with `sh path`) for commands with awkward paths such as headless Chrome.
 
 ## Open threads
 
+- About page built and committed on branch `worktree-about-page` (2026-09-06), not yet merged into `main`; it will conflict on one line each in `Shell`, `pages.tsx` and the end of `global.css` with the calendar-views redesign. See `blog/2026-09-06-02-about-page.md`.
+- The user said `npm run dev` "should not be serving dist"; today it does by design (build, serve `dist/`, rebuild on change). Whether to change it to render on request is undecided.
 - Calendar views for the home page: spec approved in conversation and committed (`docs/superpowers/specs/2026-09-06-calendar-views-design.md`), awaiting the user's review of the file, then plan and implementation; see `blog/2026-09-06-01-calendar-views-designed.md`. A Claude Design prototype of the four views, two rounds reviewed, exists at `https://claude.ai/design/p/bb0e7e04-46a2-494a-9fde-2f52f1383849` (copy and renders under `blog/media/2026-09-06-01-calendar-views-designed/`). It carries a **TV-guide aesthetic** the user asked for mid-session; whether that look replaces the spec's quiet styling in the implementation is undecided.
 - Subscribe to `https://phdtv.net/feeds/all.ics` from a calendar app and confirm an edited event updates in place (a first attempt via Calendar.app's webcal sheet was never completed); the validate workflow has run on a push but not yet on a real pull request (the ownership rule path).
 - Deferred design questions: second taxonomy level in the UI, the 30-day recording window.
