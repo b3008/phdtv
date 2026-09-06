@@ -14,7 +14,7 @@ const groups = groupByDate(
 describe('YearView', () => {
   it('shows twelve six-row mini-months with counts', () => {
     const { container } = render(<YearView date="2026-09-15" groups={groups} onOpenMonth={() => {}} onOpenDay={() => {}} />);
-    const months = screen.getAllByRole('region');
+    const months = screen.getAllByRole('group');
     expect(months).toHaveLength(12);
     expect(months[0]?.getAttribute('aria-label')).toBe('January 2026');
     expect(container.querySelectorAll('.year-month:first-child .year-day')).toHaveLength(42);

@@ -17,7 +17,7 @@ export function WeekView({ date, groups, today, now, zone }: WeekViewProps) {
       {daysOfWeek(date).map((day, i) => {
         const isToday = day === today;
         return (
-          <section key={day} className={`week-day${isToday ? ' week-day-today' : ''}`} aria-label={formatDateString(day)}>
+          <div key={day} role="group" className={`week-day${isToday ? ' week-day-today' : ''}`} aria-label={formatDateString(day)}>
             <div className="week-head">
               <div className="week-head-dow">{WEEKDAYS_SHORT[i]}</div>
               <div className="week-head-num">
@@ -30,7 +30,7 @@ export function WeekView({ date, groups, today, now, zone }: WeekViewProps) {
                 <DefenseChip key={d.key} defense={d} phase={defensePhase(d, now)} zone={zone} detail="week" />
               ))}
             </div>
-          </section>
+          </div>
         );
       })}
     </div>

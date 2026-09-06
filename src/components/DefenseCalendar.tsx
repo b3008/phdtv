@@ -30,7 +30,7 @@ export interface DefenseCalendarProps {
   /** The major fields of the vocabulary, for the legend. */
   majors: MajorField[];
   /** Build time, so the first client render matches the server render before the real clock takes over. */
-  renderedAt?: string;
+  renderedAt: string;
 }
 
 const LEDE =
@@ -49,7 +49,7 @@ function uniqueOptions(defenses: Defense[], pick: (d: Defense) => Array<{ slug: 
  */
 export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalendarProps) {
   const clock = useViewerClock();
-  const buildNow = renderedAt ? new Date(renderedAt) : new Date();
+  const buildNow = new Date(renderedAt);
   const now = clock.now ?? buildNow;
   const zone = clock.zone;
   const today: DateString = zone ? todayIn(zone, now) : todayIn('UTC', now);
@@ -88,7 +88,7 @@ export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalenda
     .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
 
   const bounds = periodBounds(calendar.view, calendar.date);
-  const isEmpty = calendar.view !== 'year' && ![...groups.keys()].some((day) => day >= bounds.start && day <= bounds.end);
+  const isEmpty = ![...groups.keys()].some((day) => day >= bounds.start && day <= bounds.end);
 
   return (
     <div className="calendar">
@@ -109,7 +109,7 @@ export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalenda
           </section>
         )}
         <CalendarToolbar state={calendar} today={today} onChange={updateCalendar} />
-        {isEmpty && <EmptyPeriod state={calendar} dates={groups.keys()} onJump={(date) => updateCalendar({ ...calendar, date })} />}
+        {isEmpty && <EmptyPeriod state={calendar} dates={[...groups.keys()]} onJump={(date) => updateCalendar({ ...calendar, date })} />}
         {calendar.view === 'day' && !isEmpty && (
           <DayView date={calendar.date} defenses={groups.get(calendar.date) ?? []} now={now} zone={zone} />
         )}

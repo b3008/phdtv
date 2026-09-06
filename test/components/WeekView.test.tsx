@@ -13,7 +13,7 @@ const groups = groupByDate([monday, wednesday], 'Europe/Amsterdam');
 describe('WeekView', () => {
   it('renders seven Monday-start columns with the chips in the right days', () => {
     render(<WeekView date="2026-09-09" groups={groups} today="2026-09-07" now={NOW} zone="Europe/Amsterdam" />);
-    const days = screen.getAllByRole('region');
+    const days = screen.getAllByRole('group');
     expect(days.map((d) => d.getAttribute('aria-label'))).toEqual([
       'Mon 7 Sep 2026', 'Tue 8 Sep 2026', 'Wed 9 Sep 2026', 'Thu 10 Sep 2026', 'Fri 11 Sep 2026', 'Sat 12 Sep 2026', 'Sun 13 Sep 2026',
     ]);
@@ -23,7 +23,7 @@ describe('WeekView', () => {
 
   it('marks today with the NOW tag and a live chip', () => {
     render(<WeekView date="2026-09-09" groups={groups} today="2026-09-07" now={NOW} zone="Europe/Amsterdam" />);
-    const today = screen.getByRole('region', { name: 'Mon 7 Sep 2026' });
+    const today = screen.getByRole('group', { name: 'Mon 7 Sep 2026' });
     expect(today.className).toContain('week-day-today');
     expect(within(today).getByText('Now')).toBeTruthy();
     expect(within(today).getByText('Live')).toBeTruthy();

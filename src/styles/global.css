@@ -51,7 +51,7 @@
     --rule: #7a705d;
     --hairline: #3d3729;
     --accent: #93b4ff;
-    --live: #ff4d5a;
+    --live: #e03a48;
     --yellow: #ffd83d;
     --yellow-fg: #15130f;
     --cyan: #3cc7f5;
@@ -111,8 +111,8 @@ abbr[title] { text-decoration: none; }
 .headline { padding: .6rem .9rem .75rem; }
 .headline-live { background: var(--live); color: #fff; }
 .headline-upcoming { background: var(--yellow); color: var(--yellow-fg); }
-.headline-recordings { background: var(--cyan); color: #fff; }
-.headline-kicker { display: block; font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .2em; font-size: .62rem; opacity: .85; }
+.headline-recordings { background: var(--cyan); color: var(--yellow-fg); }
+.headline-kicker { display: block; font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .2em; font-size: .68rem; opacity: .85; }
 .headline-text { display: block; margin-top: .15rem; font-family: var(--display); font-size: 1.05rem; line-height: 1.15; text-transform: uppercase; letter-spacing: -.01em; text-wrap: pretty; }
 
 /* page intro */
@@ -136,7 +136,7 @@ abbr[title] { text-decoration: none; }
 /* badges, pills and the starburst */
 .badge-inst { display: inline-block; border: 1px solid var(--ink); color: var(--ink); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; line-height: 1.4; padding: 0 .35rem; }
 .pill-live { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; line-height: 1.5; padding: 0 .4rem; }
-.tag-now { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .6rem; line-height: 1.5; padding: 0 .3rem; margin-left: .3rem; vertical-align: middle; }
+.tag-now { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; line-height: 1.5; padding: 0 .3rem; margin-left: .3rem; vertical-align: middle; }
 .tag-centerfold { display: inline-block; background: var(--yellow); color: var(--yellow-fg); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .73rem; line-height: 1.5; padding: 0 .4rem; text-decoration: none; }
 .starburst { position: absolute; top: -1rem; right: 1.1rem; width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; text-align: center; background: var(--yellow); color: var(--live); font-family: var(--display); font-size: .8rem; line-height: 1; text-transform: uppercase; transform: rotate(8deg); clip-path: polygon(50% 0%, 61% 12%, 76% 6%, 80% 21%, 95% 25%, 89% 39%, 100% 50%, 89% 61%, 95% 75%, 80% 79%, 76% 94%, 61% 88%, 50% 100%, 39% 88%, 24% 94%, 20% 79%, 5% 75%, 11% 61%, 0% 50%, 11% 39%, 5% 25%, 20% 21%, 24% 6%, 39% 12%); }
 
@@ -186,7 +186,7 @@ abbr[title] { text-decoration: none; }
 .week-day { border-right: 1px solid var(--hairline); min-height: 14rem; }
 .week-day-today { background: var(--today); }
 .week-head { padding: .4rem .4rem .35rem; background: var(--bar); color: var(--bar-fg); }
-.week-day-today .week-head { box-shadow: inset 0 0 0 2px var(--accent); }
+.week-day-today .week-head { outline: 2px solid var(--accent); outline-offset: -2px; }
 .week-head-dow { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; opacity: .75; }
 .week-head-num { font-family: var(--condensed); font-weight: 700; font-size: 1.25rem; line-height: 1; }
 .week-chips { padding: .4rem; display: flex; flex-direction: column; gap: .4rem; }
@@ -197,7 +197,7 @@ abbr[title] { text-decoration: none; }
 .month-dow { padding: .3rem .4rem; background: var(--bar); color: var(--bar-fg); border-right: 1px solid var(--hairline); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; }
 .month-cell { position: relative; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); min-height: 6.1rem; padding: .3rem; }
 .month-cell-pad .month-num { color: var(--muted); }
-.month-cell-today { box-shadow: inset 0 0 0 2px var(--accent); background: var(--today); }
+.month-cell-today { outline: 2px solid var(--accent); outline-offset: -2px; background: var(--today); }
 .month-num { font-family: var(--condensed); font-weight: 700; font-size: .95rem; line-height: 1; }
 .month-chips { margin-top: .3rem; display: flex; flex-direction: column; gap: .25rem; }
 .month-dots, .month-open { display: none; }
@@ -210,7 +210,7 @@ abbr[title] { text-decoration: none; }
 .chip-time { font-family: var(--condensed); font-weight: 700; font-size: 1rem; line-height: 1.1; }
 .chip-name { display: block; font-size: .78rem; font-weight: 600; line-height: 1.25; margin-top: .15rem; }
 .chip-foot { display: block; margin-top: .25rem; }
-.chip .badge-inst { font-size: .62rem; }
+.chip .badge-inst { font-size: .68rem; }
 .chip-month .chip-time { font-size: .85rem; }
 .chip-month .chip-name { font-size: .72rem; }
 
@@ -218,7 +218,7 @@ abbr[title] { text-decoration: none; }
 .year { display: grid; gap: 1.4rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .year-month-name { cursor: pointer; background: none; border: 0; border-bottom: 1px solid var(--ink); padding: 0 0 .2rem; width: 100%; text-align: left; color: var(--ink); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 1rem; }
 .year-grid { margin-top: .4rem; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
-.year-dow { text-align: center; font-family: var(--condensed); font-size: .62rem; color: var(--muted); }
+.year-dow { text-align: center; font-family: var(--condensed); font-size: .68rem; color: var(--muted); }
 .year-day { border: 0; padding: 0; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: transparent; color: var(--muted); font-family: var(--condensed); font-size: .7rem; line-height: 1; }
 .year-day-pad { visibility: hidden; }
 .year-day-1 { background: var(--shade-1); color: var(--ink); cursor: pointer; }

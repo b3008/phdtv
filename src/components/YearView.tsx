@@ -28,7 +28,7 @@ export function YearView({ date, groups, onOpenMonth, onOpenDay }: YearViewProps
         const count = cells.filter((day) => sameMonth(day, first)).reduce((sum, day) => sum + (groups.get(day)?.length ?? 0), 0);
         const name = MONTHS[Number(first.slice(5, 7)) - 1] ?? '';
         return (
-          <section key={first} className="year-month" aria-label={`${name} ${first.slice(0, 4)}`}>
+          <div key={first} role="group" className="year-month" aria-label={`${name} ${first.slice(0, 4)}`}>
             <button type="button" className="year-month-name" onClick={() => onOpenMonth(first)}>
               {name}
             </button>
@@ -63,7 +63,7 @@ export function YearView({ date, groups, onOpenMonth, onOpenDay }: YearViewProps
               })}
             </div>
             <p className="year-caption">{plural(count)}</p>
-          </section>
+          </div>
         );
       })}
     </div>

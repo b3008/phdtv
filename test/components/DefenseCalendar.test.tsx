@@ -96,8 +96,8 @@ describe('DefenseCalendar: navigation and the URL', () => {
     expect(window.location.search).toBe('?view=week');
     fireEvent.click(screen.getByRole('button', { name: 'Year' }));
     expect(period()).toBe('2026');
-    expect(within(screen.getByRole('region', { name: 'September 2026' })).getByText('3 defenses')).toBeTruthy();
-    expect(within(screen.getByRole('region', { name: 'July 2026' })).getByText('1 defense')).toBeTruthy();
+    expect(within(screen.getByRole('group', { name: 'September 2026' })).getByText('3 defenses')).toBeTruthy();
+    expect(within(screen.getByRole('group', { name: 'July 2026' })).getByText('1 defense')).toBeTruthy();
   });
 
   it('moves with previous, next and Today, writing only a non-default date', () => {
@@ -115,7 +115,7 @@ describe('DefenseCalendar: navigation and the URL', () => {
     renderCalendar();
     fireEvent.click(screen.getByRole('button', { name: 'Year' }));
     fireEvent.change(screen.getByLabelText('Discipline'), { target: { value: 'law' } });
-    expect(within(screen.getByRole('region', { name: 'September 2026' })).getByText('1 defense')).toBeTruthy();
+    expect(within(screen.getByRole('group', { name: 'September 2026' })).getByText('1 defense')).toBeTruthy();
     expect(window.location.search).toBe('?discipline=law&view=year');
     expect(screen.getByText('3 defenses you can still catch live')).toBeTruthy();
   });
@@ -148,6 +148,31 @@ describe('DefenseCalendar: navigation and the URL', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Wed 9 Sep 2026, 1 defense' }));
     expect(screen.getByRole('heading', { level: 2, name: 'Wednesday 9 September 2026' })).toBeTruthy();
     expect(window.location.search).toBe('?view=day&date=2026-09-09');
+  });
+
+  it('offers jump links in an empty year', () => {
+    renderCalendar();
+    fireEvent.click(screen.getByRole('button', { name: 'Year' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next year' }));
+    expect(screen.getByRole('status').textContent).toContain('No defenses in 2027.');
+    fireEvent.click(screen.getByRole('button', { name: 'Previous: Fri 2 Oct 2026' }));
+    expect(document.querySelector('.toolbar-period')?.textContent).toBe('2026');
+    expect(window.location.search).toBe('?view=year&date=2026-10-02');
+  });
+
+  it('narrows to one institution and to recorded defenses only, writing both to the URL', () => {
+    renderCalendar();
+    fireEvent.change(screen.getByLabelText('Institution'), { target: { value: 'kth' } });
+    expect(window.location.search).toBe('?university=kth');
+    expect(within(screen.getByRole('region', { name: 'Live now' })).getByRole('link', { name: /Live Person/ })).toBeTruthy();
+    expect(screen.queryByRole('link', { name: /Wed Person/ })).toBeNull();
+    fireEvent.click(screen.getByLabelText('Only defenses with a recording'));
+    expect(window.location.search).toBe('?university=kth&recorded=1');
+    expect(screen.getByRole('status').textContent).toContain('No defenses in September 2026.');
+    fireEvent.change(screen.getByLabelText('Institution'), { target: { value: '' } });
+    expect(window.location.search).toBe('?recorded=1');
+    fireEvent.click(screen.getByRole('button', { name: 'Previous: Wed 1 Jul 2026' }));
+    expect(screen.getByRole('link', { name: /Past Person/ })).toBeTruthy();
   });
 });
 
