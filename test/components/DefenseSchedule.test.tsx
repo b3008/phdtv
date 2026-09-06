@@ -15,7 +15,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-const soon = startingAt(NOW, 60, { key: 'soon', candidate: 'Soon Person', disciplines: [{ slug: 'law', name: 'Law' }] });
+const soon = startingAt(NOW, 60, { key: 'soon', candidate: 'Soon Person', disciplines: [{ slug: 'law', name: 'Law', major: 'social-sciences' }] });
 const tomorrow = startingAt(NOW, 60 * 26, {
   key: 'tomorrow',
   candidate: 'Tomorrow Person',

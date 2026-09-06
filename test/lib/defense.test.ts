@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toDefense, type DefenseInput } from '../../src/lib/defense.ts';
+import { defensePhase, institutionLabel, majorField, toDefense, type DefenseInput } from '../../src/lib/defense.ts';
 
 const input: DefenseInput = {
   id: '2026/2026-09-15-tudelft-jane-doe',
@@ -21,7 +21,10 @@ const input: DefenseInput = {
     verified_by: 'amv',
   },
   university: { slug: 'tudelft', name: 'Delft University of Technology', country: 'NL', timezone: 'Europe/Amsterdam', website: 'https://www.tudelft.nl/' },
-  disciplineNames: { 'computer-and-information-sciences': 'Computer and information sciences', mathematics: 'Mathematics' },
+  disciplineIndex: {
+    'computer-and-information-sciences': { name: 'Computer and information sciences', major: 'natural-sciences' },
+    mathematics: { name: 'Mathematics', major: 'natural-sciences' },
+  },
   base: '/phdtv/',
 };
 
@@ -36,8 +39,8 @@ describe('toDefense', () => {
   it('resolves the institution and discipline names', () => {
     expect(defense.university).toEqual({ slug: 'tudelft', name: 'Delft University of Technology', country: 'NL', website: 'https://www.tudelft.nl/' });
     expect(defense.disciplines).toEqual([
-      { slug: 'computer-and-information-sciences', name: 'Computer and information sciences' },
-      { slug: 'mathematics', name: 'Mathematics' },
+      { slug: 'computer-and-information-sciences', name: 'Computer and information sciences', major: 'natural-sciences' },
+      { slug: 'mathematics', name: 'Mathematics', major: 'natural-sciences' },
     ]);
   });
 
@@ -62,5 +65,20 @@ describe('toDefense', () => {
     expect(minimal.faculty).toBeUndefined();
     expect(minimal.durationMinutes).toBe(90);
     expect(minimal.abstract).toBeUndefined();
+  });
+
+  it('carries the short institution name when the registry has one', () => {
+    const withShort = toDefense({ ...input, university: { ...input.university, short_name: 'TU Delft' } });
+    expect(withShort.university.shortName).toBe('TU Delft');
+    expect(institutionLabel(withShort)).toBe('TU Delft');
+    expect(institutionLabel(defense)).toBe('Delft University of Technology');
+  });
+
+  it('classifies its phase against a clock and names its first major field', () => {
+    expect(defensePhase(defense, new Date('2026-09-15T10:00:00Z'))).toBe('upcoming');
+    expect(defensePhase(defense, new Date('2026-09-15T10:45:00Z'))).toBe('live');
+    expect(defensePhase(defense, new Date('2026-09-15T12:00:00Z'))).toBe('past');
+    expect(majorField(defense)).toBe('natural-sciences');
+    expect(majorField({ ...defense, disciplines: [] })).toBeUndefined();
   });
 });
