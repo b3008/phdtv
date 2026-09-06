@@ -66,6 +66,8 @@ The prototype file and the small runtime used to render it are alongside the ima
 
 Two decisions before code. First, whether the TV-guide look carries into the implementation: the spec's look section still describes the site's current quiet styling, and the prototype's masthead, condensed type and inverted header bars would replace it. Second, the user reviews the spec file. Then an implementation plan, then the work: a pure `src/lib/calendar.ts` on `YYYY-MM-DD` strings, one component per view, a chip component, a legend, the major-field slug added to the defense view-model, an optional `short_name` on universities for chip labels, and the CSS, which is most of the effort. The schedule island and its tests go away.
 
+> **Update 2026-09-06**: all of this landed the same day, including the TV-guide look — the spec's Look section was rewritten around the third round before the stylesheet task ran. See [The calendar lands](2026-09-06-02-calendar-views-landed.md).
+
 ## Surprises
 
 Two ASCII sketches did the work a mockup tool would have. The user declined the browser-based companion and picked layouts from monospace previews inside the questions; the week and year sketches were enough to make the time-grid and heat-strip alternatives look wrong at a glance.

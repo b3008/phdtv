@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { DefensePage } from '../../src/components/DefensePage.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
@@ -9,6 +9,8 @@ describe('DefensePage', () => {
     render(<DefensePage defense={fixtureDefense()} />);
     expect(screen.getByRole('heading', { level: 1, name: 'Learning to schedule under uncertainty' })).toBeTruthy();
     expect(screen.getByText('Jane Doe')).toBeTruthy();
+    expect(screen.getByText('TU Delft')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'University announcement' }).getAttribute('href')).toBe('https://www.tudelft.nl/en/events/2026/phd-defence-jane-doe');
     const institution = screen.getByRole('link', { name: 'Delft University of Technology' });
     expect(institution.getAttribute('href')).toBe('https://www.tudelft.nl/');
     expect(screen.getByText('Netherlands')).toBeTruthy();
@@ -32,6 +34,14 @@ describe('DefensePage', () => {
   it('says how a listing arrived when there is no source url', () => {
     render(<DefensePage defense={fixtureDefense({ source: { channel: 'submitted' } })} />);
     expect(screen.getByText(/Submitted to PhD TV/)).toBeTruthy();
+    expect(screen.queryByRole('link', { name: 'University announcement' })).toBeNull();
+  });
+
+  it('marks a defense in progress', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-09-15T10:45:00Z') });
+    render(<DefensePage defense={fixtureDefense()} renderedAt="2026-09-15T10:45:00.000Z" />);
+    expect(screen.getByText('Live now').className).toBe('pill-live');
+    vi.useRealTimers();
   });
 
   it('shows a recording link and skips absent optional fields', () => {

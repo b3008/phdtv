@@ -65,8 +65,10 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 
 ## Using the site
 
-- The front page lists upcoming defenses in your local time, with the institution's time alongside, and surfaces the ones in progress.
-- The archive lists past defenses and says plainly whether a recording is available, pending, known not to exist, or simply not known.
+- The front page is a calendar of every listed defense, past and future, in your local time, with day, week, month and year views. Defenses in progress are surfaced above it with their stream link.
+- Filters by discipline, institution and "only defenses with a recording" apply to every view; chips are coloured by the discipline's OECD major field.
+- Past dates say plainly whether a recording is available, pending, known not to exist, or simply not known. "Recordings" in the header opens the year view with the recordings filter on.
+- The view, the date and the filters are in the URL, so a link reopens the same screen.
 - `https://phdtv.net/feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
 - `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version.
 
