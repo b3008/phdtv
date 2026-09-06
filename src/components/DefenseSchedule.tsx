@@ -55,7 +55,7 @@ export function DefenseSchedule({ mode, defenses, renderedAt }: DefenseScheduleP
   }
 
   const card = (item: { defense: Defense; phase: ReturnType<typeof classify> }) => (
-    <DefenseCard key={item.defense.key} defense={item.defense} phase={item.phase} now={now} viewerZone={clock.zone} mode={mode} />
+    <DefenseCard key={item.defense.key} defense={item.defense} phase={item.phase} now={now} viewerZone={clock.zone} />
   );
 
   return (
@@ -64,7 +64,6 @@ export function DefenseSchedule({ mode, defenses, renderedAt }: DefenseScheduleP
         filters={filters}
         disciplines={disciplines}
         universities={universities}
-        showRecordedOnly={mode === 'archive'}
         onChange={updateFilters}
       />
       {mode === 'upcoming' && live.length > 0 && (

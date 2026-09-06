@@ -9,11 +9,10 @@ interface FilterBarProps {
   filters: Filters;
   disciplines: Option[];
   universities: Option[];
-  showRecordedOnly: boolean;
   onChange: (filters: Filters) => void;
 }
 
-export function FilterBar({ filters, disciplines, universities, showRecordedOnly, onChange }: FilterBarProps) {
+export function FilterBar({ filters, disciplines, universities, onChange }: FilterBarProps) {
   const set = (patch: Partial<Filters>) => {
     const next: Filters = { ...filters, ...patch };
     if (!next.discipline) delete next.discipline;
@@ -24,7 +23,7 @@ export function FilterBar({ filters, disciplines, universities, showRecordedOnly
   return (
     <form className="filters" onSubmit={(e) => e.preventDefault()}>
       <label>
-        Discipline
+        <span className="label">Discipline</span>
         <select value={filters.discipline ?? ''} onChange={(e) => set({ discipline: e.target.value })}>
           <option value="">All disciplines</option>
           {disciplines.map((d) => (
@@ -35,7 +34,7 @@ export function FilterBar({ filters, disciplines, universities, showRecordedOnly
         </select>
       </label>
       <label>
-        Institution
+        <span className="label">Institution</span>
         <select value={filters.university ?? ''} onChange={(e) => set({ university: e.target.value })}>
           <option value="">All institutions</option>
           {universities.map((u) => (
@@ -45,12 +44,10 @@ export function FilterBar({ filters, disciplines, universities, showRecordedOnly
           ))}
         </select>
       </label>
-      {showRecordedOnly && (
-        <label className="filters-check">
-          <input type="checkbox" checked={filters.recordedOnly ?? false} onChange={(e) => set({ recordedOnly: e.target.checked })} />
-          Only defenses with a recording
-        </label>
-      )}
+      <label className="filters-check">
+        <input type="checkbox" checked={filters.recordedOnly ?? false} onChange={(e) => set({ recordedOnly: e.target.checked })} />
+        Only defenses with a recording
+      </label>
     </form>
   );
 }
