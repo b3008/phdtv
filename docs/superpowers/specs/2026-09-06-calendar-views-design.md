@@ -45,7 +45,7 @@ The user asked for the calendar to reflect the aesthetics of a TV guide and, aft
 | rule | #141210 | #7a705d |
 | hairline | #cdc4b0 | #3d3729 |
 | accent (links, today outline) | #1d4ed8 | #93b4ff |
-| live (warm red) | #d90429 | #ff4d5a |
+| live (warm red) | #d90429 | #e03a48 |
 | yellow / yellow-fg (process yellow) | #ffd400 / #141210 | #ffd83d / #15130f |
 | cyan (process cyan) | #00a9e0 | #3cc7f5 |
 | today | #fff3b0 | #3d3410 |
@@ -59,7 +59,7 @@ The six major-field colours stay as before, cooler than the masthead palette so 
 
 **Masthead band.** A full-width rich-black band. The logo "PHD TV" is Archivo Black at 54px, white, reversed out of a live-red box with a hard 6px offset shadow in yellow. Navigation links "Calendar" and "Recordings" sit at the right in Oswald caps, yellow on the band; the current page's link is a yellow box with black text. No tagline.
 
-**Headline strip.** Directly under the masthead, continuing the band, three equal blurbs across the column: red "On air now: <candidate> defends at <institution>!" (or "Next up: <candidate> at <institution> on <date>" when nothing is live, or "Next up: No defenses scheduled yet"), yellow "Coming up: <n> defenses you can still catch live", cyan "Catch-up: <n> recordings ready to watch". Kickers in Oswald caps with 0.2em tracking, texts in Archivo Black caps. The strip describes the whole listing, not the filtered view, and updates with the viewer's clock, so it lives in the calendar island. On narrow screens the three blurbs stack.
+**Headline strip.** Directly under the masthead, continuing the band, three equal blurbs across the column: red "On air now: <candidate> defends at <institution>!" (or "Next up: <candidate> at <institution> on <date>" when nothing is live, or "Next up: No defenses scheduled yet"), yellow "Coming up: <n> defenses you can still catch live", cyan "Catch-up: <n> recordings ready to watch". Kickers in Oswald caps with 0.2em tracking, texts in Archivo Black caps. Text is white on the red and rich black on the yellow and the cyan blurbs. The strip describes the whole listing, not the filtered view, and updates with the viewer's clock, so it lives in the calendar island. On narrow screens the three blurbs stack.
 
 **Page intro.** A small yellow "Special issue" kicker rotated -1.5° (the only rotated element besides the starburst), then the title "PhD defenses you can watch live" in Archivo Black caps with "watch live" in red, the lede in muted text, and a 2px ink rule below.
 
@@ -165,7 +165,7 @@ A chip is a link to the defense page. Its tooltip holds the thesis title, the in
 
 ### Empty periods
 
-Empty periods are the common case with sparse data. When the day, week or month has no defense under the current filters, the view shows a sentence, "No defenses on Tue 16 Sep 2026", "No defenses this week" or "No defenses in September 2026", followed by up to two links: "Previous: Fri 28 Aug 2026" and "Next: Mon 7 Sep 2026". Each jumps the anchor to the nearest date outside the period that has a defense under the current filters, keeping the view. When there is none in that direction, that link is omitted. The year view has no empty state, since the zeros are the information.
+Empty periods are the common case with sparse data. When the day, week or month has no defense under the current filters, the view shows a sentence, "No defenses on Tue 16 Sep 2026", "No defenses this week" or "No defenses in September 2026", followed by up to two links: "Previous: Fri 28 Aug 2026" and "Next: Mon 7 Sep 2026". Each jumps the anchor to the nearest date outside the period that has a defense under the current filters, keeping the view. When there is none in that direction, that link is omitted. The year view shows the same box above its twelve mini-months when the year has nothing under the current filters, so the Recordings link and the archive redirect, which land on the current year, always offer a way to the nearest recorded year.
 
 ### Narrow screens
 

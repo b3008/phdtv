@@ -16,11 +16,11 @@ The new pieces, roughly in the order they were built:
 | File | What it does |
 | --- | --- |
 | `src/lib/calendar.ts` (238 lines) | Every date helper, pure, on `YYYY-MM-DD` strings: `addDays`, `startOfWeek`, `weeksOfMonth`, `periodBounds`, `groupByDate`, `nearestDate`, and the URL codec `calendarFromSearch` / `searchFromState`. |
-| `DayView`, `WeekView`, `MonthView`, `YearView` | One component per view. The week is seven columns of stacked chips; the month is six rows of cells with a chip each; the year is twelve mini-months with day cells shaded on a three-step scale. |
+| `DayView`, `WeekView`, `MonthView`, `YearView` | One component per view. The week is seven columns of stacked chips; the month is five or six rows of cells with a chip each; the year is twelve mini-months with day cells shaded on a four-step scale. |
 | `DefenseChip`, `MajorFieldLegend` | The chip carries a 3px left stripe in its discipline's OECD major-field colour; the legend names the six. |
 | `CalendarToolbar`, `EmptyPeriod` | Previous / next / Today, the period label, the view switcher; and, when a period is empty, the box that links straight to the nearest defense in either direction. |
 | `HeadlineStrip` | The three-colour band under the masthead: "On air now" or "Next up" in red, "Coming up" in yellow, "Catch-up" in cyan. |
-| `src/styles/global.css` (+293 lines) | The look, which was most of the work. |
+| `src/styles/global.css` (about 260 lines after the rewrite) | The look, which was most of the work. |
 
 The defense page kept its structure but picked up the institution badge above the candidate, the `pill-live` "Live now" pill, and a "University announcement" link to `source.url` whenever the record has one. The README's "Using the site" section was rewritten around the calendar rather than the list-plus-archive it used to describe.
 
@@ -60,13 +60,15 @@ The filters matter more than they did too. Discipline, institution and recording
 
 **State lives in the URL.** `view`, `date`, `discipline`, `university` and `recorded` are read from `location.search` on mount and written back with `replaceState` on every change, and `searchFromState` omits anything at its default so the common URL stays `/`. A link therefore reopens the same screen — including the archive redirect's `?view=year&recorded=1`.
 
-**The look is CSS, not components.** The TV-guide system — newsprint cream, rich black, warm red, process yellow and cyan; hard corners; borders instead of whitespace; a red masthead box with a 6px hard yellow offset — is 293 lines of tokens and rules. The three typefaces are self-hosted from `@fontsource/archivo-black`, `@fontsource/oswald` and `@fontsource/archivo`, imported at the top of `global.css` so Vite bundles the woff2 files with hashed names. The site makes no request to Google Fonts.
+**The look is CSS, not components.** The TV-guide system — newsprint cream, rich black, warm red, process yellow and cyan; hard corners; borders instead of whitespace; a red masthead box with a 6px hard yellow offset — is about 260 lines of tokens and rules. The three typefaces are self-hosted from `@fontsource/archivo-black`, `@fontsource/oswald` and `@fontsource/archivo`, imported at the top of `global.css` so Vite bundles the woff2 files with hashed names. The site makes no request to Google Fonts.
 
 ## What's next
 
 The spec's out-of-scope list is the backlog, and nothing on it moved: popovers, colour by country, keyboard shortcuts, remembering the last view, a history entry per navigation, a time-grid week, a second taxonomy level in the filters, and a light/dark toggle button (the site still follows the system preference). The "centerfold" pages per thesis — portraits, pull quotes, questions and facts — are being built by a sibling session on its own worktree, against a `.tag-centerfold` hook and a precomputed-headline strip that this branch reserved for them.
 
 The nearer thing is data. The year view above is mostly white space, and the empty-period jump links exist precisely because paging through blank months is the normal experience today. The calendar makes the case for the scraper better than any argument could.
+
+The final review also asked for two accessibility fixes (contrast on the cyan and dark-red panels, an outline instead of a box-shadow ring for today) and island-level tests for the institution and recordings filters; they landed before the merge.
 
 ## Surprises
 

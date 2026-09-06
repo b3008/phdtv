@@ -1,6 +1,6 @@
 # PhD TV
 
-A calendar of PhD defenses that are livestreamed for free, with links to the streams, and an archive of past defenses where a recording exists on the web.
+A calendar of PhD defenses that are livestreamed for free, with links to the streams and, for past defenses, to the recording where one exists on the web.
 
 In the Netherlands, the Nordic countries and elsewhere a defense is a public ceremony, and most universities kept the livestream running after 2020. The listings are scattered across dozens of agenda pages; this project gathers them in one place, in your local time, with a calendar feed you can subscribe to.
 
@@ -49,7 +49,7 @@ The machine-readable versions of the format are generated from the TypeScript sc
 
 ## Adding or correcting a defense
 
-1. Create or edit the file under `records/`. If the institution is new, add `universities/<slug>.yaml` with its name, country, time zone and website.
+1. Create or edit the file under `records/`. If the institution is new, add `universities/<slug>.yaml` with its name, an optional short name for badges, country, time zone and website.
 2. Run `npm run validate`. It prints one line per problem as `path: rule: message`, and warns about links that do not respond.
 3. Open a pull request. The same validation runs there; a curator reviews the diff and merges.
 
