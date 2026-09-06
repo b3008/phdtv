@@ -4,28 +4,40 @@ import { withBase } from '../lib/paths.ts';
 interface ShellProps {
   /** Site base path, e.g. /phdtv/. */
   base?: string;
+  /** Which navigation entry is the current page, if any. */
+  current?: 'calendar';
   children: ReactNode;
 }
 
-/** Layout chrome shared by every page: header with navigation, main content, footer. */
-export function Shell({ base = '/', children }: ShellProps) {
+/**
+ * Layout chrome shared by every page. The masthead band and the footer are full width with an inner column;
+ * pages put their own content inside a <div className="column">.
+ */
+export function Shell({ base = '/', current, children }: ShellProps) {
+  const home = withBase(base, '/');
   return (
     <div className="shell">
-      <header className="shell-header">
-        <a className="shell-brand" href={withBase(base, '/')}>
-          PhD TV
-        </a>
-        <nav className="shell-nav" aria-label="Main">
-          <a href={withBase(base, '/')}>Upcoming</a>
-          <a href={withBase(base, '/archive/')}>Archive</a>
-        </nav>
+      <header className="masthead-band">
+        <div className="column masthead">
+          <a className="masthead-logo" href={home} aria-label="PhD TV">
+            PhD TV
+          </a>
+          <nav className="masthead-nav" aria-label="Main">
+            <a href={home} aria-current={current === 'calendar' ? 'page' : undefined}>
+              Calendar
+            </a>
+            <a href={`${home}?view=year&recorded=1`}>Recordings</a>
+          </nav>
+        </div>
       </header>
       <main className="shell-main">{children}</main>
       <footer className="shell-footer">
-        <p>
-          Public PhD defenses that are streamed for free. Listings come from university agendas and
-          from people who submit them.
-        </p>
+        <div className="column">
+          <p>
+            Public PhD defenses that are streamed for free. Listings come from university agendas and
+            from people who submit them.
+          </p>
+        </div>
       </footer>
     </div>
   );

@@ -59,6 +59,6 @@ describe('pages', () => {
     expect(html).toContain('data-island="DefensePage"');
     expect(html).toContain('"base":"/phdtv/"');
     expect(html).toContain('src="/phdtv/assets/defense-456.js"');
-    expect(html).toContain('href="/phdtv/archive/"');
+    expect(html).toContain('href="/phdtv/?view=year&amp;recorded=1"');
   });
 });

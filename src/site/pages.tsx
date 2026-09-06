@@ -31,12 +31,14 @@ export function homePage(defenses: Defense[], { base, manifest, renderedAt }: Pa
       base={base}
       assets={pageAssets(manifest, base, ['DefenseSchedule'])}
     >
-      <Shell base={base}>
-        <PageIntro
-          title="PhD defenses you can watch live"
-          lede="Public defenses streamed for free by universities, shown in your local time. Subscribe to the calendar feed to get them in your own calendar."
-        />
-        <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'upcoming' as const, defenses, renderedAt }} />
+      <Shell base={base} current="calendar">
+        <div className="column">
+          <PageIntro
+            title="PhD defenses you can watch live"
+            lede="Public defenses streamed for free by universities, shown in your local time. Subscribe to the calendar feed to get them in your own calendar."
+          />
+          <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'upcoming' as const, defenses, renderedAt }} />
+        </div>
       </Shell>
     </Document>,
   );
@@ -51,11 +53,13 @@ export function archivePage(defenses: Defense[], { base, manifest, renderedAt }:
       assets={pageAssets(manifest, base, ['DefenseSchedule'])}
     >
       <Shell base={base}>
-        <PageIntro
-          title="Past defenses"
-          lede="Recordings where a university published one. Where none exists, we say so rather than showing a dead link."
-        />
-        <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'archive' as const, defenses, renderedAt }} />
+        <div className="column">
+          <PageIntro
+            title="Past defenses"
+            lede="Recordings where a university published one. Where none exists, we say so rather than showing a dead link."
+          />
+          <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'archive' as const, defenses, renderedAt }} />
+        </div>
       </Shell>
     </Document>,
   );
@@ -70,7 +74,9 @@ export function defensePage(defense: Defense, { base, manifest, renderedAt }: Pa
       assets={pageAssets(manifest, base, ['DefensePage'])}
     >
       <Shell base={base}>
-        <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
+        <div className="column">
+          <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
+        </div>
       </Shell>
     </Document>,
   );
