@@ -28,4 +28,26 @@ describe('DefenseCard', () => {
     expect(screen.getByRole('link', { name: 'Watch the recording' }).getAttribute('href')).toBe('https://youtu.be/rec');
     expect(screen.queryByRole('link', { name: 'Watch the livestream' })).toBeNull();
   });
+
+  it('links the candidate to the page presented for the defense', () => {
+    const featured = fixtureDefense({ url: '/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: {} });
+    render(<DefenseCard defense={featured} phase="upcoming" now={NOW} viewerZone={null} />);
+    expect(screen.getByRole('link', { name: 'Jane Doe' }).getAttribute('href')).toBe('/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+  });
+
+  it('tags a defense that has a centerfold, after the live pill', () => {
+    const featured = fixtureDefense({ url: '/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: {} });
+    const { container } = render(<DefenseCard defense={featured} phase="live" now={NOW} viewerZone={null} />);
+    const tag = screen.getByRole('link', { name: 'Centerfold ›' });
+    expect(tag.className).toBe('tag-centerfold');
+    expect(tag.getAttribute('href')).toBe('/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+    const head = container.querySelector('.card-head');
+    const order = [...(head?.children ?? [])].map((el) => el.className);
+    expect(order.indexOf('tag-centerfold')).toBeGreaterThan(order.indexOf('pill-live'));
+  });
+
+  it('shows no centerfold tag otherwise', () => {
+    render(<DefenseCard defense={fixtureDefense()} phase="upcoming" now={NOW} viewerZone={null} />);
+    expect(screen.queryByRole('link', { name: 'Centerfold ›' })).toBeNull();
+  });
 });

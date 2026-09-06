@@ -39,7 +39,7 @@
 .cf-heading { margin: 0; padding-bottom: 4px; border-bottom: 2px solid var(--ink); font: 700 18px/1.2 var(--condensed); text-transform: uppercase; letter-spacing: .06em; }
 .cf-qa { list-style: none; margin: 0; padding: 0; }
 .cf-q { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--hairline); }
-.cf-q-num { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--ink); color: var(--yellow); font: 400 18px/1 var(--display); }
+.cf-q-num { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--bar); color: var(--bar-fg); font: 400 18px/1 var(--display); }
 .cf-q-text { margin: 0; font: 400 16px/1.15 var(--display); }
 .cf-q-answer { margin: 6px 0 0; font: 400 14px/1.55 var(--sans); }
 .cf-quote { margin: 18px 0 0; padding: 18px 20px; background: var(--yellow); color: var(--yellow-fg); }
