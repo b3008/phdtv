@@ -8,3 +8,6 @@ coverage/
 
 # Claude Code worktrees
 .claude/worktrees/
+
+# Storybook static build
+storybook-static/

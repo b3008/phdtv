@@ -11,6 +11,8 @@ on:
       - 'src/**'
       - 'scripts/**'
       - 'test/**'
+      - 'stories/**'
+      - '.storybook/**'
       - 'package.json'
       - 'package-lock.json'
       - 'tsconfig.json'

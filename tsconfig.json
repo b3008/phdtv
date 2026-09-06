@@ -6,7 +6,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -20,6 +20,6 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "scripts", "test", "vitest.config.ts"],
+  "include": ["src", "scripts", "test", "stories", ".storybook", "vitest.config.ts"],
   "exclude": ["dist", "node_modules"]
 }
