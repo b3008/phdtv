@@ -91,7 +91,9 @@ export function centerfoldPage(defense: Defense, { base, manifest, renderedAt, p
       assets={pageAssets(manifest, base, ['CenterfoldPage'])}
     >
       <Shell base={base}>
-        <Island name="CenterfoldPage" component={CenterfoldPage} props={{ defense, base, renderedAt, preview }} />
+        <div className="column">
+          <Island name="CenterfoldPage" component={CenterfoldPage} props={{ defense, base, renderedAt, preview }} />
+        </div>
       </Shell>
     </Document>,
   );
