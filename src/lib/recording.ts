@@ -8,6 +8,14 @@ export interface HasRecording extends Scheduled {
   recording?: { url: string; platform: string } | { status: 'none' } | undefined;
 }
 
+/** The sentence for each state without a link; `available` has a link instead. */
+export const RECORDING_STATE_TEXT: Record<RecordingState, string> = {
+  available: '',
+  none: 'This defense was not recorded',
+  pending: 'Recording not yet available',
+  unknown: 'No recording known',
+};
+
 /** What to tell a viewer about the recording of a past defense. */
 export function recordingState(item: HasRecording, now: Date): RecordingState {
   if (item.recording && 'url' in item.recording) return 'available';
