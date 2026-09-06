@@ -53,9 +53,9 @@ The user asked for the calendar to reflect the aesthetics of a TV guide and, aft
 | band / band-fg (masthead band) | #141210 / #ffffff | #0b0a08 / #f5eed9 |
 | year shading 1, 2, 3+ | #d3defb, #8aa8f2, #1d4ed8 | #2a3247, #4c5c85, #93b4ff |
 
-The six major-field colours stay as before, cooler than the masthead palette so they do not compete with it. Text on a spot colour is always white or rich black. Corners are hard everywhere; the only round shapes are the starburst and the phone month's dots.
+The six major-field colours stay as before, cooler than the masthead palette so they do not compete with it. Text on a spot colour is always white or rich black. Corners are hard everywhere; the only round shapes are the starburst and small dot indicators (the live strip's dot, the phone month's dots).
 
-**Rules and borders.** Structure comes from borders, not whitespace: 1px hairline for cells, 2px ink for regions (the filter card, the toolbar, the empty-period box, the page intro's bottom rule), 6px double ink for major section breaks (above the day view, above the footer). No gradients, no shadows other than the masthead's hard offset.
+**Rules and borders.** Structure comes from borders, not whitespace: 1px hairline for cells, 2px ink for regions (the filter card, the toolbar, the empty-period box, the page intro's bottom rule), 6px double ink for major section breaks (above the day view, above the footer). No gradients and no blurred shadows; the masthead's hard yellow offset and the 2px inset rings that outline today are the only shadow declarations.
 
 **Masthead band.** A full-width rich-black band. The logo "PHD TV" is Archivo Black at 54px, white, reversed out of a live-red box with a hard 6px offset shadow in yellow. Navigation links "Calendar" and "Recordings" sit at the right in Oswald caps, yellow on the band; the current page's link is a yellow box with black text. No tagline.
 
