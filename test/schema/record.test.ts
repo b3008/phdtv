@@ -109,4 +109,44 @@ describe('recordSchema', () => {
   it('rejects a stream url that is not http(s)', () => {
     expect(paths({ ...valid, stream: { url: 'rtmp://x', platform: 'other' } })).toEqual(['stream.url']);
   });
+
+  describe('centerfold', () => {
+    const centerfold = {
+      issue: 'No. 37',
+      kicker: "This week's centerfold",
+      standfirst: 'Every phone call costs energy somewhere in the network.',
+      portrait: '/img/centerfold/anders-enqvist/portrait.jpg',
+      wide: 'https://example.org/lab.jpg',
+      quote: 'How little can a wireless link get away with?',
+      questions: [{ q: 'Why this topic?', a: 'Because it matters.' }, { q: 'What surprised you?' }],
+      facts: [
+        ['Faculty', 'Electrical Engineering and Computer Science'],
+        ['Language', 'English'],
+      ],
+    };
+
+    it('accepts a block with every editorial field', () => {
+      expect(recordSchema.safeParse({ ...valid, centerfold }).success).toBe(true);
+    });
+
+    it('accepts an empty block, since every field is editorial', () => {
+      expect(recordSchema.safeParse({ ...valid, centerfold: {} }).success).toBe(true);
+    });
+
+    it('rejects unknown centerfold fields and names them', () => {
+      expect(issues({ ...valid, centerfold: { mascot: 'owl' } })[0]?.message).toContain('mascot');
+    });
+
+    it('rejects a fact that is not a key and value pair', () => {
+      expect(paths({ ...valid, centerfold: { facts: [['Faculty']] } })[0]).toMatch(/^centerfold\.facts\.0/);
+    });
+
+    it('rejects an image that is neither a site-relative path nor an http(s) URL', () => {
+      expect(paths({ ...valid, centerfold: { portrait: 'portrait.jpg' } })).toEqual(['centerfold.portrait']);
+    });
+
+    it('requires the question text of a Q&A entry', () => {
+      expect(paths({ ...valid, centerfold: { questions: [{ a: 'An answer without a question' }] } })).toEqual(['centerfold.questions.0.q']);
+    });
+  });
 });

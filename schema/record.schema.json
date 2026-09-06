@@ -159,6 +159,79 @@
       "type": "string",
       "format": "uri"
     },
+    "centerfold": {
+      "type": "object",
+      "properties": {
+        "issue": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kicker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "standfirst": {
+          "type": "string",
+          "minLength": 1
+        },
+        "portrait": {
+          "type": "string",
+          "pattern": "^(?:\\/|https?:\\/\\/)\\S+$"
+        },
+        "wide": {
+          "type": "string",
+          "pattern": "^(?:\\/|https?:\\/\\/)\\S+$"
+        },
+        "detail": {
+          "type": "string",
+          "pattern": "^(?:\\/|https?:\\/\\/)\\S+$"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "type": "string",
+                "minLength": 1
+              },
+              "a": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "q"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ],
+            "additionalItems": false,
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "status": {
       "type": "string",
       "enum": [
