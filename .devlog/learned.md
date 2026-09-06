@@ -61,7 +61,8 @@
 ## Open threads
 
 - The user said `npm run dev` "should not be serving dist"; today it does by design (build, serve `dist/`, rebuild on change). Whether to change it to render on request is undecided.
-- Centerfold pages merged into `main` on 2026-09-06 (see `blog/2026-09-06-03-centerfold-pages.md`). Still open: the editorial copy, answers, pull quotes and photos for the Anders Enqvist and Shayne Longpre centerfolds (no `public/img/` yet); a "Live now" tag in the top bar has not been seen live outside tests; `main` is unpushed, and pushing deploys the redesign to phdtv.net.
+- Centerfold pages merged into `main` and deployed on 2026-09-06 (see `blog/2026-09-06-03-centerfold-pages.md` and `blog/2026-09-06-06-integration-and-deploy.md`). Still open: the editorial copy, answers, pull quotes and photos for the Anders Enqvist and Shayne Longpre centerfolds (no `public/img/` yet); a "Live now" tag in the top bar has not been seen live outside tests.
+- The dark-mode `--live` token is `#e03a48` (4.31:1 against white, under AA); `#d63541` was proposed and awaits the user's word. The three worktrees under `.claude/worktrees/` hold only merged branches. The workflows' checkout and setup-node actions target Node 20 and log a deprecation notice; bump to v5.
 - Subscribe to `https://phdtv.net/feeds/all.ics` from a calendar app and confirm an edited event updates in place (a first attempt via Calendar.app's webcal sheet was never completed); the validate workflow has run on a push but not yet on a real pull request (the ownership rule path).
 - Deferred design questions: second taxonomy level in the UI (partly answered — the six OECD majors now colour the chips and appear as a legend, but they are still not a filter), the 30-day recording window.
 - GitHub issue forms as the first submission path is still only a proposed default for the later submissions change.

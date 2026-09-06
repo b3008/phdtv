@@ -47,6 +47,8 @@ The bigger structural point is how it was built. The calendar views were being i
 - The editorial content: answers, pull quotes and photos for the two sample centerfolds, and a `public/img/` directory to serve them from.
 - Merging: `calendar-views` first, then `centerfold`.
 
+> **Update 2026-09-06**: done that evening, as two merge commits into `main`, then pushed and deployed; see [the integration entry](2026-09-06-06-integration-and-deploy.md).
+
 ![After the rebase: the day view of 7 September, with the KTH badge and the yellow Centerfold tag on the card's time line, in the dark palette](media/2026-09-06-03-centerfold-pages/dayview-tag-dark.png)
 
 ![After the rebase: the centerfold under the masthead and the headline strip, in the dark palette](media/2026-09-06-03-centerfold-pages/anders-strip-dark.png)
