@@ -34,7 +34,10 @@ function firstIssue(error: ZodError): string {
 export function loadSiteData(rootDir: string, base: string): SiteData {
   const disciplines = loadDisciplines(rootDir);
   const recordSchema = createRecordSchema(disciplines.slugs);
-  const disciplineIndex = Object.fromEntries(disciplines.minors.map((m) => [m.slug, { name: m.name, major: m.major }]));
+  const majorNames = new Map(disciplines.majors.map((m) => [m.slug, m.name]));
+  const disciplineIndex = Object.fromEntries(
+    disciplines.minors.map((m) => [m.slug, { name: m.name, major: m.major, majorName: majorNames.get(m.major) ?? m.major }]),
+  );
 
   const universities = new Map<string, University>();
   for (const file of loadUniversityFiles(rootDir)) {

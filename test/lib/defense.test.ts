@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defensePhase, institutionLabel, majorField, toDefense, type DefenseInput } from '../../src/lib/defense.ts';
+import { defensePhase, institutionLabel, majorField, majorFieldName, toDefense, type DefenseInput } from '../../src/lib/defense.ts';
 
 const input: DefenseInput = {
   id: '2026/2026-09-15-tudelft-jane-doe',
@@ -22,10 +22,19 @@ const input: DefenseInput = {
   },
   university: { slug: 'tudelft', name: 'Delft University of Technology', country: 'NL', timezone: 'Europe/Amsterdam', website: 'https://www.tudelft.nl/' },
   disciplineIndex: {
-    'computer-and-information-sciences': { name: 'Computer and information sciences', major: 'natural-sciences' },
-    mathematics: { name: 'Mathematics', major: 'natural-sciences' },
+    'computer-and-information-sciences': { name: 'Computer and information sciences', major: 'natural-sciences', majorName: 'Natural sciences' },
+    mathematics: { name: 'Mathematics', major: 'natural-sciences', majorName: 'Natural sciences' },
   },
   base: '/phdtv/',
+};
+
+const centerfold = {
+  issue: 'No. 37',
+  standfirst: 'Every phone call costs energy somewhere in the network.',
+  portrait: '/img/centerfold/jane-doe/portrait.jpg',
+  wide: 'https://example.org/lab.jpg',
+  questions: [{ q: 'Why this topic?', a: 'Because it matters.' }],
+  facts: [['Format', 'Public defense, livestreamed']] as Array<[string, string]>,
 };
 
 describe('toDefense', () => {
@@ -39,9 +48,33 @@ describe('toDefense', () => {
   it('resolves the institution and discipline names', () => {
     expect(defense.university).toEqual({ slug: 'tudelft', name: 'Delft University of Technology', country: 'NL', website: 'https://www.tudelft.nl/' });
     expect(defense.disciplines).toEqual([
-      { slug: 'computer-and-information-sciences', name: 'Computer and information sciences', major: 'natural-sciences' },
-      { slug: 'mathematics', name: 'Mathematics', major: 'natural-sciences' },
+      { slug: 'computer-and-information-sciences', name: 'Computer and information sciences', major: 'natural-sciences', majorName: 'Natural sciences' },
+      { slug: 'mathematics', name: 'Mathematics', major: 'natural-sciences', majorName: 'Natural sciences' },
     ]);
+  });
+
+  it('names the major field of its first discipline', () => {
+    expect(majorFieldName(defense)).toBe('Natural sciences');
+    expect(majorFieldName({ ...defense, disciplines: [] })).toBeUndefined();
+  });
+
+  it('carries the centerfold with its images resolved under the base, and a centerfold page URL', () => {
+    const featured = toDefense({ ...input, record: { ...input.record, centerfold } });
+    expect(featured.centerfoldUrl).toBe('/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+    expect(featured.centerfold).toEqual({
+      issue: 'No. 37',
+      standfirst: 'Every phone call costs energy somewhere in the network.',
+      portrait: '/phdtv/img/centerfold/jane-doe/portrait.jpg',
+      wide: 'https://example.org/lab.jpg',
+      questions: [{ q: 'Why this topic?', a: 'Because it matters.' }],
+      facts: [['Format', 'Public defense, livestreamed']],
+    });
+  });
+
+  it('has no centerfold fields at all when the record has no centerfold', () => {
+    expect(defense.centerfold).toBeUndefined();
+    expect(defense.centerfoldUrl).toBeUndefined();
+    expect('centerfoldUrl' in defense).toBe(false);
   });
 
   it('carries the scheduling fields as ISO strings', () => {
