@@ -1759,7 +1759,7 @@ describe('DayView', () => {
 
   it('gives each card the phase for the clock', () => {
     render(<DayView date="2026-09-15" defenses={[first, second]} now={NOW} zone={null} />);
-    expect(screen.getByText('No recording known')).toBeTruthy();
+    expect(screen.getByText('Recording not yet available')).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Watch the livestream' })).toBeTruthy();
   });
 });
