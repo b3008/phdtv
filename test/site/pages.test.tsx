@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { AssetManifest } from '../../src/site/assets.ts';
 import { Document } from '../../src/site/document.tsx';
-import { archivePage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
+import type { University } from '../../src/schema/university.ts';
+import { aboutPage, archivePage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
 const manifest: AssetManifest = {
@@ -60,5 +61,15 @@ describe('pages', () => {
     expect(html).toContain('"base":"/phdtv/"');
     expect(html).toContain('src="/phdtv/assets/defense-456.js"');
     expect(html).toContain('href="/phdtv/archive/"');
+  });
+
+  it('about page: title, the institutions, the stylesheet, and no island script', () => {
+    const tudelft: University = { slug: 'tudelft', name: 'Delft University of Technology', country: 'NL', timezone: 'Europe/Amsterdam', agenda_url: 'https://www.tudelft.nl/en/events' };
+    const html = aboutPage([tudelft], ctx);
+    expect(html).toContain('<title>PhD TV: about</title>');
+    expect(html).toContain('<meta name="description" content="Where the listings come from and how to reach the maintainer."/>');
+    expect(html).toContain('href="https://www.tudelft.nl/en/events"');
+    expect(html).toContain('href="/phdtv/assets/global-abc.css"');
+    expect(html).not.toContain('<script');
   });
 });

@@ -69,6 +69,7 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 - The archive lists past defenses and says plainly whether a recording is available, pending, known not to exist, or simply not known.
 - `https://phdtv.net/feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
 - `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version.
+- `https://phdtv.net/about/` explains where the listings come from, lists the institutions covered, and says how to reach the maintainer. The institution list is generated from `universities/`.
 
 ## Development
 

@@ -22,6 +22,13 @@ describe('loadSiteData on the repository', () => {
     expect(data.disciplineSlugs).toHaveLength(42);
     expect(data.disciplineSlugs).toContain('law');
   });
+
+  it('lists every institution of the registry, sorted by name, with its agenda page', () => {
+    expect(data.universities).toHaveLength(16);
+    const names = data.universities.map((u) => u.name);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b, 'en')));
+    expect(data.universities.find((u) => u.slug === 'tudelft')?.agenda_url).toBe('https://www.tudelft.nl/en/events');
+  });
 });
 
 /** A throwaway project: the valid one-record fixture plus the real vocabulary, with extra files layered on top. */

@@ -1,11 +1,13 @@
 // One function per page type: a data-bearing header around one component tree.
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
+import { AboutPage } from '../components/AboutPage.tsx';
 import { DefensePage } from '../components/DefensePage.tsx';
 import { DefenseSchedule } from '../components/DefenseSchedule.tsx';
 import { PageIntro } from '../components/PageIntro.tsx';
 import { Shell } from '../components/Shell.tsx';
 import type { Defense } from '../lib/defense.ts';
+import type { University } from '../schema/university.ts';
 import { pageAssets, type AssetManifest } from './assets.ts';
 import { Document } from './document.tsx';
 import { Island } from './islands.tsx';
@@ -71,6 +73,22 @@ export function defensePage(defense: Defense, { base, manifest, renderedAt }: Pa
     >
       <Shell base={base}>
         <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
+      </Shell>
+    </Document>,
+  );
+}
+
+/** Static page, no island: nothing on it needs the browser. */
+export function aboutPage(universities: University[], { base, manifest }: PageContext): string {
+  return renderDocument(
+    <Document
+      title="PhD TV: about"
+      description="Where the listings come from and how to reach the maintainer."
+      base={base}
+      assets={pageAssets(manifest, base, [])}
+    >
+      <Shell base={base}>
+        <AboutPage universities={universities} base={base} />
       </Shell>
     </Document>,
   );

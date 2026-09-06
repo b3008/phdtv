@@ -6,7 +6,7 @@ import { readFileHistories } from '../lib/git-meta.ts';
 import { renderCalendar } from '../lib/ics.ts';
 import type { AssetManifest } from './assets.ts';
 import { loadSiteData } from './data.ts';
-import { archivePage, defensePage, homePage } from './pages.tsx';
+import { aboutPage, archivePage, defensePage, homePage } from './pages.tsx';
 
 export const SCHEMA_VERSION = 1;
 
@@ -29,7 +29,7 @@ export interface OutputFile {
 }
 
 export function generate({ rootDir, site, base, manifest, now = new Date() }: GenerateOptions): OutputFile[] {
-  const { defenses, disciplineSlugs } = loadSiteData(rootDir, base);
+  const { defenses, disciplineSlugs, universities } = loadSiteData(rootDir, base);
   const histories = readFileHistories(rootDir);
   const renderedAt = now.toISOString();
   const context = { base, manifest, renderedAt };
@@ -37,6 +37,7 @@ export function generate({ rootDir, site, base, manifest, now = new Date() }: Ge
 
   files.push({ path: 'index.html', body: homePage(defenses, context) });
   files.push({ path: 'archive/index.html', body: archivePage(defenses, context) });
+  files.push({ path: 'about/index.html', body: aboutPage(universities, context) });
   for (const defense of defenses) files.push({ path: `defenses/${defense.key}/index.html`, body: defensePage(defense, context) });
 
   const calendar = (name: string, keep: (d: Defense) => boolean) =>

@@ -12,6 +12,8 @@ export interface SiteData {
   defenses: Defense[];
   /** Every minor-field slug of the vocabulary, in file order. */
   disciplineSlugs: string[];
+  /** Every institution of the registry, sorted by name. */
+  universities: University[];
 }
 
 function fail(where: string, issue: string): never {
@@ -55,5 +57,6 @@ export function loadSiteData(rootDir: string, base: string): SiteData {
   }
   defenses.sort((a, b) => a.startsAt.localeCompare(b.startsAt));
 
-  return { defenses, disciplineSlugs: disciplines.minors.map((m) => m.slug) };
+  const registry = [...universities.values()].sort((a, b) => a.name.localeCompare(b.name, 'en'));
+  return { defenses, disciplineSlugs: disciplines.minors.map((m) => m.slug), universities: registry };
 }

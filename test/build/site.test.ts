@@ -45,6 +45,13 @@ describe('pages', () => {
     for (const r of published) expect(output.has(`defenses/${r.path.replace(/^records\//, '').replace(/\.md$/, '')}/index.html`)).toBe(true);
   });
 
+  it('generates the about page with every institution of the registry linked to its agenda', () => {
+    const page = read('about/index.html');
+    expect(page).toContain('<title>PhD TV: about</title>');
+    expect(page).toContain('href="https://www.uu.nl/en/events"');
+    expect(page).toContain('href="/phdtv/feeds/all.ics"');
+  });
+
   it('gives a defense page its title, island, assets and feed link', () => {
     const page = read('defenses/2026/2026-09-15-utrecht-chris-ten-dam/index.html');
     expect(page).toContain('<title>Chris ten Dam: Built environment transformation for the transport energy transition</title>');
