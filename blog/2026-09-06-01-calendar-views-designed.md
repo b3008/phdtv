@@ -1,15 +1,15 @@
 ---
 type: "Devlog Entry"
-title: "The list becomes a calendar: day, week, month and year views designed"
+title: "The list becomes a calendar: day, week, month and year views designed and prototyped"
 date: 2026-09-06
 timestamp: 2026-09-06T16:33:00
-tags: [architecture, ux]
-description: "An interview settled how the home page turns from a day-grouped list into a hand-built calendar with four views, one page for past and future, chips coloured by OECD major field, and filters that apply everywhere. The spec is committed; implementation has not started."
+tags: [architecture, ux, demo]
+description: "An interview settled how the home page turns from a day-grouped list into a hand-built calendar with four views, one page for past and future, chips coloured by OECD major field, and filters that apply everywhere. The spec is committed, and a Claude Design prototype with a TV-guide look went through two rounds; implementation has not started."
 ---
 
 ## What changed
 
-The user asked for the defense list to become a calendar with day, week, month and year views, so that a visitor gets not only the details of each defense but a sense of when things are coming up and how dense the schedule is. They asked to be interviewed about the open questions rather than handed a design. This entry records what the interview settled and why. No code changed; the spec lives at `docs/superpowers/specs/2026-09-06-calendar-views-design.md`.
+The user asked for the defense list to become a calendar with day, week, month and year views, so that a visitor gets not only the details of each defense but a sense of when things are coming up and how dense the schedule is. They asked to be interviewed about the open questions rather than handed a design. This entry records what the interview settled and why, and the prototype that followed. No code changed; the spec lives at `docs/superpowers/specs/2026-09-06-calendar-views-design.md`.
 
 The decisions, in the order they were taken:
 
@@ -42,9 +42,29 @@ The design is in the spec; three points are worth pulling out because they took 
 
 Everything the island knows is in the URL: `view`, `date` and the three filter parameters, written with `replaceState` as the filters are today, so a link reopens the same screen and the back button returns to it from a defense page.
 
+## The prototype
+
+Before implementation the user asked for a prototype in Claude Design, driven from this session through the Chrome extension, and mid-way asked that it reflect the aesthetics of a TV guide. The brief was the spec condensed to a page, all twenty-two real defenses as sample data, and a fixed "now" of Monday 7 September 2026 at 13:20 so that one defense is live. The look section asked for listings-magazine and programme-guide cues, institutions treated like channels, and no CRT kitsch.
+
+The first version came back in about four minutes: Barlow Condensed headings over IBM Plex Sans, a "PHDTV · The defense listings" masthead, ruled grids, colour-striped chips, the live strip, dark mode, and a phone layout that turns month chips into dots. It was faithful to the spec and readable, but the TV flavour was mild, the year view's captions drifted where a month needed six rows, the day view printed its date twice, and the Recordings link opened August instead of the year view. Five adjustments went back and landed in three minutes: inverted header bars with a red NOW tag on today, the institution badge on the time line like a channel tag, six rows in every mini-month, a spelled-out day heading, and the Recordings link fixed.
+
+![Month view: black weekday bar, today outlined, one chip per defense with a major-field stripe and a live badge](media/2026-09-06-01-calendar-views-designed/month.png)
+
+![Week view: seven columns with inverted day headers, NOW on Monday, chips with the institution badge beside the time](media/2026-09-06-01-calendar-views-designed/week.png)
+
+![Year view: twelve six-row mini-months with days shaded by count and aligned captions](media/2026-09-06-01-calendar-views-designed/year.png)
+
+![Day view and the dark week view](media/2026-09-06-01-calendar-views-designed/day.png)
+
+![Dark palette, week view](media/2026-09-06-01-calendar-views-designed/week-dark.png)
+
+![Phone width: month as dots, week as a stacked list, year two months per row](media/2026-09-06-01-calendar-views-designed/phone.png)
+
+The prototype file and the small runtime used to render it are alongside the images in `blog/media/2026-09-06-01-calendar-views-designed/`. The project itself is "PhD TV calendar prototype" in the user's Claude Design account.
+
 ## What's next
 
-The user reviews the spec file. Then an implementation plan, then the work: a pure `src/lib/calendar.ts` on `YYYY-MM-DD` strings, one component per view, a chip component, a legend, the major-field slug added to the defense view-model, an optional `short_name` on universities for chip labels, and the CSS, which is most of the effort. The schedule island and its tests go away.
+Two decisions before code. First, whether the TV-guide look carries into the implementation: the spec's look section still describes the site's current quiet styling, and the prototype's masthead, condensed type and inverted header bars would replace it. Second, the user reviews the spec file. Then an implementation plan, then the work: a pure `src/lib/calendar.ts` on `YYYY-MM-DD` strings, one component per view, a chip component, a legend, the major-field slug added to the defense view-model, an optional `short_name` on universities for chip labels, and the CSS, which is most of the effort. The schedule island and its tests go away.
 
 ## Surprises
 
@@ -52,4 +72,4 @@ Two ASCII sketches did the work a mockup tool would have. The user declined the 
 
 The colour question went the other way from the recommendation. Uniform chips were proposed as the simpler default; the user chose colour by major field, which revives the deferred "second taxonomy level in the UI" thread from the notebook in a form nobody had proposed: the six OECD majors as a legend rather than a filter.
 
-> **Update 2026-09-06, later the same day**: the user asked for a prototype in Claude Design before implementation, driven from this session through the Chrome extension, and mid-way asked that it reflect the aesthetics of a TV guide. The brief sent was the spec condensed plus all 22 real defenses as sample data, with the look section rewritten around listings-magazine and on-screen-guide cues. The prototype exists in the project "PhD TV calendar prototype" but has not been reviewed yet; whether the TV-guide look replaces the quiet look the spec describes is an open thread in `.devlog/learned.md`. Driving Claude Design from the extension needed a few workarounds, recorded there too.
+Seeing the prototype was harder than making it. The Claude Design page never reaches the idle state the Chrome extension waits for, so screenshots time out; the preview iframes carry signed tokens the extension redacts; the system screenshot tool returns black without a permission the session cannot grant; and the downloaded file is not plain HTML but Claude Design's own `.dc` template format, with `sc-if` and `sc-for` directives and a logic class that expects a runtime that does not ship with it. The way through was a ninety-line runtime of our own, `build-runtime.js`, that resolves the template against the logic class and renders in headless Chrome. It also produced a false alarm: the first phone capture overflowed sideways because headless Chrome will not open a window narrower than about 500 pixels, which an iframe of 390 pixels inside a wider page then disproved.
