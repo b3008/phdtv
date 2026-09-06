@@ -52,6 +52,28 @@ const sourceSchema = z
   })
   .strict();
 
+/** A site-relative path such as /img/centerfold/x.jpg, served from public/, or an absolute http(s) URL. */
+const imageRef = z
+  .string()
+  .regex(/^(?:\/|https?:\/\/)\S+$/, { error: 'must be a site-relative path such as /img/x.jpg or an http(s) URL' });
+
+const questionSchema = z.object({ q: nonEmptyString, a: nonEmptyString.optional() }).strict();
+
+/** Editorial content of a defense's centerfold page. Every field may be left for later; the page hides what is missing. */
+export const centerfoldSchema = z
+  .object({
+    issue: nonEmptyString.optional(),
+    kicker: nonEmptyString.optional(),
+    standfirst: nonEmptyString.optional(),
+    portrait: imageRef.optional(),
+    wide: imageRef.optional(),
+    detail: imageRef.optional(),
+    quote: nonEmptyString.optional(),
+    questions: z.array(questionSchema).optional(),
+    facts: z.array(z.tuple([nonEmptyString, nonEmptyString])).optional(),
+  })
+  .strict();
+
 /** Build the record schema against a discipline vocabulary. */
 export function createRecordSchema(disciplineSlugs: Iterable<string>) {
   const slugs = [...disciplineSlugs] as [string, ...string[]];
@@ -70,6 +92,7 @@ export function createRecordSchema(disciplineSlugs: Iterable<string>) {
       stream: streamSchema.optional(),
       recording: recordingSchema.optional(),
       thesis_url: httpUrl.optional(),
+      centerfold: centerfoldSchema.optional(),
       status: statusSchema,
       source: sourceSchema,
       verified_by: nonEmptyString.optional(),
@@ -113,5 +136,6 @@ export function formatOffset(minutes: number): string {
 export const recordSchema = createRecordSchema(loadDisciplines().slugs);
 
 export type DefenseRecord = z.infer<typeof recordSchema>;
+export type Centerfold = z.infer<typeof centerfoldSchema>;
 export type Platform = z.infer<typeof platformSchema>;
 export type RecordStatus = z.infer<typeof statusSchema>;

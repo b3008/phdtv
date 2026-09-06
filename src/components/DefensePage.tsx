@@ -43,6 +43,11 @@ export function DefensePage({ defense, base = '/', renderedAt }: DefensePageProp
         <p className="defense-kicker">
           <span className="badge-inst">{institutionLabel(defense)}</span>
           {phase === 'live' && <span className="pill-live">Live now</span>}
+          {defense.centerfold && (
+            <a className="tag-centerfold" href={defense.url}>
+              Centerfold ›
+            </a>
+          )}
         </p>
         <p className="defense-candidate">{defense.candidate}</p>
         <h1 className="defense-title">{defense.title}</h1>

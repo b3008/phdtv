@@ -15,14 +15,17 @@ describe('node scripts/build.ts', () => {
     for (const key of ['NODE_ENV', 'VITEST', 'MODE', 'BASE_URL', 'DEV', 'PROD', 'SSR']) delete env[key];
     execFileSync(process.execPath, ['scripts/build.ts', '--out', out], { stdio: ['ignore', 'pipe', 'pipe'], env, timeout: 180_000 });
 
-    for (const file of ['index.html', 'archive/index.html', 'feeds/all.ics', 'feeds/law.ics', 'api/defenses.json']) {
+    const centerfold = 'centerfold/2026/2026-09-07-kth-anders-enqvist/index.html';
+    for (const file of ['index.html', 'archive/index.html', centerfold, 'feeds/all.ics', 'feeds/law.ics', 'api/defenses.json']) {
       expect(existsSync(join(out, file)), file).toBe(true);
     }
-    const html = readFileSync(join(out, 'index.html'), 'utf8');
-    const refs = [...html.matchAll(/(?:src|href)="\/phdtv\/(assets\/[^"]+)"/g)].map((m) => m[1] ?? '');
-    expect(refs.some((r) => r.endsWith('.css'))).toBe(true);
-    expect(refs.some((r) => r.endsWith('.js'))).toBe(true);
-    for (const ref of refs) expect(existsSync(join(out, ref)), ref).toBe(true);
+    for (const page of ['index.html', centerfold]) {
+      const html = readFileSync(join(out, page), 'utf8');
+      const refs = [...html.matchAll(/(?:src|href)="\/phdtv\/(assets\/[^"]+)"/g)].map((m) => m[1] ?? '');
+      expect(refs.filter((r) => r.endsWith('.css')).length, page).toBeGreaterThanOrEqual(page === centerfold ? 2 : 1);
+      expect(refs.some((r) => r.endsWith('.js')), page).toBe(true);
+      for (const ref of refs) expect(existsSync(join(out, ref)), ref).toBe(true);
+    }
     expect(existsSync(join(out, '.vite'))).toBe(false);
   }, 200_000);
 });

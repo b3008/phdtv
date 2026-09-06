@@ -27,6 +27,13 @@ describe('buildJsonSchemas', () => {
     expect(items['enum']).toContain('mathematics');
   });
 
+  it('describes the optional centerfold block as a closed object', () => {
+    const centerfold = (record['properties'] as Record<string, Record<string, unknown>>)['centerfold'];
+    expect(centerfold?.['type']).toBe('object');
+    expect(centerfold?.['additionalProperties']).toBe(false);
+    expect(record['required']).not.toContain('centerfold');
+  });
+
   it('lists the required university fields', () => {
     expect(university['required']).toEqual(expect.arrayContaining(['slug', 'name', 'country', 'timezone']));
   });

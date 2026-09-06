@@ -11,11 +11,12 @@ export function fixtureDefense(overrides: DefenseOverrides = {}): Defense {
   return withoutUndefined({
     key: '2026/2026-09-15-tudelft-jane-doe',
     url: '/defenses/2026/2026-09-15-tudelft-jane-doe/',
+    listingUrl: '/defenses/2026/2026-09-15-tudelft-jane-doe/',
     candidate: 'Jane Doe',
     title: 'Learning to schedule under uncertainty',
     university: { slug: 'tudelft', name: 'Delft University of Technology', shortName: 'TU Delft', country: 'NL', website: 'https://www.tudelft.nl/' },
     faculty: 'Electrical Engineering, Mathematics and Computer Science',
-    disciplines: [{ slug: 'computer-and-information-sciences', name: 'Computer and information sciences', major: 'natural-sciences' }],
+    disciplines: [{ slug: 'computer-and-information-sciences', name: 'Computer and information sciences', major: 'natural-sciences', majorName: 'Natural sciences' }],
     language: 'en',
     startsAt: '2026-09-15T12:30:00+02:00',
     endsAt: '2026-09-15T11:30:00.000Z',

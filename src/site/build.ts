@@ -12,6 +12,8 @@ export interface BuildOptions {
   site: string;
   /** Base path, with or without slashes, e.g. /phdtv. */
   base: string;
+  /** Preview builds show slots for empty editorial fields on centerfold pages. */
+  preview?: boolean;
 }
 
 const GENERATOR_ENTRY = 'src/site/generate.ts';
@@ -23,7 +25,7 @@ export function normalizeBase(base: string): string {
 }
 
 /** Bundle the browser assets, then render every page, feed and export into `outDir`. Returns the written paths. */
-export async function buildSite({ rootDir, outDir, site, base }: BuildOptions): Promise<string[]> {
+export async function buildSite({ rootDir, outDir, site, base, preview = false }: BuildOptions): Promise<string[]> {
   const root = resolve(rootDir);
   const out = resolve(outDir);
   const normalizedBase = normalizeBase(base);
@@ -45,7 +47,7 @@ export async function buildSite({ rootDir, outDir, site, base }: BuildOptions): 
   const url = `${pathToFileURL(join(serverDir, 'generate.js')).href}?t=${Date.now()}`;
   const generator = (await import(url)) as typeof import('./generate.ts');
 
-  const files = generator.generate({ rootDir: root, site, base: normalizedBase, manifest });
+  const files = generator.generate({ rootDir: root, site, base: normalizedBase, manifest, preview });
   for (const file of files) {
     const target = join(out, file.path);
     mkdirSync(dirname(target), { recursive: true });

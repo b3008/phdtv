@@ -37,6 +37,11 @@ export function DefenseCard({ defense, phase, now, viewerZone }: DefenseCardProp
           </span>
           <span className="badge-inst">{institutionLabel(defense)}</span>
           {phase === 'live' && <span className="pill-live">Live</span>}
+          {defense.centerfold && (
+            <a className="tag-centerfold" href={defense.url}>
+              Centerfold ›
+            </a>
+          )}
         </div>
         <h3 className="card-candidate">
           <a href={defense.url}>{defense.candidate}</a>

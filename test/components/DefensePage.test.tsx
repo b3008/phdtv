@@ -5,6 +5,19 @@ import { DefensePage } from '../../src/components/DefensePage.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
 describe('DefensePage', () => {
+  it('tags a defense that has a centerfold with a link to it', () => {
+    const featured = fixtureDefense({ url: '/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: { issue: 'No. 37' } });
+    render(<DefensePage defense={featured} />);
+    const tag = screen.getByRole('link', { name: 'Centerfold ›' });
+    expect(tag.className).toBe('tag-centerfold');
+    expect(tag.getAttribute('href')).toBe('/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+  });
+
+  it('shows no centerfold tag otherwise', () => {
+    render(<DefensePage defense={fixtureDefense()} />);
+    expect(screen.queryByRole('link', { name: 'Centerfold ›' })).toBeNull();
+  });
+
   it('renders every present field of a defense', () => {
     render(<DefensePage defense={fixtureDefense()} />);
     expect(screen.getByRole('heading', { level: 1, name: 'Learning to schedule under uncertainty' })).toBeTruthy();

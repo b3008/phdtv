@@ -26,23 +26,23 @@ The defense page kept its structure but picked up the institution badge above th
 
 Here is the month view as the build actually renders it:
 
-![The month view: black masthead band, three-colour headline strip, filter card, yellow toolbar and a September grid of chips](media/2026-09-06-02-calendar-views-landed/month.png)
+![The month view: black masthead band, three-colour headline strip, filter card, yellow toolbar and a September grid of chips](media/2026-09-06-03-calendar-views-landed/month.png)
 
 The week, seven columns of chips rather than a time grid:
 
-![The week view: black day bars with yellow dates over cream columns holding three chips](media/2026-09-06-02-calendar-views-landed/week.png)
+![The week view: black day bars with yellow dates over cream columns holding three chips](media/2026-09-06-03-calendar-views-landed/week.png)
 
 The year, which is the view that answers "how busy is this project, really":
 
-![The year view: twelve mini-month grids with day cells shaded by count and a defense count under each](media/2026-09-06-02-calendar-views-landed/year.png)
+![The year view: twelve mini-month grids with day cells shaded by count and a defense count under each](media/2026-09-06-03-calendar-views-landed/year.png)
 
 The day, under a double rule:
 
-![The day view: a black date bar reading Tuesday 15 September 2026 over one defense card](media/2026-09-06-02-calendar-views-landed/day.png)
+![The day view: a black date bar reading Tuesday 15 September 2026 over one defense card](media/2026-09-06-03-calendar-views-landed/day.png)
 
 And the phone, where the month collapses to dots:
 
-![The phone width: the masthead, headline strip and filters stacked, and a month grid where each defense is a coloured dot](media/2026-09-06-02-calendar-views-landed/phone.png)
+![The phone width: the masthead, headline strip and filters stacked, and a month grid where each defense is a coloured dot](media/2026-09-06-03-calendar-views-landed/phone.png)
 
 ## Why it matters
 

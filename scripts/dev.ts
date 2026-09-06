@@ -15,7 +15,8 @@ function rebuild(): Promise<void> {
   chain = chain.then(async () => {
     const started = Date.now();
     try {
-      const files = await buildSite({ rootDir, outDir, site, base });
+      // The dev server is a preview: centerfold pages show slots for editorial fields that are still empty.
+      const files = await buildSite({ rootDir, outDir, site, base, preview: true });
       console.log(`[${new Date().toLocaleTimeString()}] built ${files.length} files in ${Date.now() - started} ms`);
     } catch (cause) {
       console.error(cause instanceof Error ? cause.message : cause);

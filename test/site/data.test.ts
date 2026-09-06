@@ -33,6 +33,7 @@ describe('loadSiteData on the repository', () => {
   it('resolves each discipline to its major field and lists the majors', () => {
     const one = data.defenses.find((d) => d.key === '2026/2026-09-15-utrecht-chris-ten-dam');
     expect(one?.disciplines.map((d) => d.major)).toContain('social-sciences');
+    expect(one?.disciplines.map((d) => d.majorName)).toContain('Social sciences');
     expect(data.majors.map((m) => m.slug)).toEqual([
       'natural-sciences',
       'engineering-and-technology',

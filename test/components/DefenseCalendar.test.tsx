@@ -29,9 +29,9 @@ const at = (key: string, candidate: string, startsAt: string, extra: DefenseOver
   });
 const live = at('live', 'Live Person', '2026-09-07T13:00:00+02:00', {
   university: { slug: 'kth', name: 'KTH Royal Institute of Technology', shortName: 'KTH', country: 'SE' },
-  disciplines: [{ slug: 'electrical-electronic-and-information-engineering', name: 'Electrical engineering', major: 'engineering-and-technology' }],
+  disciplines: [{ slug: 'electrical-electronic-and-information-engineering', name: 'Electrical engineering', major: 'engineering-and-technology', majorName: 'Engineering and technology' }],
 });
-const wed = at('wed', 'Wed Person', '2026-09-09T09:00:00+02:00', { disciplines: [{ slug: 'law', name: 'Law', major: 'social-sciences' }] });
+const wed = at('wed', 'Wed Person', '2026-09-09T09:00:00+02:00', { disciplines: [{ slug: 'law', name: 'Law', major: 'social-sciences', majorName: 'Social sciences' }] });
 const midnight = at('midnight', 'Midnight Person', '2026-09-16T00:30:00+02:00');
 const october = at('october', 'October Person', '2026-10-02T12:15:00+02:00');
 const past = at('past', 'Past Person', '2026-07-01T11:00:00+02:00', { stream: undefined, recording: { url: 'https://youtu.be/rec', platform: 'youtube' } });

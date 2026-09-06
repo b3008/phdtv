@@ -32,6 +32,19 @@ recording:                                       # optional; either a link ...
 # recording:                                     # ... or an explicit statement that none exists
 #   status: none
 thesis_url: https://repository.tudelft.nl/record/1   # optional
+centerfold:                                      # optional; gives the defense a feature page, see below
+  issue: "No. 37"
+  kicker: "This week's centerfold"
+  standfirst: "One or two sentences of plain-language framing."
+  portrait: /img/centerfold/jane-doe/portrait.jpg   # served from public/, or an absolute http(s) URL
+  wide: /img/centerfold/jane-doe/lab.jpg
+  detail: /img/centerfold/jane-doe/figure.png
+  quote: "A pull quote from the candidate."
+  questions:
+    - { q: "Why this topic?", a: "…" }
+    - { q: "What surprised you?" }               # a question without an answer is hidden until it has one
+  facts:                                         # extra rows for the Close-up box
+    - [Format, "Public defense, livestreamed"]
 status: published                                # unverified | published | hidden
 source:
   channel: curated                               # scraped | submitted | curated
@@ -46,6 +59,10 @@ The file name is the record's identity: `records/<year>/<local date>-<university
 Two rules catch most mistakes. Timestamps must be quoted, because an unquoted one is parsed as a date object and loses its offset. The offset in `starts_at` must be the offset of `timezone` at that instant, so a defense written with the wrong zone fails validation with the expected offset in the message.
 
 The machine-readable versions of the format are generated from the TypeScript schemas: [`schema/record.schema.json`](schema/record.schema.json) and [`schema/university.schema.json`](schema/university.schema.json).
+
+### Centerfolds
+
+A centerfold is a magazine-style feature page for one defense: the candidate, the thesis title as a banner, photos, three questions, a pull quote, a facts box and a "Tune in" bar. Add a `centerfold` block to the record and the defense gets `/centerfold/<id>/` as its page: the calendar, the feeds and the export link there instead of the plain listing, which stays reachable at `/defenses/<id>/` from the "Listing" link. Every field in the block is editorial and may be left for later; the deployed site hides what is missing, while the dev server (and `SITE_PREVIEW=1 npm run build`) shows a labelled slot in its place so the page can be laid out before the copy and the photos arrive. Image paths that start with `/` are served from a `public/` directory at the project root, which the build copies as is.
 
 ## Adding or correcting a defense
 
@@ -70,21 +87,22 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 - Past dates say plainly whether a recording is available, pending, known not to exist, or simply not known. "Recordings" in the header opens the year view with the recordings filter on.
 - The view, the date and the filters are in the URL, so a link reopens the same screen.
 - `https://phdtv.net/feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
-- `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version.
+- `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version. Each entry's `url` is the page presented for the defense, its centerfold when it has one, and `listingUrl` is always the plain listing.
+- Some defenses have a centerfold, a feature page reached from the calendar cards and the listing through a yellow "Centerfold ›" tag.
 - `https://phdtv.net/about/` explains where the listings come from, lists the institutions covered, and says how to reach the maintainer. The institution list is generated from `universities/`.
 
 ## Development
 
-Everything is TypeScript: the schemas, the validator, the site build, the React components and the tests. There is no site framework. `scripts/build.ts` renders the React pages to HTML, writes the calendar feeds and the JSON export, and uses Vite only to bundle the two components that run in the browser and the stylesheet.
+Everything is TypeScript: the schemas, the validator, the site build, the React components and the tests. There is no site framework. `scripts/build.ts` renders the React pages to HTML, writes the calendar feeds and the JSON export, and uses Vite only to bundle the components that run in the browser and the stylesheets.
 
 ```sh
 npm install
-npm run dev          # build, serve at http://localhost:4321/, rebuild on change
+npm run dev          # build, serve at http://localhost:4321/, rebuild on change; a preview build
 npm test             # unit, component and build-level tests
 npm run typecheck
 npm run validate     # records and registry
 npm run schema       # regenerate schema/*.json after changing src/schema/
-npm run build        # static site into dist/
+npm run build        # static site into dist/; SITE_PREVIEW=1 shows the centerfold editorial slots
 ```
 
 ## Deployment
