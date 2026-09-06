@@ -46,6 +46,7 @@
 
 ## Open threads
 
+- Calendar views for the home page: spec approved in conversation and committed (`docs/superpowers/specs/2026-09-06-calendar-views-design.md`), awaiting the user's review of the file, then plan and implementation; see `blog/2026-09-06-01-calendar-views-designed.md`.
 - Subscribe to `https://phdtv.net/feeds/all.ics` from a calendar app and confirm an edited event updates in place (a first attempt via Calendar.app's webcal sheet was never completed); the validate workflow has run on a push but not yet on a real pull request (the ownership rule path).
 - Deferred design questions: second taxonomy level in the UI, the 30-day recording window.
 - GitHub issue forms as the first submission path is still only a proposed default for the later submissions change.
