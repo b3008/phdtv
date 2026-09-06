@@ -14,6 +14,8 @@ export interface SiteData {
   disciplineSlugs: string[];
   /** Every institution of the registry, sorted by name. */
   universities: University[];
+  /** The major fields of the vocabulary, in file order, for legends and colours. */
+  majors: Array<{ slug: string; name: string }>;
 }
 
 function fail(where: string, issue: string): never {
@@ -34,7 +36,7 @@ function firstIssue(error: ZodError): string {
 export function loadSiteData(rootDir: string, base: string): SiteData {
   const disciplines = loadDisciplines(rootDir);
   const recordSchema = createRecordSchema(disciplines.slugs);
-  const disciplineNames = Object.fromEntries(disciplines.minors.map((m) => [m.slug, m.name]));
+  const disciplineIndex = Object.fromEntries(disciplines.minors.map((m) => [m.slug, { name: m.name, major: m.major }]));
 
   const universities = new Map<string, University>();
   for (const file of loadUniversityFiles(rootDir)) {
@@ -53,10 +55,15 @@ export function loadSiteData(rootDir: string, base: string): SiteData {
     const id = file.path.replace(/^records\//, '').replace(/\.md$/, '');
     const university = universities.get(parsed.data.university);
     if (!university) fail(id, `university "${parsed.data.university}" is not in the registry`);
-    defenses.push(toDefense({ id, body: file.body, record: parsed.data, university, disciplineNames, base }));
+    defenses.push(toDefense({ id, body: file.body, record: parsed.data, university, disciplineIndex, base }));
   }
   defenses.sort((a, b) => a.startsAt.localeCompare(b.startsAt));
 
   const registry = [...universities.values()].sort((a, b) => a.name.localeCompare(b.name, 'en'));
-  return { defenses, disciplineSlugs: disciplines.minors.map((m) => m.slug), universities: registry };
+  return {
+    defenses,
+    disciplineSlugs: disciplines.minors.map((m) => m.slug),
+    universities: registry,
+    majors: disciplines.majors.map((m) => ({ slug: m.slug, name: m.name })),
+  };
 }

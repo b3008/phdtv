@@ -29,6 +29,20 @@ describe('loadSiteData on the repository', () => {
     expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b, 'en')));
     expect(data.universities.find((u) => u.slug === 'tudelft')?.agenda_url).toBe('https://www.tudelft.nl/en/events');
   });
+
+  it('resolves each discipline to its major field and lists the majors', () => {
+    const one = data.defenses.find((d) => d.key === '2026/2026-09-15-utrecht-chris-ten-dam');
+    expect(one?.disciplines.map((d) => d.major)).toContain('social-sciences');
+    expect(data.majors.map((m) => m.slug)).toEqual([
+      'natural-sciences',
+      'engineering-and-technology',
+      'medical-and-health-sciences',
+      'agricultural-and-veterinary-sciences',
+      'social-sciences',
+      'humanities-and-the-arts',
+    ]);
+    expect(one?.university.shortName).toBe('UU');
+  });
 });
 
 /** A throwaway project: the valid one-record fixture plus the real vocabulary, with extra files layered on top. */

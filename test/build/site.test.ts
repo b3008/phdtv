@@ -9,7 +9,7 @@ import { generate } from '../../src/site/generate.ts';
 // exercised once, separately, in bundle.test.ts.
 const manifest: AssetManifest = {
   'src/styles/global.css': { file: 'assets/global-test.css' },
-  'src/site/client/schedule.tsx': { file: 'assets/schedule-test.js' },
+  'src/site/client/calendar.tsx': { file: 'assets/calendar-test.js' },
   'src/site/client/defense.tsx': { file: 'assets/defense-test.js' },
 };
 // Pinned so the feed-window assertions below do not drift as the seed defenses age.
@@ -38,8 +38,8 @@ describe('pages', () => {
   });
 
   it('generates the two list pages and one page per published defense', () => {
-    expect(read('index.html')).toContain('"mode":"upcoming"');
-    expect(read('archive/index.html')).toContain('"mode":"archive"');
+    expect(read('index.html')).toContain('data-island="DefenseCalendar"');
+    expect(read('archive/index.html')).toContain('http-equiv="refresh"');
     const pages = [...output.keys()].filter((p) => p.startsWith('defenses/'));
     expect(pages).toHaveLength(published.length);
     for (const r of published) expect(output.has(`defenses/${r.path.replace(/^records\//, '').replace(/\.md$/, '')}/index.html`)).toBe(true);
@@ -104,7 +104,14 @@ describe('per-discipline feeds', () => {
 interface Export {
   schemaVersion: number;
   generatedAt: string;
-  defenses: Array<{ key: string; candidate: string; url: string; university: { name: string }; status: string }>;
+  defenses: Array<{
+    key: string;
+    candidate: string;
+    url: string;
+    university: { name: string; shortName?: string };
+    disciplines: Array<{ slug: string; major: string }>;
+    status: string;
+  }>;
 }
 
 describe('api/defenses.json', () => {
@@ -121,5 +128,7 @@ describe('api/defenses.json', () => {
     const one = data.defenses.find((d) => d.key === '2026/2026-09-15-utrecht-chris-ten-dam');
     expect(one?.university.name).toBe('Utrecht University');
     expect(one?.url).toBe('https://example.test/phdtv/defenses/2026/2026-09-15-utrecht-chris-ten-dam/');
+    expect(one?.university.shortName).toBe('UU');
+    expect(one?.disciplines.map((d) => d.major)).toContain('social-sciences');
   });
 });

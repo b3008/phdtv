@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { applyFilters, filtersFromSearch, searchFromFilters, type Filters } from '../../src/lib/filters.ts';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
-const a = fixtureDefense({ key: 'a', university: { slug: 'tudelft', name: 'TU Delft', country: 'NL' }, disciplines: [{ slug: 'mathematics', name: 'Mathematics' }] });
-const b = fixtureDefense({ key: 'b', university: { slug: 'uu', name: 'Utrecht', country: 'NL' }, disciplines: [{ slug: 'law', name: 'Law' }], recording: { url: 'https://youtu.be/x', platform: 'youtube' } });
-const c = fixtureDefense({ key: 'c', university: { slug: 'tudelft', name: 'TU Delft', country: 'NL' }, disciplines: [{ slug: 'law', name: 'Law' }, { slug: 'mathematics', name: 'Mathematics' }] });
+const a = fixtureDefense({ key: 'a', university: { slug: 'tudelft', name: 'TU Delft', country: 'NL' }, disciplines: [{ slug: 'mathematics', name: 'Mathematics', major: 'natural-sciences' }] });
+const b = fixtureDefense({ key: 'b', university: { slug: 'uu', name: 'Utrecht', country: 'NL' }, disciplines: [{ slug: 'law', name: 'Law', major: 'social-sciences' }], recording: { url: 'https://youtu.be/x', platform: 'youtube' } });
+const c = fixtureDefense({ key: 'c', university: { slug: 'tudelft', name: 'TU Delft', country: 'NL' }, disciplines: [{ slug: 'law', name: 'Law', major: 'social-sciences' }, { slug: 'mathematics', name: 'Mathematics', major: 'natural-sciences' }] });
 
 describe('applyFilters', () => {
   it('returns everything for empty filters', () => {

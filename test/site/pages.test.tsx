@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import type { AssetManifest } from '../../src/site/assets.ts';
 import { Document } from '../../src/site/document.tsx';
 import type { University } from '../../src/schema/university.ts';
-import { aboutPage, archivePage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
+import { aboutPage, archiveRedirectPage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
 const manifest: AssetManifest = {
   'src/styles/global.css': { file: 'assets/global-abc.css' },
-  'src/site/client/schedule.tsx': { file: 'assets/schedule-123.js', imports: ['_react-xyz.js'] },
+  'src/site/client/calendar.tsx': { file: 'assets/calendar-123.js', imports: ['_react-xyz.js'] },
   'src/site/client/defense.tsx': { file: 'assets/defense-456.js', imports: ['_react-xyz.js'] },
   '_react-xyz.js': { file: 'assets/react-xyz.js' },
 };
@@ -34,23 +34,29 @@ describe('Document', () => {
 describe('pages', () => {
   const defense = fixtureDefense();
 
-  it('home page: schedule island in upcoming mode, its script, and the static markup as fallback', () => {
-    const html = homePage([defense], ctx);
+  it('home page: calendar island with the majors, its script, and the static month as fallback', () => {
+    const html = homePage({ defenses: [defense], majors: [{ slug: 'natural-sciences', name: 'Natural sciences' }] }, ctx);
     expect(html).toContain('<title>PhD TV</title>');
-    expect(html).toContain('PhD defenses you can watch live');
-    expect(html).toContain('data-island="DefenseSchedule"');
-    expect(html).toContain('"mode":"upcoming"');
+    expect(html).toContain('Special issue');
+    expect(html).toContain('PhD defenses you can');
+    expect(html).toContain('watch live');
+    expect(html).toContain('you can still catch live');
+    expect(html).toContain('data-island="DefenseCalendar"');
+    expect(html).toContain('"majors":[{"slug":"natural-sciences"');
     expect(html).toContain('"renderedAt":"2026-09-05T12:00:00.000Z"');
-    expect(html).toContain('src="/phdtv/assets/schedule-123.js"');
+    expect(html).toContain('src="/phdtv/assets/calendar-123.js"');
     expect(html).toContain('href="/phdtv/assets/global-abc.css"');
+    expect(html).toContain('September 2026');
     expect(html).toContain('Jane Doe');
+    expect(html).toContain('aria-current="page"');
   });
 
-  it('archive page: schedule island in archive mode', () => {
-    const html = archivePage([defense], ctx);
+  it('archive page: a redirect to the year view with the recordings filter', () => {
+    const html = archiveRedirectPage(ctx);
     expect(html).toContain('<title>PhD TV: archive</title>');
-    expect(html).toContain('Past defenses');
-    expect(html).toContain('"mode":"archive"');
+    expect(html).toContain('<meta http-equiv="refresh" content="0; url=/phdtv/?view=year&amp;recorded=1"/>');
+    expect(html).toContain('Continue to past defenses with recordings.');
+    expect(html).not.toContain('data-island');
   });
 
   it('defense page: candidate and title in the title, detail island with base and build time, nav with base', () => {
@@ -60,7 +66,7 @@ describe('pages', () => {
     expect(html).toContain('data-island="DefensePage"');
     expect(html).toContain('"base":"/phdtv/"');
     expect(html).toContain('src="/phdtv/assets/defense-456.js"');
-    expect(html).toContain('href="/phdtv/archive/"');
+    expect(html).toContain('href="/phdtv/?view=year&amp;recorded=1"');
   });
 
   it('about page: title, the institutions, the stylesheet, and no island script', () => {

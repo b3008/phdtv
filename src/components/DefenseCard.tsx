@@ -1,5 +1,6 @@
-import type { Defense } from '../lib/defense.ts';
+import { institutionLabel, type Defense } from '../lib/defense.ts';
 import type { Phase } from '../lib/time.ts';
+import { fieldClass } from './DefenseChip.tsx';
 import { RecordingStatus } from './RecordingStatus.tsx';
 import { TimeLabel } from './TimeLabel.tsx';
 
@@ -8,7 +9,6 @@ interface DefenseCardProps {
   phase: Phase;
   now: Date;
   viewerZone: string | null;
-  mode: 'upcoming' | 'archive';
 }
 
 function StreamStatus({ defense, phase }: { defense: Defense; phase: Phase }) {
@@ -26,27 +26,31 @@ function StreamStatus({ defense, phase }: { defense: Defense; phase: Phase }) {
   );
 }
 
-export function DefenseCard({ defense, phase, now, viewerZone, mode }: DefenseCardProps) {
+/** Full card for the day view and the live strip: past defenses show recording status, others the stream. */
+export function DefenseCard({ defense, phase, now, viewerZone }: DefenseCardProps) {
   return (
-    <article className={`card card-${phase}`}>
-      <div className="card-head">
+    <article className={`card card-${phase} ${fieldClass(defense)}`}>
+      <div className="card-body">
+        <div className="card-head">
+          <span className="card-time">
+            <TimeLabel startsAt={defense.startsAt} timezone={defense.timezone} viewerZone={viewerZone} />
+          </span>
+          <span className="badge-inst">{institutionLabel(defense)}</span>
+          {phase === 'live' && <span className="pill-live">Live</span>}
+        </div>
         <h3 className="card-candidate">
           <a href={defense.url}>{defense.candidate}</a>
         </h3>
-        {phase === 'live' && <span className="badge-live">Live now</span>}
+        <p className="card-title">{defense.title}</p>
+        <p className="card-meta">
+          {defense.university.name}
+          {defense.faculty ? ` · ${defense.faculty}` : ''}
+          {defense.disciplines.length > 0 ? ` · ${defense.disciplines.map((d) => d.name).join(', ')}` : ''}
+        </p>
+        <p className="card-action">
+          {phase === 'past' ? <RecordingStatus defense={defense} now={now} /> : <StreamStatus defense={defense} phase={phase} />}
+        </p>
       </div>
-      <p className="card-title">{defense.title}</p>
-      <p className="card-meta">
-        {defense.university.name}
-        {defense.faculty ? ` · ${defense.faculty}` : ''}
-        {defense.disciplines.length > 0 ? ` · ${defense.disciplines.map((d) => d.name).join(', ')}` : ''}
-      </p>
-      <p className="card-time">
-        <TimeLabel startsAt={defense.startsAt} timezone={defense.timezone} viewerZone={viewerZone} withDate={mode === 'archive'} />
-      </p>
-      <p className="card-action">
-        {mode === 'archive' ? <RecordingStatus defense={defense} now={now} /> : <StreamStatus defense={defense} phase={phase} />}
-      </p>
     </article>
   );
 }

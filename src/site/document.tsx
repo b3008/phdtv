@@ -7,17 +7,20 @@ interface DocumentProps {
   description?: string;
   base: string;
   assets: PageAssets;
+  /** Target of a meta refresh, for redirect pages. */
+  refresh?: string;
   children: ReactNode;
 }
 
 /** The HTML document around a page. Everything visible inside <body> is a component from src/components. */
-export function Document({ title, description, base, assets, children }: DocumentProps) {
+export function Document({ title, description, base, assets, refresh, children }: DocumentProps) {
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
+        {refresh && <meta httpEquiv="refresh" content={`0; url=${refresh}`} />}
         {description && <meta name="description" content={description} />}
         <link rel="alternate" type="text/calendar" title="PhD TV: all defenses" href={withBase(base, '/feeds/all.ics')} />
         {assets.styles.map((href) => (

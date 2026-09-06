@@ -18,9 +18,9 @@ function Greeting({ name, note }: { name: string; note?: string }) {
 
 describe('Island', () => {
   it('renders the component inside a marked container followed by its props as JSON', () => {
-    const html = renderToString(<Island name="DefenseSchedule" component={Greeting} props={{ name: 'Ada' }} />);
-    expect(html.startsWith('<div data-island="DefenseSchedule"><p>Hello')).toBe(true);
-    expect(html.endsWith('</div><script type="application/json" data-island-props="DefenseSchedule">{"name":"Ada"}</script>')).toBe(true);
+    const html = renderToString(<Island name="DefenseCalendar" component={Greeting} props={{ name: 'Ada' }} />);
+    expect(html.startsWith('<div data-island="DefenseCalendar"><p>Hello')).toBe(true);
+    expect(html.endsWith('</div><script type="application/json" data-island-props="DefenseCalendar">{"name":"Ada"}</script>')).toBe(true);
   });
 
   it('escapes < so a closing script tag inside the props cannot end the script element', () => {
@@ -32,14 +32,14 @@ describe('hydrateIslands', () => {
   it('hydrates every container from the serialised props without mismatch warnings', async () => {
     document.body.innerHTML = renderToString(
       <main>
-        <Island name="DefenseSchedule" component={Greeting} props={{ name: 'Ada' }} />
-        <Island name="DefenseSchedule" component={Greeting} props={{ name: 'Grace', note: 'x<y' }} />
+        <Island name="DefenseCalendar" component={Greeting} props={{ name: 'Ada' }} />
+        <Island name="DefenseCalendar" component={Greeting} props={{ name: 'Grace', note: 'x<y' }} />
       </main>,
     );
     const errors = vi.spyOn(console, 'error').mockImplementation(() => {});
     let count = 0;
     await act(async () => {
-      count = hydrateIslands('DefenseSchedule', Greeting);
+      count = hydrateIslands('DefenseCalendar', Greeting);
     });
     expect(count).toBe(2);
     expect(errors.mock.calls.map((c) => String(c[0]))).toEqual([]);

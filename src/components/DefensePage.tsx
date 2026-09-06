@@ -1,4 +1,4 @@
-import type { Defense } from '../lib/defense.ts';
+import { institutionLabel, type Defense } from '../lib/defense.ts';
 import { countryName, languageName, PLATFORM_LABELS } from '../lib/display.ts';
 import { withBase } from '../lib/paths.ts';
 import { classify, formatDate } from '../lib/time.ts';
@@ -40,9 +40,12 @@ export function DefensePage({ defense, base = '/', renderedAt }: DefensePageProp
   return (
     <article className={`defense defense-${phase}`}>
       <header className="defense-head">
+        <p className="defense-kicker">
+          <span className="badge-inst">{institutionLabel(defense)}</span>
+          {phase === 'live' && <span className="pill-live">Live now</span>}
+        </p>
         <p className="defense-candidate">{defense.candidate}</p>
         <h1 className="defense-title">{defense.title}</h1>
-        {phase === 'live' && <span className="badge-live">Live now</span>}
       </header>
 
       <dl className="defense-facts">
@@ -106,6 +109,11 @@ export function DefensePage({ defense, base = '/', renderedAt }: DefensePageProp
         {defense.thesisUrl && (
           <a className="action action-secondary" href={defense.thesisUrl}>
             Read the thesis
+          </a>
+        )}
+        {defense.source.url && (
+          <a className="action action-secondary" href={defense.source.url}>
+            University announcement
           </a>
         )}
       </p>

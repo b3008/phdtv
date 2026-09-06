@@ -1,6 +1,6 @@
 # PhD TV
 
-A calendar of PhD defenses that are livestreamed for free, with links to the streams, and an archive of past defenses where a recording exists on the web.
+A calendar of PhD defenses that are livestreamed for free, with links to the streams and, for past defenses, to the recording where one exists on the web.
 
 In the Netherlands, the Nordic countries and elsewhere a defense is a public ceremony, and most universities kept the livestream running after 2020. The listings are scattered across dozens of agenda pages; this project gathers them in one place, in your local time, with a calendar feed you can subscribe to.
 
@@ -49,7 +49,7 @@ The machine-readable versions of the format are generated from the TypeScript sc
 
 ## Adding or correcting a defense
 
-1. Create or edit the file under `records/`. If the institution is new, add `universities/<slug>.yaml` with its name, country, time zone and website.
+1. Create or edit the file under `records/`. If the institution is new, add `universities/<slug>.yaml` with its name, an optional short name for badges, country, time zone and website.
 2. Run `npm run validate`. It prints one line per problem as `path: rule: message`, and warns about links that do not respond.
 3. Open a pull request. The same validation runs there; a curator reviews the diff and merges.
 
@@ -65,8 +65,10 @@ Scrapers and other automation will open pull requests as GitHub accounts listed 
 
 ## Using the site
 
-- The front page lists upcoming defenses in your local time, with the institution's time alongside, and surfaces the ones in progress.
-- The archive lists past defenses and says plainly whether a recording is available, pending, known not to exist, or simply not known.
+- The front page is a calendar of every listed defense, past and future, in your local time, with day, week, month and year views. Defenses in progress are surfaced above it with their stream link.
+- Filters by discipline, institution and "only defenses with a recording" apply to every view; chips are coloured by the discipline's OECD major field.
+- Past dates say plainly whether a recording is available, pending, known not to exist, or simply not known. "Recordings" in the header opens the year view with the recordings filter on.
+- The view, the date and the filters are in the URL, so a link reopens the same screen.
 - `https://phdtv.net/feeds/all.ics` is a calendar feed of every upcoming defense; `feeds/<discipline>.ics` narrows it to one field. Events update in place when a stream link is added.
 - `https://phdtv.net/api/defenses.json` is the whole published dataset with a schema version.
 - `https://phdtv.net/about/` explains where the listings come from, lists the institutions covered, and says how to reach the maintainer. The institution list is generated from `universities/`.

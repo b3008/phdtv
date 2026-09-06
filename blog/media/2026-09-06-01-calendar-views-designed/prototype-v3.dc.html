@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Black&family=Archivo:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+  body { margin: 0; background: #fbf7ea; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent, #1b3a8f); }
+  a:hover { color: var(--live, #c8102e); }
+  select, input, button { font: inherit; }
+</style>
+</helmet>
+<div style="{{ themeVars }}">
+<div style="min-height:100vh;background:var(--page,#fbf7ea);color:var(--ink,#1a1714);font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased">
+
+  <header style="background:var(--ink,#141210)">
+    <div style="max-width:64rem;margin:0 auto;padding:14px 20px 0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <a href="#" onClick="{{ navCal }}" style="text-decoration:none;background:var(--live,#d90429);color:#fff;font-family:'Archivo Black',sans-serif;font-size:54px;line-height:1;letter-spacing:-.03em;padding:8px 16px 6px;text-transform:uppercase;box-shadow:6px 6px 0 var(--yellow,#ffd400)">PhD TV</a>
+        <div style="display:flex;align-items:center;gap:10px;padding-bottom:6px;flex-wrap:wrap">
+          <a href="#" onClick="{{ navCal }}" style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:600;text-decoration:none;padding:4px 12px;background:{{ navCalBg }};color:{{ navCalFg }}">Calendar</a>
+          <a href="#" onClick="{{ navRec }}" style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:600;text-decoration:none;padding:4px 12px;background:{{ navRecBg }};color:{{ navRecFg }}">Recordings</a>
+          <button onClick="{{ toggleTheme }}" style="cursor:pointer;background:transparent;border:1px solid var(--yellow,#ffd400);color:var(--yellow,#ffd400);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:10px;padding:4px 8px">{{ themeLabel }} edition</button>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0">
+        <sc-for list="{{ blurbs }}" as="b" hint-placeholder-count="3">
+          <div style="padding:10px 14px 12px;background:{{ b.bg }};color:{{ b.fg }}">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:10px;opacity:.85">{{ b.kicker }}</div>
+            <div style="font-family:'Archivo Black',sans-serif;font-size:17px;line-height:1.15;margin-top:2px;text-transform:uppercase;letter-spacing:-.01em;text-wrap:pretty">{{ b.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </header>
+
+  <div style="max-width:64rem;margin:0 auto;padding:0 20px 80px">
+
+    <sc-if value="{{ isCenterfold }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:28px 0 0">
+        <a href="#" onClick="{{ back }}" style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:13px;font-weight:600;text-decoration:none">‹ Back to {{ backLabel }}</a>
+
+        <div style="margin-top:18px;border:2px solid var(--ink,#141210);background:var(--card,#fff)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bar,#141210);color:var(--barfg,#ffd400);padding:6px 14px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:11px">
+            <span>Centerfold · {{ cf.issue }}</span>
+            <span style="display:flex;align-items:center;gap:8px">
+              <span style="display:inline-block;border:1px solid var(--barfg,#ffd400);padding:0 5px;letter-spacing:.08em">{{ cf.inst }}</span>
+              <sc-if value="{{ cf.live }}" hint-placeholder-val="{{ false }}"><span style="background:var(--live,#d90429);color:#fff;padding:1px 6px;letter-spacing:.1em">Live now</span></sc-if>
+            </span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border-bottom:2px solid var(--ink,#141210)">
+            <div style="position:relative;min-height:380px;border-right:1px solid var(--hairline,#cdc4b0)">
+              <image-slot id="{{ cf.slotPortrait }}" shape="rect" placeholder="Portrait of the candidate" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+            </div>
+            <div style="padding:22px 24px 24px;display:flex;flex-direction:column;justify-content:center">
+              <div style="display:inline-block;align-self:flex-start;background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:11px;padding:3px 8px;transform:rotate(-1.5deg)">{{ cf.kicker }}</div>
+              <h1 style="font-family:'Archivo Black',sans-serif;font-weight:400;font-size:46px;line-height:.95;letter-spacing:-.025em;text-transform:uppercase;margin:12px 0 0;text-wrap:pretty">{{ cf.name }}</h1>
+              <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--muted,#615a4f);margin-top:8px">{{ cf.instFull }} · {{ cf.field }}</div>
+              <p style="font-size:15px;line-height:1.55;margin:16px 0 0;text-wrap:pretty">{{ cf.standfirst }}</p>
+            </div>
+          </div>
+
+          <div style="background:var(--live,#d90429);color:#fff;padding:26px 24px 28px;border-bottom:2px solid var(--ink,#141210)">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:11px;opacity:.9">The thesis</div>
+            <div style="font-family:'Archivo Black',sans-serif;font-size:34px;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin-top:6px;text-wrap:pretty;max-width:52rem">“{{ cf.title }}”</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+            <div style="padding:20px 24px 24px;border-right:1px solid var(--hairline,#cdc4b0)">
+              <div style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:18px;border-bottom:2px solid var(--ink,#141210);padding-bottom:4px">Three questions</div>
+              <sc-for list="{{ cf.questions }}" as="q" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--hairline,#cdc4b0)">
+                  <div style="width:34px;height:34px;background:var(--ink,#141210);color:var(--yellow,#ffd400);font-family:'Archivo Black',sans-serif;font-size:18px;display:flex;align-items:center;justify-content:center">{{ q.n }}</div>
+                  <div>
+                    <div style="font-family:'Archivo Black',sans-serif;font-size:16px;line-height:1.15">{{ q.q }}</div>
+                    <div style="margin-top:6px;border:1px solid var(--hairline,#cdc4b0);background:var(--page,#fbf7ea);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted,#615a4f)">answer from the candidate</div>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="margin-top:18px;background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);padding:18px 20px">
+                <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:10px">In their words</div>
+                <div style="font-family:'Archivo Black',sans-serif;font-size:22px;line-height:1.05;letter-spacing:-.01em;margin-top:4px;text-transform:uppercase">“Pull quote from the candidate goes here.”</div>
+                <div style="font-style:italic;font-size:12px;margin-top:8px">{{ cf.name }}, {{ cf.inst }}</div>
+              </div>
+            </div>
+            <div style="padding:20px 24px 24px;display:flex;flex-direction:column;gap:18px">
+              <div style="position:relative;height:190px">
+                <image-slot id="{{ cf.slotWide }}" shape="rect" placeholder="Lab, campus or work in progress" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+              </div>
+              <div style="border:2px solid var(--ink,#141210)">
+                <div style="background:var(--bar,#141210);color:var(--barfg,#ffd400);padding:4px 10px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:11px">Close-up</div>
+                <sc-for list="{{ cf.facts }}" as="f" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:7px 10px;border-top:1px solid var(--hairline,#cdc4b0);font-size:13px">
+                    <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--muted,#615a4f);padding-top:2px">{{ f.k }}</div>
+                    <div>{{ f.v }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="position:relative;height:120px">
+                <image-slot id="{{ cf.slotDetail }}" shape="rect" placeholder="Detail: a figure from the thesis" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 24px;background:{{ cf.tuneBg }};color:{{ cf.tuneFg }}">
+            <div>
+              <div style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:10px;opacity:.85">Tune in</div>
+              <div style="font-family:'Archivo Black',sans-serif;font-size:20px;line-height:1;text-transform:uppercase;margin-top:2px">{{ cf.dateShort }} · {{ cf.timeMain }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+              <sc-if value="{{ cf.hasLink }}" hint-placeholder-val="{{ true }}">
+                <a href="#" onClick="{{ noop }}" style="display:inline-block;background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;padding:8px 14px">{{ cf.linkText }}</a>
+              </sc-if>
+              <sc-if value="{{ cf.mutedText }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;opacity:.85">{{ cf.mutedText }}</span></sc-if>
+              <a href="#" onClick="{{ cf.openDetail }}" style="color:inherit;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:12px">Listing ›</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:28px 0 0">
+        <a href="#" onClick="{{ back }}" style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:13px;font-weight:600;text-decoration:none">‹ Back to {{ backLabel }}</a>
+        <div style="margin-top:18px;border:2px solid var(--ink,#141210);background:var(--card,#fff)">
+          <div style="border-left:6px solid {{ detail.color }};padding:22px 24px 26px">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="display:inline-block;border:1px solid var(--ink,#14140f);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:12px;padding:1px 6px">{{ detail.inst }}</span>
+              <span style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted,#6b6b60)">{{ detail.field }}</span>
+              <sc-if value="{{ detail.live }}" hint-placeholder-val="{{ false }}">
+                <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Live now</span>
+              </sc-if>
+              <sc-if value="{{ detail.hasCf }}" hint-placeholder-val="{{ false }}">
+                <a href="#" onClick="{{ detail.openCf }}" style="background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Centerfold ›</a>
+              </sc-if>
+            </div>
+            <h1 style="font-family:'Archivo Black',sans-serif;font-weight:400;font-size:30px;line-height:1.05;letter-spacing:-.015em;margin:12px 0 8px;text-wrap:pretty">{{ detail.title }}</h1>
+            <div style="font-size:17px;font-weight:600">{{ detail.name }}</div>
+            <div style="color:var(--muted,#6b6b60);font-size:14px;margin-top:2px">{{ detail.instFull }} · {{ detail.field }}</div>
+            <div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;border-top:1px solid var(--hairline,#e4e4db);border-bottom:1px solid var(--hairline,#e4e4db);padding:14px 0">
+              <div>
+                <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--muted,#6b6b60)">Your time (Amsterdam)</div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:22px">{{ detail.dateLong }}, {{ detail.timeMain }}</div>
+              </div>
+              <div>
+                <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--muted,#6b6b60)">Institution time</div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:22px">{{ detail.timeInstFull }}</div>
+              </div>
+            </div>
+            <div style="margin-top:18px">
+              <sc-if value="{{ detail.hasLink }}" hint-placeholder-val="{{ true }}">
+                <a href="#" onClick="{{ noop }}" style="display:inline-block;background:{{ detail.linkBg }};color:{{ detail.linkFg }};text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:15px;padding:8px 14px">{{ detail.linkText }}</a>
+              </sc-if>
+              <sc-if value="{{ detail.mutedText }}" hint-placeholder-val="{{ false }}">
+                <span style="color:var(--muted,#6b6b60);font-size:14px">{{ detail.mutedText }}</span>
+              </sc-if>
+            </div>
+            <div style="margin-top:24px">
+              <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--muted,#6b6b60);border-bottom:1px solid var(--ink,#14140f);padding-bottom:4px">Abstract</div>
+              <div style="margin-top:10px;border:1px solid var(--hairline,#cdc4b0);padding:18px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted,#615a4f);background:var(--page,#fbf7ea)">abstract text — supplied by the university listing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCalendar }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="padding:26px 0 20px;border-bottom:2px solid var(--ink,#1a1714)">
+        <div style="display:inline-block;background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:11px;padding:3px 8px;transform:rotate(-1.5deg)">Special issue</div>
+        <h1 style="font-family:'Archivo Black',sans-serif;font-weight:400;font-size:44px;line-height:.98;margin:10px 0 0;letter-spacing:-.02em;text-transform:uppercase;text-wrap:pretty">PhD defenses you can <span style="color:var(--live,#d90429)">watch live</span></h1>
+        <p style="margin:10px 0 0;max-width:44rem;font-size:14.5px;line-height:1.6;color:var(--muted,#6f665a);text-wrap:pretty">Public defenses streamed for free by universities, shown in your local time. Browse by day, week, month or year. Past dates show where a recording exists.</p>
+      </div>
+
+      <div style="margin-top:20px;border:2px solid var(--ink,#1a1714);background:var(--card,#faf6ec);padding:14px 16px;display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end">
+        <label style="display:flex;flex-direction:column;gap:5px;min-width:200px;flex:1 1 200px">
+          <span style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted,#6b6b60)">Discipline</span>
+          <select value="{{ disc }}" onChange="{{ setDisc }}" style="appearance:none;background:var(--page,#fbfbf9);color:var(--ink,#14140f);border:1px solid var(--ink,#141210);padding:7px 9px;font-size:14px;width:100%">
+            <sc-for list="{{ discOpts }}" as="o" hint-placeholder-count="3">
+              <option value="{{ o }}">{{ o }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:5px;min-width:200px;flex:1 1 200px">
+          <span style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:var(--muted,#6b6b60)">Institution</span>
+          <select value="{{ inst }}" onChange="{{ setInst }}" style="appearance:none;background:var(--page,#fbfbf9);color:var(--ink,#14140f);border:1px solid var(--ink,#141210);padding:7px 9px;font-size:14px;width:100%">
+            <sc-for list="{{ instOpts }}" as="o" hint-placeholder-count="3">
+              <option value="{{ o }}">{{ o }}</option>
+            </sc-for>
+          </select>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding-bottom:7px;cursor:pointer">
+          <input type="checkbox" checked="{{ recOnly }}" onChange="{{ setRec }}" style="width:16px;height:16px;accent-color:var(--accent,#1d4ed8)" />
+          <span>Only defenses with a recording</span>
+        </label>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="5">
+          <span style="display:flex;align-items:center;gap:6px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--ink,#141210)">
+            <span style="width:14px;height:14px;background:{{ l.color }};display:inline-block;border:2px solid var(--ink,#141210)"></span>{{ l.name }}
+          </span>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ hasLive }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:22px;border:2px solid var(--live,#d90429);background:var(--card,#fff);position:relative">
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--live,#d90429)">
+            <span style="width:9px;height:9px;border-radius:50%;background:#fff;display:inline-block"></span>
+            <span style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.2em;font-size:14px;color:#fff">Live now</span>
+          </div>
+          <div style="position:absolute;top:-16px;right:18px;width:78px;height:78px;background:var(--yellow,#ffd400);clip-path:polygon(50% 0%,61% 12%,76% 6%,80% 21%,95% 25%,89% 39%,100% 50%,89% 61%,95% 75%,80% 79%,76% 94%,61% 88%,50% 100%,39% 88%,24% 94%,20% 79%,5% 75%,11% 61%,0% 50%,11% 39%,5% 25%,20% 21%,24% 6%,39% 12%);display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Archivo Black',sans-serif;font-size:12px;line-height:1;text-transform:uppercase;color:#d90429;transform:rotate(8deg)">On<br />air!</div>
+          <div style="padding:4px 14px 14px">
+            <sc-for list="{{ liveCards }}" as="c" hint-placeholder-count="1">
+              <div style="padding:14px 0;border-top:1px solid var(--hairline,#e4e4db)">
+                <div style="border-left:3px solid {{ c.color }};padding-left:12px">
+                  <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+                    <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;letter-spacing:.01em">{{ c.timeMain }}</span>
+                    <span style="display:inline-block;border:1px solid var(--ink,#14140f);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0 5px">{{ c.inst }}</span>
+                    <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Live</span>
+                    <sc-if value="{{ c.hasCf }}" hint-placeholder-val="{{ false }}">
+                      <a href="#" onClick="{{ c.openCf }}" style="background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Centerfold ›</a>
+                    </sc-if>
+                  </div>
+                  <a href="#" onClick="{{ c.open }}" style="display:block;font-family:'Archivo Black',sans-serif;font-size:19px;line-height:1.1;letter-spacing:-.01em;margin-top:6px;text-decoration:none;color:var(--ink,#141210)">{{ c.name }}</a>
+                  <div style="font-size:14px;line-height:1.45;margin-top:2px;text-wrap:pretty">{{ c.title }}</div>
+                  <div style="font-size:13px;color:var(--muted,#6b6b60);margin-top:3px">{{ c.meta }}</div>
+                  <div style="margin-top:8px">
+                    <a href="#" onClick="{{ noop }}" style="font-weight:600;font-size:14px">Watch the livestream</a>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="margin-top:22px;background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);border:2px solid var(--ink,#141210);padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;gap:6px">
+          <button onClick="{{ goPrev }}" style="cursor:pointer;background:#fff;border:2px solid #141210;color:#141210;width:32px;height:30px;font-family:'Oswald',sans-serif;font-size:16px">‹</button>
+          <button onClick="{{ goNext }}" style="cursor:pointer;background:#fff;border:2px solid #141210;color:#141210;width:32px;height:30px;font-family:'Oswald',sans-serif;font-size:16px">›</button>
+          <button onClick="{{ goToday }}" style="cursor:pointer;background:#fff;border:2px solid #141210;color:#141210;height:30px;padding:0 12px;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:600">Today</button>
+        </div>
+        <div style="font-family:'Archivo Black',sans-serif;font-size:24px;letter-spacing:-.01em;text-transform:uppercase;color:var(--yellowfg,#141210)">{{ periodLabel }}</div>
+        <div style="display:flex">
+          <sc-for list="{{ vbtns }}" as="b" hint-placeholder-count="4">
+            <button onClick="{{ b.onClick }}" style="cursor:pointer;border:2px solid #141210;margin-left:-2px;height:30px;padding:0 12px;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:600;background:{{ b.bg }};color:{{ b.fg }}">{{ b.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{ empty.show }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border:2px solid var(--ink,#141210);background:var(--card,#fff);padding:18px">
+          <div style="font-family:'Archivo Black',sans-serif;font-size:20px;line-height:1.1;text-transform:uppercase;letter-spacing:-.01em">{{ empty.msg }}</div>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:8px">
+            <sc-if value="{{ empty.prev }}" hint-placeholder-val="{{ true }}">
+              <a href="#" onClick="{{ empty.prevGo }}" style="font-size:14px;font-weight:600">Previous: {{ empty.prev }}</a>
+            </sc-if>
+            <sc-if value="{{ empty.next }}" hint-placeholder-val="{{ true }}">
+              <a href="#" onClick="{{ empty.nextGo }}" style="font-size:14px;font-weight:600">Next: {{ empty.next }}</a>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isDay }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border-top:6px double var(--ink,#141210);padding-top:10px">
+          <h2 style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;margin:0;text-transform:uppercase;letter-spacing:.16em;background:var(--bar,#141210);color:var(--barfg,#ffd400);padding:6px 10px">{{ dayHeading }}</h2>
+          <sc-for list="{{ dayCards }}" as="c" hint-placeholder-count="2">
+            <div style="border-bottom:1px solid var(--hairline,#cdc4b0);padding:16px 0">
+              <div style="border-left:3px solid {{ c.color }};padding-left:12px">
+                <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+                  <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;letter-spacing:.01em">{{ c.timeMain }}</span>
+                  <sc-if value="{{ c.timeInst }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:12px;color:var(--muted,#6b6b60)">· {{ c.timeInst }} institution time</span>
+                  </sc-if>
+                  <span style="display:inline-block;border:1px solid var(--ink,#14140f);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0 5px">{{ c.inst }}</span>
+                  <sc-if value="{{ c.live }}" hint-placeholder-val="{{ false }}">
+                    <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Live</span>
+                  </sc-if>
+                  <sc-if value="{{ c.hasCf }}" hint-placeholder-val="{{ false }}">
+                    <a href="#" onClick="{{ c.openCf }}" style="background:var(--yellow,#ffd400);color:var(--yellowfg,#141210);text-decoration:none;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:1px 6px">Centerfold ›</a>
+                  </sc-if>
+                </div>
+                <a href="#" onClick="{{ c.open }}" style="display:block;font-family:'Archivo Black',sans-serif;font-size:19px;line-height:1.1;letter-spacing:-.01em;margin-top:6px;text-decoration:none;color:var(--ink,#141210)">{{ c.name }}</a>
+                <div style="font-size:14px;line-height:1.45;margin-top:2px;text-wrap:pretty">{{ c.title }}</div>
+                <div style="font-size:13px;color:var(--muted,#6b6b60);margin-top:3px">{{ c.meta }}</div>
+                <div style="margin-top:8px">
+                  <sc-if value="{{ c.hasLink }}" hint-placeholder-val="{{ true }}">
+                    <span style="font-size:14px"><a href="#" onClick="{{ noop }}" style="font-weight:600">{{ c.linkText }}</a><span style="color:var(--muted,#6b6b60)">{{ c.linkSuffix }}</span></span>
+                  </sc-if>
+                  <sc-if value="{{ c.mutedText }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:14px;color:var(--muted,#6b6b60)">{{ c.mutedText }}</span>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isWeekWide }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-left:1px solid var(--hairline,#e4e4db)">
+          <sc-for list="{{ weekCols }}" as="col" hint-placeholder-count="7">
+            <div style="border-right:1px solid var(--hairline,#e4e4db);min-height:220px;background:{{ col.bg }}">
+              <div style="padding:6px 6px 5px;background:var(--bar,#14140f);color:var(--barfg,#fbfbf9);box-shadow:inset 0 0 0 2px {{ col.outline }}">
+                <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:11px;opacity:.75">{{ col.dow }}</div>
+                <div style="display:flex;align-items:baseline;gap:5px">
+                  <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;line-height:1">{{ col.num }}</span>
+                  <sc-if value="{{ col.isToday }}" hint-placeholder-val="{{ false }}">
+                    <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:9px;padding:1px 4px">Now</span>
+                  </sc-if>
+                </div>
+              </div>
+              <div style="padding:6px;display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ col.chips }}" as="chip" hint-placeholder-count="0">
+                  <a href="#" onClick="{{ chip.open }}" title="{{ chip.tooltip }}" style="display:block;text-decoration:none;color:inherit;background:var(--chip,#fff);border:1px solid var(--hairline,#e4e4db);border-left:3px solid {{ chip.color }};padding:5px 6px;opacity:{{ chip.opacity }}">
+                    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:4px">
+                      <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;line-height:1.1">{{ chip.time }}</span>
+                      <span style="display:inline-block;border:1px solid var(--ink,#141210);color:var(--ink,#141210);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:10px;padding:0 4px;white-space:nowrap">{{ chip.inst }}</span>
+                    </div>
+                    <div style="font-size:12px;font-weight:600;line-height:1.25;margin-top:3px">{{ chip.name }}</div>
+                    <sc-if value="{{ chip.live }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:4px">
+                        <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:10px;padding:0 4px">Live</span>
+                      </div>
+                    </sc-if>
+                  </a>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isWeekNarrow }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px">
+          <sc-for list="{{ weekCols }}" as="col" hint-placeholder-count="7">
+            <div style="border-top:1px solid var(--hairline,#e4e4db);padding:10px 0;display:flex;gap:12px;background:{{ col.bg }}">
+              <div style="min-width:56px;box-shadow:inset 0 0 0 2px {{ col.outline }};padding:4px 6px;height:fit-content;background:var(--bar,#14140f);color:var(--barfg,#fbfbf9)">
+                <div style="font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px;opacity:.75">{{ col.dow }}</div>
+                <div style="display:flex;align-items:baseline;gap:4px">
+                  <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;line-height:1">{{ col.num }}</span>
+                  <sc-if value="{{ col.isToday }}" hint-placeholder-val="{{ false }}">
+                    <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:9px;padding:1px 4px">Now</span>
+                  </sc-if>
+                </div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ col.chips }}" as="chip" hint-placeholder-count="0">
+                  <a href="#" onClick="{{ chip.open }}" title="{{ chip.tooltip }}" style="display:flex;gap:8px;align-items:baseline;text-decoration:none;color:inherit;background:var(--chip,#fff);border:1px solid var(--hairline,#e4e4db);border-left:3px solid {{ chip.color }};padding:6px 8px;opacity:{{ chip.opacity }}">
+                    <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:15px">{{ chip.time }}</span>
+                    <span style="font-size:13px;font-weight:600;flex:1">{{ chip.name }}</span>
+                    <span style="display:inline-block;border:1px solid var(--ink,#141210);color:var(--ink,#141210);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:10px;padding:0 4px">{{ chip.inst }}</span>
+                  </a>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMonthWide }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:18px;border-top:1px solid var(--rule,#c9c9bf);border-left:1px solid var(--hairline,#e4e4db)">
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+            <sc-for list="{{ dowNames }}" as="d" hint-placeholder-count="7">
+              <div style="border-right:1px solid var(--bar,#14140f);padding:5px 6px;background:var(--bar,#14140f);color:var(--barfg,#fbfbf9);font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:11px">{{ d }}</div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+            <sc-for list="{{ monthCells }}" as="cell" hint-placeholder-count="35">
+              <div style="border-right:1px solid var(--hairline,#e4e4db);border-bottom:1px solid var(--hairline,#e4e4db);min-height:98px;padding:5px;background:{{ cell.cellBg }};box-shadow:inset 0 0 0 2px {{ cell.outline }}">
+                <div style="font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;line-height:1;color:{{ cell.numColor }}">{{ cell.num }}</div>
+                <div style="margin-top:5px;display:flex;flex-direction:column;gap:4px">
+                  <sc-for list="{{ cell.chips }}" as="chip" hint-placeholder-count="0">
+                    <a href="#" onClick="{{ chip.open }}" title="{{ chip.tooltip }}" style="display:block;text-decoration:none;color:inherit;background:var(--chip,#fff);border:1px solid var(--hairline,#e4e4db);border-left:3px solid {{ chip.color }};padding:3px 5px;opacity:{{ chip.opacity }}">
+                      <div style="display:flex;align-items:baseline;gap:5px">
+                        <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:13px">{{ chip.time }}</span>
+                        <sc-if value="{{ chip.live }}" hint-placeholder-val="{{ false }}">
+                          <span style="background:var(--live,#b91c1c);color:#fff;font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:9px;padding:0 4px">Live</span>
+                        </sc-if>
+                      </div>
+                      <div style="font-size:11.5px;font-weight:600;line-height:1.2">{{ chip.name }}</div>
+                    </a>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMonthNarrow }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;border-top:1px solid var(--rule,#c9c9bf);border-left:1px solid var(--hairline,#e4e4db)">
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+            <sc-for list="{{ dowInitials }}" as="d" hint-placeholder-count="7">
+              <div style="border-right:1px solid var(--bar,#14140f);padding:4px;text-align:center;background:var(--bar,#14140f);color:var(--barfg,#fbfbf9);font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.06em;font-size:11px">{{ d }}</div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+            <sc-for list="{{ monthCells }}" as="cell" hint-placeholder-count="35">
+              <button onClick="{{ cell.openDay }}" style="cursor:pointer;border:0;border-right:1px solid var(--hairline,#e4e4db);border-bottom:1px solid var(--hairline,#e4e4db);min-height:54px;padding:4px;display:flex;flex-direction:column;align-items:center;gap:4px;background:{{ cell.cellBg }};box-shadow:inset 0 0 0 2px {{ cell.outline }}">
+                <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;color:{{ cell.numColor }}">{{ cell.num }}</span>
+                <span style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center">
+                  <sc-for list="{{ cell.dots }}" as="dot" hint-placeholder-count="0">
+                    <span style="width:6px;height:6px;border-radius:50%;display:inline-block;background:{{ dot.color }};opacity:{{ dot.opacity }}"></span>
+                  </sc-for>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isYear }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;display:grid;gap:22px;grid-template-columns:repeat({{ yearCols }},minmax(0,1fr))">
+          <sc-for list="{{ yearMonths }}" as="mo" hint-placeholder-count="12">
+            <div>
+              <button onClick="{{ mo.open }}" style="cursor:pointer;background:transparent;border:0;border-bottom:1px solid var(--ink,#14140f);padding:0 0 3px;width:100%;text-align:left;color:var(--ink,#14140f);font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:15px">{{ mo.name }}</button>
+              <div style="margin-top:6px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px">
+                <sc-for list="{{ dowInitials }}" as="d" hint-placeholder-count="7">
+                  <div style="text-align:center;font-family:'Oswald',sans-serif;font-size:10px;color:var(--muted,#6b6b60)">{{ d }}</div>
+                </sc-for>
+                <sc-for list="{{ mo.cells }}" as="c" hint-placeholder-count="35">
+                  <button onClick="{{ c.open }}" title="{{ c.tip }}" style="cursor:{{ c.cursor }};border:0;padding:0;aspect-ratio:1;font-family:'Oswald',sans-serif;font-size:11px;line-height:1;display:flex;align-items:center;justify-content:center;background:{{ c.bg }};color:{{ c.fg }}">{{ c.num }}</button>
+                </sc-for>
+              </div>
+              <div style="margin-top:6px;font-size:12px;color:var(--muted,#6b6b60)">{{ mo.caption }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;day&quot;,&quot;week&quot;,&quot;month&quot;,&quot;year&quot;],&quot;default&quot;:&quot;month&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pastOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0.3,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;default&quot;:0.55,&quot;unit&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Chips&quot;}}">
+class Component extends DCLogic {
+  FIELDS = {
+    'Natural sciences': ['#2563eb', '#93b4ff'],
+    'Engineering and technology': ['#ea580c', '#fdba74'],
+    'Medical and health sciences': ['#e11d48', '#fda4af'],
+    'Social sciences': ['#7c3aed', '#c4b5fd'],
+    'Humanities and the arts': ['#0d9488', '#5eead4'],
+    'Agricultural sciences': ['#16a34a', '#86efac']
+  };
+
+  ROWS = [
+    [5, 1, '20:00', '14:00 EDT', 'Shayne Longpre', 'MIT', 'Massachusetts Institute of Technology', 'Natural sciences', 'past', 'yt', 'From Data to Intelligence: Shaping, Scaling, and Scrutinizing AI Systems'],
+    [6, 4, '14:30', null, 'Behrooz Elahi', 'UT', 'University of Twente', 'Engineering and technology', 'past', 'none', 'Tunable Encapsulated Salt Hydrates for Thermochemical Heat Storage'],
+    [6, 23, '14:00', null, 'Nemania Borovits', 'TU/e', 'Eindhoven University of Technology', 'Natural sciences', 'past', 'yt', 'Privacy Engineering Solutions for GDPR-Compliant Contemporary Software'],
+    [7, 1, '11:00', null, 'Sanne Vrijenhoek', 'UvA', 'University of Amsterdam', 'Social sciences', 'past', 'yt', 'Building normative diversity into algorithmic news recommendations'],
+    [7, 6, '15:00', null, 'Stefan Heijboer', 'TU Delft', 'Delft University of Technology', 'Engineering and technology', 'past', 'yt', 'From Touch to Feel: Integrating Haptic Fidelity and Material Interaction'],
+    [8, 12, '11:00', '12:00 EEST', 'Anna Kuusi', 'UEF', 'University of Eastern Finland', 'Social sciences', 'past', 'yt', 'Perfectionism and well-being during secondary education'],
+    [8, 14, '11:00', '12:00 EEST', 'Tiina Kuutti', 'UEF', 'University of Eastern Finland', 'Social sciences', 'past', 'yt', 'Inklusiivisen varhaiskasvatuksen rajat, esteet ja toivo'],
+    [8, 19, '13:00', null, 'Zirui Luo', 'Aarhus', 'Aarhus University', 'Engineering and technology', 'past', 'none', 'Enhancing Ultrasonic Degradation and Defluorination of PFAS'],
+    [8, 28, '11:00', '12:00 EEST', 'Jari Saastamoinen', 'Oulu', 'University of Oulu', 'Humanities and the arts', 'past', 'none', 'Fika, Dala horses, and Falun red villas: Swedishness in the media'],
+    [9, 7, '13:00', null, 'Anders Enqvist', 'KTH', 'KTH Royal Institute of Technology', 'Engineering and technology', 'live', 'stream', 'Analytical Foundations of Energy-Efficient Wireless Communication'],
+    [9, 9, '09:00', null, 'Simon Ryfisch', 'Uppsala', 'Uppsala University', 'Social sciences', 'up', 'stream', 'Charting Waters in the Anthropocene'],
+    [9, 10, '11:00', '12:00 EEST', 'Andrea Mancianti', 'Aalto', 'Aalto University', 'Humanities and the arts', 'up', null, 'Sounding agencies and performing others'],
+    [9, 11, '11:00', '12:00 EEST', 'Teemu Sorsa', 'UEF', 'University of Eastern Finland', 'Medical and health sciences', 'up', null, 'Long-acting ocular drug delivery systems'],
+    [9, 15, '16:15', null, 'Chris ten Dam', 'UU', 'Utrecht University', 'Social sciences', 'up', null, 'Built environment transformation for the transport energy transition'],
+    [9, 17, '09:00', null, 'Shuai Lang', 'KTH', 'KTH Royal Institute of Technology', 'Engineering and technology', 'up', null, 'Network-Based DNA Data Storage'],
+    [9, 18, '11:00', '12:00 EEST', 'Essam Elsaed', 'Tampere', 'Tampere University', 'Engineering and technology', 'up', null, 'Using a Neural Network Controller to Minimize Pressure Peaks'],
+    [9, 24, '10:30', null, 'Yan Fang', 'WUR', 'Wageningen University & Research', 'Medical and health sciences', 'up', null, 'Diet, Liver Fat, and Metabolic Health'],
+    [9, 24, '16:30', null, 'Delaram Fahmi Yigit', 'UT', 'University of Twente', 'Engineering and technology', 'up', null, 'Bio-Aerosols: the impact of ventilation design'],
+    [9, 25, '11:15', null, 'Lina Stotz', 'UiO', 'University of Oslo', 'Social sciences', 'up', null, 'Children Born of War and Narratives of (Non-)Recognition'],
+    [9, 28, '13:45', null, 'I. Fatima', 'VU', 'Vrije Universiteit Amsterdam', 'Natural sciences', 'up', null, 'Software Architecture Evaluation for Sustainability'],
+    [10, 2, '12:15', null, 'Marta Olivi', 'UU', 'Utrecht University', 'Humanities and the arts', 'up', null, 'Food That Matters: Food Figurations in Contemporary Anglophone Feminist Fiction'],
+    [10, 2, '12:30', null, 'Edoardo Bellincioni', 'UT', 'University of Twente', 'Natural sciences', 'up', null, 'Melting of bodies in flows: from constraint to advection']
+  ];
+
+  MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  MON3 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  DOW3 = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  DOWFULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  TODAY = { y: 2026, m: 9, d: 7 };
+
+  /* Centerfold features, keyed by defense index (ROWS order). Copy fields are editorial slots. */
+  CENTERFOLDS = {
+    9: { issue: 'No. 37', kicker: 'This week\'s centerfold', standfirst: 'Every phone call, video stream and sensor reading costs energy somewhere in the network. This defense asks how little a wireless link can get away with.', questions: ['Why this topic?', 'What surprised you?', 'What happens after the defense?'], facts: [['Faculty', 'Electrical Engineering and Computer Science'], ['Format', 'Public defense, livestreamed'], ['Language', 'English']] },
+    0: { issue: 'No. 19', kicker: 'From the archive', standfirst: 'A look back at a defense on how the data behind AI systems is gathered, scaled and audited, now available as a recording.', questions: ['Why this topic?', 'What surprised you?', 'What happens after the defense?'], facts: [['Faculty', 'Media Arts and Sciences'], ['Format', 'Public defense, recorded'], ['Language', 'English']] }
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      view: props.startView || 'month',
+      anchor: 20260907,
+      theme: props.theme || 'light',
+      disc: 'All disciplines',
+      inst: 'All institutions',
+      recOnly: false,
+      route: null,
+      cf: null,
+      narrow: typeof window !== 'undefined' ? window.innerWidth < 640 : false
+    };
+  }
+
+  componentDidMount() {
+    this._r = () => {
+      const n = window.innerWidth < 640;
+      if (n !== this.state.narrow) this.setState({ narrow: n });
+    };
+    window.addEventListener('resize', this._r);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); }
+
+  /* --- date helpers: dates are integer keys yyyymmdd --- */
+  toDate(k) { return new Date(Date.UTC(Math.floor(k / 10000), Math.floor(k / 100) % 100 - 1, k % 100)); }
+  toKey(dt) { return dt.getUTCFullYear() * 10000 + (dt.getUTCMonth() + 1) * 100 + dt.getUTCDate(); }
+  parts(k) { return { y: Math.floor(k / 10000), m: Math.floor(k / 100) % 100, d: k % 100 }; }
+  dowIdx(k) { return (this.toDate(k).getUTCDay() + 6) % 7; }
+  addDays(k, n) { const dt = this.toDate(k); dt.setUTCDate(dt.getUTCDate() + n); return this.toKey(dt); }
+  monStart(k) { const p = this.parts(k); return p.y * 10000 + p.m * 100 + 1; }
+  weekStart(k) { return this.addDays(k, -this.dowIdx(k)); }
+  daysIn(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }
+  fmtShort(k) { const p = this.parts(k); return this.DOW3[this.dowIdx(k)] + ' ' + p.d + ' ' + this.MON3[p.m - 1] + ' ' + p.y; }
+  fmtLong(k) { const p = this.parts(k); return this.DOWFULL[this.dowIdx(k)] + ' ' + p.d + ' ' + this.MON[p.m - 1] + ' ' + p.y; }
+
+  theme() {
+    const dark = this.state.theme === 'dark';
+    const L = {
+      '--page': '#fbf7ea', '--card': '#ffffff', '--ink': '#141210', '--muted': '#615a4f',
+      '--rule': '#141210', '--hairline': '#cdc4b0', '--accent': '#1d4ed8', '--live': '#d90429',
+      '--chip': '#ffffff', '--s1': '#d3defb', '--s2': '#8aa8f2', '--s3': '#1d4ed8', '--s3fg': '#ffffff',
+      '--todaybg': '#fff3b0', '--bar': '#141210', '--barfg': '#ffd400',
+      '--yellow': '#ffd400', '--yellowfg': '#141210', '--cyan': '#00a9e0'
+    };
+    const D = {
+      '--page': '#15130f', '--card': '#201d17', '--ink': '#f5eed9', '--muted': '#b0a58f',
+      '--rule': '#7a705d', '--hairline': '#3d3729', '--accent': '#93b4ff', '--live': '#ff4d5a',
+      '--chip': '#282418', '--s1': '#2a3247', '--s2': '#4c5c85', '--s3': '#93b4ff', '--s3fg': '#15130f',
+      '--todaybg': '#3d3410', '--bar': '#ffd83d', '--barfg': '#15130f',
+      '--yellow': '#ffd83d', '--yellowfg': '#15130f', '--cyan': '#3cc7f5'
+    };
+    return dark ? D : L;
+  }
+
+  color(field) { return this.FIELDS[field][this.state.theme === 'dark' ? 1 : 0]; }
+
+  all() {
+    return this.ROWS.map((r, i) => ({
+      id: i,
+      key: 2026 * 10000 + r[0] * 100 + r[1],
+      time: r[2],
+      mins: parseInt(r[2].slice(0, 2), 10) * 60 + parseInt(r[2].slice(3), 10),
+      instTime: r[3],
+      name: r[4],
+      inst: r[5],
+      instFull: r[6],
+      field: r[7],
+      status: r[8],
+      rec: r[9],
+      title: r[10]
+    }));
+  }
+
+  filtered() {
+    const s = this.state;
+    return this.all().filter(d =>
+      (s.disc === 'All disciplines' || d.field === s.disc) &&
+      (s.inst === 'All institutions' || d.inst === s.inst) &&
+      (!s.recOnly || d.rec === 'yt')
+    ).sort((a, b) => a.key - b.key || a.mins - b.mins);
+  }
+
+  open(id) { return e => { e.preventDefault(); this.setState({ route: id, cf: null }); }; }
+  openCf(id) { return e => { e.preventDefault(); this.setState({ cf: id, route: null }); }; }
+  noop = e => { e.preventDefault(); };
+
+  chip(d) {
+    return {
+      id: d.id,
+      time: d.time,
+      name: d.name,
+      inst: d.inst,
+      color: this.color(d.field),
+      opacity: d.status === 'past' ? (this.props.pastOpacity != null ? this.props.pastOpacity : 0.55) : 1,
+      live: d.status === 'live',
+      tooltip: d.title + ' — ' + d.instFull,
+      open: this.open(d.id)
+    };
+  }
+
+  card(d) {
+    const c = {
+      id: d.id,
+      name: d.name,
+      title: d.title,
+      meta: d.instFull + ' · ' + d.field,
+      timeMain: d.time + ' CEST',
+      timeInst: d.instTime || '',
+      inst: d.inst,
+      color: this.color(d.field),
+      live: d.status === 'live',
+      opacity: d.status === 'past' ? 0.82 : 1,
+      hasCf: !!this.CENTERFOLDS[d.id],
+      openCf: this.openCf(d.id),
+      hasLink: false,
+      linkText: '',
+      linkSuffix: '',
+      mutedText: '',
+      open: this.open(d.id)
+    };
+    if (d.status === 'live' || (d.status === 'up' && d.rec === 'stream')) {
+      c.hasLink = true; c.linkText = 'Watch the livestream';
+    } else if (d.status === 'up') {
+      c.mutedText = 'Stream link not yet announced';
+    } else if (d.rec === 'yt') {
+      c.hasLink = true; c.linkText = 'Watch the recording'; c.linkSuffix = ' on YouTube';
+    } else {
+      c.mutedText = 'No recording known';
+    }
+    return c;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const list = this.filtered();
+    const byDay = {};
+    list.forEach(d => { (byDay[d.key] = byDay[d.key] || []).push(d); });
+    const todayKey = 20260907;
+    const dark = s.theme === 'dark';
+
+    const anchorP = this.parts(s.anchor);
+    const view = s.view;
+
+    /* ---- toolbar ---- */
+    const nav = dir => e => {
+      e.preventDefault();
+      let k = s.anchor;
+      if (view === 'day') k = this.addDays(k, dir);
+      else if (view === 'week') k = this.addDays(k, 7 * dir);
+      else if (view === 'month') {
+        const p = this.parts(k); let m = p.m + dir, y = p.y;
+        if (m > 12) { m = 1; y++; } if (m < 1) { m = 12; y--; }
+        k = y * 10000 + m * 100 + Math.min(p.d, this.daysIn(y, m));
+      } else { const p = this.parts(k); k = (p.y + dir) * 10000 + p.m * 100 + p.d; }
+      this.setState({ anchor: k });
+    };
+
+    let periodLabel = '';
+    const wkStart = this.weekStart(s.anchor);
+    const wkEnd = this.addDays(wkStart, 6);
+    if (view === 'day') periodLabel = this.fmtShort(s.anchor);
+    else if (view === 'week') {
+      const a = this.parts(wkStart), b = this.parts(wkEnd);
+      periodLabel = a.m === b.m
+        ? a.d + ' – ' + b.d + ' ' + this.MON3[a.m - 1] + ' ' + a.y
+        : a.d + ' ' + this.MON3[a.m - 1] + ' – ' + b.d + ' ' + this.MON3[b.m - 1] + ' ' + b.y;
+    } else if (view === 'month') periodLabel = this.MON[anchorP.m - 1] + ' ' + anchorP.y;
+    else periodLabel = String(anchorP.y);
+
+    const vbtns = ['day', 'week', 'month', 'year'].map(v => ({
+      label: v[0].toUpperCase() + v.slice(1),
+      bg: v === view ? 'var(--live,#d90429)' : 'var(--card,#fff)',
+      fg: v === view ? '#ffffff' : '#141210',
+      onClick: e => { e.preventDefault(); this.setState({ view: v }); }
+    }));
+
+    /* ---- range + empty state ---- */
+    let rangeStart = s.anchor, rangeEnd = s.anchor;
+    if (view === 'week') { rangeStart = wkStart; rangeEnd = wkEnd; }
+    if (view === 'month') { rangeStart = this.monStart(s.anchor); rangeEnd = anchorP.y * 10000 + anchorP.m * 100 + this.daysIn(anchorP.y, anchorP.m); }
+    if (view === 'year') { rangeStart = anchorP.y * 10000 + 101; rangeEnd = anchorP.y * 10000 + 1231; }
+
+    const inRange = list.filter(d => d.key >= rangeStart && d.key <= rangeEnd);
+    const before = list.filter(d => d.key < rangeStart);
+    const after = list.filter(d => d.key > rangeEnd);
+    const jump = (k, v) => e => { e.preventDefault(); this.setState({ anchor: k, view: v }); };
+    const prevD = before.length ? before[before.length - 1] : null;
+    const nextD = after.length ? after[0] : null;
+    let emptyMsg = '';
+    if (view === 'day') emptyMsg = 'No defenses on ' + this.fmtShort(s.anchor);
+    else if (view === 'week') emptyMsg = 'No defenses this week';
+    else if (view === 'month') emptyMsg = 'No defenses in ' + this.MON[anchorP.m - 1] + ' ' + anchorP.y;
+    const empty = {
+      show: view !== 'year' && inRange.length === 0,
+      msg: emptyMsg,
+      prev: prevD ? this.fmtShort(prevD.key) : '',
+      next: nextD ? this.fmtShort(nextD.key) : '',
+      prevGo: prevD ? jump(prevD.key, view) : this.noop,
+      nextGo: nextD ? jump(nextD.key, view) : this.noop
+    };
+
+    /* ---- week ---- */
+    const weekCols = [];
+    for (let i = 0; i < 7; i++) {
+      const k = this.addDays(wkStart, i);
+      weekCols.push({
+        dow: this.DOW3[i],
+        num: this.parts(k).d,
+        isToday: k === todayKey,
+        outline: k === todayKey ? 'var(--accent,#1d4ed8)' : 'transparent',
+        bg: k === todayKey ? 'var(--todaybg,#fdf9ec)' : 'transparent',
+        chips: (byDay[k] || []).map(d => this.chip(d))
+      });
+    }
+
+    /* ---- month ---- */
+    const mStart = this.monStart(s.anchor);
+    const lead = this.dowIdx(mStart);
+    const dim = this.daysIn(anchorP.y, anchorP.m);
+    const weeks = Math.ceil((lead + dim) / 7);
+    const monthCells = [];
+    for (let i = 0; i < weeks * 7; i++) {
+      const k = this.addDays(mStart, i - lead);
+      const p = this.parts(k);
+      const ds = byDay[k] || [];
+      monthCells.push({
+        num: p.d,
+        pad: p.m !== anchorP.m,
+        cellBg: p.m === anchorP.m ? 'transparent' : 'var(--page,#fbfbf9)',
+        numColor: p.m === anchorP.m ? 'var(--ink,#14140f)' : 'var(--muted,#6b6b60)',
+        outline: k === todayKey ? 'var(--accent,#1d4ed8)' : 'transparent',
+        chips: ds.map(d => this.chip(d)),
+        dots: ds.map(d => ({ color: this.color(d.field), opacity: d.status === 'past' ? 0.55 : 1 })),
+        openDay: e => { e.preventDefault(); this.setState({ view: 'day', anchor: k }); }
+      });
+    }
+
+    /* ---- year ---- */
+    const yearMonths = [];
+    for (let m = 1; m <= 12; m++) {
+      const ms = anchorP.y * 10000 + m * 100 + 1;
+      const ld = this.dowIdx(ms);
+      const nd = this.daysIn(anchorP.y, m);
+      const wk = 6;
+      const cells = [];
+      let count = 0;
+      for (let i = 0; i < wk * 7; i++) {
+        const idx = i - ld;
+        if (idx < 0 || idx >= nd) { cells.push({ num: '', bg: 'transparent', fg: 'transparent', cursor: 'default', tip: '', open: this.noop }); continue; }
+        const k = anchorP.y * 10000 + m * 100 + (idx + 1);
+        const n = (byDay[k] || []).length;
+        count += n;
+        const bg = n === 0 ? 'transparent' : n === 1 ? 'var(--s1,#dde5fb)' : n === 2 ? 'var(--s2,#a9bef6)' : 'var(--s3,#1d4ed8)';
+        cells.push({
+          num: idx + 1,
+          bg: bg,
+          fg: n >= 3 ? 'var(--s3fg,#fff)' : n === 0 ? 'var(--muted,#6b6b60)' : 'var(--ink,#14140f)',
+          cursor: n ? 'pointer' : 'default',
+          tip: n ? this.fmtShort(k) + ' — ' + n + (n === 1 ? ' defense' : ' defenses') : '',
+          open: n ? (e => { e.preventDefault(); this.setState({ view: 'day', anchor: k }); }) : this.noop
+        });
+      }
+      yearMonths.push({
+        name: this.MON[m - 1],
+        cells: cells,
+        caption: count + (count === 1 ? ' defense' : ' defenses'),
+        open: e => { e.preventDefault(); this.setState({ view: 'month', anchor: ms }); }
+      });
+    }
+
+    /* ---- centerfold ---- */
+    let cf = null;
+    if (s.cf != null) {
+      const d = this.all()[s.cf];
+      const c = this.card(d);
+      const meta = this.CENTERFOLDS[s.cf];
+      cf = {
+        id: d.id, name: d.name, title: d.title, inst: d.inst, instFull: d.instFull, field: d.field,
+        color: this.color(d.field), live: d.status === 'live', past: d.status === 'past',
+        issue: meta.issue, kicker: meta.kicker, standfirst: meta.standfirst,
+        questions: meta.questions.map((q, i) => ({ n: i + 1, q: q })),
+        facts: [['Institution', d.instFull], ['Discipline', d.field]].concat(meta.facts, [['When', this.fmtLong(d.key) + ', ' + d.time + ' CEST' + (d.instTime ? ' (' + d.instTime + ' local)' : '')]]).map(f => ({ k: f[0], v: f[1] })),
+        dateShort: this.fmtShort(d.key), timeMain: d.time + ' CEST',
+        hasLink: c.hasLink, linkText: c.linkText + (c.linkSuffix ? ' on YouTube' : ''), mutedText: c.mutedText,
+        tuneBg: d.status === 'live' ? 'var(--live,#d90429)' : 'var(--ink,#141210)',
+        tuneFg: d.status === 'live' ? '#ffffff' : 'var(--page,#fbf7ea)',
+        openDetail: this.open(d.id),
+        slotPortrait: 'cf-' + d.id + '-portrait', slotWide: 'cf-' + d.id + '-wide', slotDetail: 'cf-' + d.id + '-detail'
+      };
+    }
+
+    /* ---- detail ---- */
+    let detail = null;
+    if (s.route != null) {
+      const d = this.all()[s.route];
+      const c = this.card(d);
+      detail = {
+        hasCf: !!this.CENTERFOLDS[d.id], openCf: this.openCf(d.id),
+        name: d.name, title: d.title, inst: d.inst, instFull: d.instFull, field: d.field,
+        color: this.color(d.field), live: d.status === 'live',
+        dateLong: this.fmtLong(d.key), timeMain: d.time + ' CEST',
+        timeInstFull: d.instTime ? d.instTime : d.time + ' CEST (same zone)',
+        hasLink: c.hasLink,
+        linkText: c.linkText + (c.linkSuffix ? ' on YouTube' : ''),
+        linkBg: d.status === 'live' ? 'var(--live,#b91c1c)' : 'var(--ink,#14140f)',
+        linkFg: 'var(--page,#fbfbf9)',
+        mutedText: c.mutedText
+      };
+    }
+
+    const liveList = list.filter(d => d.status === 'live');
+    const allD = this.all();
+    const upcoming = allD.filter(d => d.status === 'up').length;
+    const recs = allD.filter(d => d.rec === 'yt').length;
+    const liveOne = allD.find(d => d.status === 'live');
+    const blurbs = [
+      liveOne
+        ? { kicker: 'On air now', text: liveOne.name + ' defends at ' + liveOne.inst + '!', bg: 'var(--live,#d90429)', fg: '#fff' }
+        : { kicker: 'Next up', text: 'See what is coming this week', bg: 'var(--live,#d90429)', fg: '#fff' },
+      { kicker: 'Coming up', text: upcoming + ' defenses you can still catch live', bg: 'var(--yellow,#ffd400)', fg: 'var(--yellowfg,#141210)' },
+      { kicker: 'Catch-up', text: recs + ' recordings ready to watch', bg: 'var(--cyan,#00a9e0)', fg: '#fff' }
+    ];
+
+    return {
+      blurbs: blurbs,
+      themeVars: this.theme(),
+      themeLabel: dark ? 'Light' : 'Dark',
+      toggleTheme: e => { e.preventDefault(); this.setState({ theme: dark ? 'light' : 'dark' }); },
+      navCal: e => { e.preventDefault(); this.setState({ route: null, cf: null, recOnly: false, view: 'month', anchor: todayKey }); },
+      navRec: e => { e.preventDefault(); this.setState({ route: null, cf: null, recOnly: true, view: 'year', anchor: 20260101 }); },
+      navCalBg: s.recOnly ? 'transparent' : 'var(--yellow,#ffd400)',
+      navCalFg: s.recOnly ? 'var(--page,#fbf7ea)' : 'var(--yellowfg,#141210)',
+      navRecBg: s.recOnly ? 'var(--yellow,#ffd400)' : 'transparent',
+      navRecFg: s.recOnly ? 'var(--yellowfg,#141210)' : 'var(--page,#fbf7ea)',
+      isDetail: s.route != null,
+      isCenterfold: s.cf != null,
+      isCalendar: s.route == null && s.cf == null,
+      detail: detail || {},
+      cf: cf || {},
+      back: e => { e.preventDefault(); this.setState({ route: null, cf: null }); },
+      backLabel: view === 'day' ? 'day view' : view === 'week' ? 'week view' : view === 'month' ? 'month view' : 'year view',
+      noop: this.noop,
+
+      disc: s.disc,
+      inst: s.inst,
+      recOnly: !!s.recOnly,
+      discOpts: ['All disciplines'].concat(Object.keys(this.FIELDS).filter(f => this.ROWS.some(r => r[7] === f))),
+      instOpts: ['All institutions'].concat(Array.from(new Set(this.ROWS.map(r => r[5]))).sort()),
+      setDisc: e => this.setState({ disc: e.target.value }),
+      setInst: e => this.setState({ inst: e.target.value }),
+      setRec: e => this.setState({ recOnly: e.target.checked }),
+
+      legend: Object.keys(this.FIELDS).filter(f => this.ROWS.some(r => r[7] === f)).map(f => ({ name: f, color: this.color(f) })),
+
+      hasLive: liveList.length > 0,
+      liveCards: liveList.map(d => this.card(d)),
+
+      periodLabel: periodLabel,
+      goPrev: nav(-1), goNext: nav(1),
+      goToday: e => { e.preventDefault(); this.setState({ anchor: todayKey }); },
+      vbtns: vbtns,
+      empty: empty,
+
+      isDay: view === 'day' && inRange.length > 0,
+      dayHeading: this.fmtLong(s.anchor),
+      dayCards: (byDay[s.anchor] || []).map(d => this.card(d)),
+
+      isWeekWide: view === 'week' && !s.narrow,
+      isWeekNarrow: view === 'week' && s.narrow,
+      weekCols: weekCols,
+
+      isMonthWide: view === 'month' && !s.narrow,
+      isMonthNarrow: view === 'month' && s.narrow,
+      monthCells: monthCells,
+      dowNames: this.DOW3,
+      dowInitials: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+
+      isYear: view === 'year',
+      yearMonths: yearMonths,
+      yearCols: s.narrow ? 2 : 4
+    };
+  }
+}
+</script>
+</body>
+</html>

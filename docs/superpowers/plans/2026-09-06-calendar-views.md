@@ -4,7 +4,7 @@
 
 **Goal:** Replace the day-grouped defense list on the PhD TV home page with a hand-built calendar that has day, week, month and year views, one page for past and future, filters that apply to every view, chips coloured by OECD major field, and a TV-guide look across the site.
 
-**Architecture:** One hydrated React island, `DefenseCalendar`, owns the view, the anchor date and the filters, all mirrored in the URL query. Pure date helpers on `YYYY-MM-DD` strings live in `src/lib/calendar.ts`; one component per view renders from a `Map<date, Defense[]>` grouped in the viewer's zone after mount and in each institution's zone at build time. The archive page becomes a redirect; the stylesheet is rewritten around self-hosted Barlow Condensed and IBM Plex Sans.
+**Architecture:** One hydrated React island, `DefenseCalendar`, renders everything below the masthead (headline strip, intro, filters, live strip, toolbar, active view) and owns the view, the anchor date and the filters, all mirrored in the URL query. Pure date helpers on `YYYY-MM-DD` strings live in `src/lib/calendar.ts`; one component per view renders from a `Map<date, Defense[]>` grouped in the viewer's zone after mount and in each institution's zone at build time. The archive page becomes a redirect; the stylesheet is rewritten as a print TV-guide system (newsprint cream, rich black, warm red, process yellow and cyan, hard corners) around self-hosted Archivo Black, Oswald and Archivo.
 
 **Tech Stack:** TypeScript, React 19 (`react-dom/server` at build, hydration in the browser), Vite 8 for the two island bundles and the stylesheet, Zod schemas, Vitest + React Testing Library under jsdom, Node 24. No calendar or date library.
 
@@ -19,8 +19,8 @@
 - Test commands: `/opt/homebrew/bin/npx vitest run <file>` for one file, `/opt/homebrew/bin/npm test` for all, `/opt/homebrew/bin/npm run typecheck` for `tsc --noEmit`. Both `npm test` and `npm run typecheck` must pass at the end of every task; `test/build/bundle.test.ts` runs a real build and takes about a minute.
 - Weeks start on Monday. Dates in the calendar helpers are `YYYY-MM-DD` strings with no zone.
 - Query parameters, exactly: `view` (`day` | `week` | `month` | `year`, default `month`), `date` (`YYYY-MM-DD`, default today), `discipline`, `university`, `recorded=1`. Parameters at their default are omitted.
-- Copy, verbatim: lede "Public defenses streamed for free by universities, shown in your local time. Browse by day, week, month or year. Past dates show where a recording exists. Subscribe to the calendar feed to get them in your own calendar."; empty states "No defenses on Tue 16 Sep 2026.", "No defenses this week.", "No defenses in September 2026."; jump links "Previous: Fri 28 Aug 2026" and "Next: Mon 7 Sep 2026"; captions "3 defenses" / "1 defense"; navigation "Calendar" and "Recordings"; tagline "The defense listings".
-- Fonts: `@fontsource/barlow-condensed` and `@fontsource/ibm-plex-sans`, both `^5.3.0`, imported from `src/styles/global.css`. No request to Google Fonts.
+- Copy, verbatim: lede "Public defenses streamed for free by universities, shown in your local time. Browse by day, week, month or year. Past dates show where a recording exists. Subscribe to the calendar feed to get them in your own calendar."; empty states "No defenses on Tue 16 Sep 2026.", "No defenses this week.", "No defenses in September 2026."; jump links "Previous: Fri 28 Aug 2026" and "Next: Mon 7 Sep 2026"; captions "3 defenses" / "1 defense"; navigation "Calendar" and "Recordings"; kicker "Special issue"; page title "PhD defenses you can" with the highlighted ending "watch live"; headline kickers "On air now" / "Next up", "Coming up", "Catch-up" with texts "<candidate> defends at <institution>!", "<candidate> at <institution> on <Tue 15 Sep 2026>", "No defenses scheduled yet", "<n> defenses you can still catch live", "<n> recordings ready to watch" (singular "1 defense", "1 recording"); starburst "On air!". There is no tagline.
+- Fonts: `@fontsource/archivo-black`, `@fontsource/oswald` and `@fontsource/archivo`, all `^5.3.0`, imported from `src/styles/global.css`. No request to Google Fonts. Archivo Black is the display face (masthead, page title, headline strip, period label), Oswald the condensed face (times, labels, badges, buttons, reversed bars), Archivo the body face.
 - Major-field colours (light / dark): natural-sciences #2563eb / #93b4ff; engineering-and-technology #ea580c / #fdba74; medical-and-health-sciences #e11d48 / #fda4af; agricultural-and-veterinary-sciences #16a34a / #86efac; social-sciences #7c3aed / #c4b5fd; humanities-and-the-arts #0d9488 / #5eead4.
 - Commit after every task with the trailer lines
   `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>` and
@@ -38,17 +38,19 @@
 | `src/site/data.ts` | Passes a discipline index (name and major) to the view model; returns `majors`. |
 | `src/components/DefenseCalendar.tsx` (new) | The island: state, URL, filters, live strip, toolbar, active view. |
 | `src/components/CalendarToolbar.tsx` (new) | Previous, next, Today, period label, view switcher. |
+| `src/components/HeadlineStrip.tsx` (new) | The three spot-colour headlines under the masthead: on air or next up, defenses still to come, recordings to catch up on. |
+| `src/components/PageIntro.tsx` | Gains the slanted kicker and a highlighted ending of the title. |
 | `src/components/EmptyPeriod.tsx` (new) | Empty-period sentence with Previous and Next jump buttons. |
 | `src/components/DayView.tsx`, `WeekView.tsx`, `MonthView.tsx`, `YearView.tsx` (new) | One view each, pure functions of the grouped defenses, the anchor date, today, the clock and the zone. |
 | `src/components/DefenseChip.tsx` (new) | Compact link for week and month cells; exports `fieldClass` and `chipTooltip`. |
 | `src/components/MajorFieldLegend.tsx` (new) | Colour legend. |
 | `src/components/DefenseCard.tsx` | Full card; action chosen by phase; institution badge. |
 | `src/components/FilterBar.tsx` | Recordings checkbox always shown; labels wrapped for styling. |
-| `src/components/Shell.tsx` | Masthead, tagline, Calendar and Recordings navigation. |
+| `src/components/Shell.tsx` | Full-width masthead band (red logo box with yellow offset shadow), Calendar and Recordings navigation with the current page marked, inner columns. |
 | `src/components/DefensePage.tsx` | Adds the institution badge; live pill class renamed. |
 | `src/site/client/calendar.tsx` (new) | Browser entry; replaces `client/schedule.tsx`. |
 | `src/site/assets.ts`, `src/site/document.tsx`, `src/site/pages.tsx`, `src/site/generate.ts` | Island registry, `refresh` meta, home page with majors, archive redirect. |
-| `src/styles/global.css` | Rewritten: fonts, tokens, every component's rules, responsive rules. |
+| `src/styles/global.css` | Rewritten: fonts, the spot-ink tokens, every component's rules, responsive rules. |
 | `src/components/DefenseSchedule.tsx`, `src/site/client/schedule.tsx`, `test/components/DefenseSchedule.test.tsx` | Deleted in Task 8. |
 
 ---
@@ -811,19 +813,21 @@ EOF
 
 ---
 
-### Task 3: Fonts, tokens, the full stylesheet and the masthead
+### Task 3: Fonts, tokens, the full stylesheet, the masthead band and the page intro
 
 **Files:**
 - Modify: `package.json` (dependencies)
 - Rewrite: `src/styles/global.css`
-- Modify: `src/components/Shell.tsx`
+- Modify: `src/components/Shell.tsx`, `src/components/PageIntro.tsx`
+- Modify: `src/site/pages.tsx` (column wrappers and the `current` prop only; the page functions themselves change in Task 8)
 - Modify: `test/site/pages.test.tsx:67` (the archive nav assertion)
-- Test: `test/components/Shell.test.tsx`
+- Test: `test/components/Shell.test.tsx`, `test/components/PageIntro.test.tsx`
 
 **Interfaces:**
-- Produces: the class names every later task uses. Layout: `shell`, `masthead`, `masthead-brand`, `masthead-logo`, `masthead-tv`, `masthead-tagline`, `masthead-nav`, `shell-main`, `shell-footer`, `page-intro`, `page-title`, `page-lede`, `label`, `link-button`. Calendar: `calendar`, `filters`, `filters-check`, `legend`, `legend-swatch`, `live`, `live-heading`, `card`, `card-body`, `card-head`, `card-time`, `card-candidate`, `card-title`, `card-meta`, `card-action`, `badge-inst`, `pill-live`, `tag-now`, `toolbar`, `toolbar-nav`, `toolbar-step`, `toolbar-period`, `toolbar-views`, `empty-period`, `empty-period-links`, `day-view`, `day-heading`, `week`, `week-day`, `week-day-today`, `week-head`, `week-head-dow`, `week-head-num`, `week-chips`, `month`, `month-dows`, `month-dow`, `month-grid`, `month-cell`, `month-cell-pad`, `month-cell-today`, `month-num`, `month-chips`, `month-dots`, `month-dot`, `month-dot-past`, `month-open`, `chip`, `chip-week`, `chip-month`, `chip-past`, `chip-head`, `chip-time`, `chip-name`, `chip-foot`, `year`, `year-month`, `year-month-name`, `year-grid`, `year-dow`, `year-day`, `year-day-pad`, `year-day-0` … `year-day-3`, `year-caption`, `field-<major slug>`, `field-none`. Defense page: `defense-kicker` plus the existing `defense-*` classes; `redirect`.
+- Produces: `Shell({ base?, current?: 'calendar', children })` — the masthead band with the Calendar link marked `aria-current="page"` when `current` is `'calendar'`; `PageIntro({ kicker?, title, highlight?, lede? })` — `highlight` is the trailing part of the title rendered in the live red. Every page's content sits inside a `<div className="column">` (max 64rem, centred); the header band and footer are full width with their own inner column.
+- Produces the class names every later task uses. Layout: `shell`, `column`, `masthead-band`, `masthead`, `masthead-logo`, `masthead-nav`, `shell-main`, `shell-footer`, `page-intro`, `kicker`, `page-title`, `page-title-accent`, `page-lede`, `label`, `link-button`, `redirect`. Headline strip (Task 5): `headlines-band`, `headlines`, `headline`, `headline-live`, `headline-upcoming`, `headline-recordings`, `headline-kicker`, `headline-text`. Calendar: `calendar`, `filters`, `filters-check`, `legend`, `legend-swatch`, `live`, `live-heading`, `starburst`, `card`, `card-body`, `card-head`, `card-time`, `card-candidate`, `card-title`, `card-meta`, `card-action`, `badge-inst`, `pill-live`, `tag-now`, `tag-centerfold` (reserved for the sibling centerfold branch; nothing on this branch uses it), `toolbar`, `toolbar-nav`, `toolbar-step`, `toolbar-period`, `toolbar-views`, `empty-period`, `empty-period-links`, `day-view`, `day-heading`, `week`, `week-day`, `week-day-today`, `week-head`, `week-head-dow`, `week-head-num`, `week-chips`, `month`, `month-dows`, `month-dow`, `month-grid`, `month-cell`, `month-cell-pad`, `month-cell-today`, `month-num`, `month-chips`, `month-dots`, `month-dot`, `month-dot-past`, `month-open`, `chip`, `chip-week`, `chip-month`, `chip-past`, `chip-head`, `chip-time`, `chip-name`, `chip-foot`, `year`, `year-month`, `year-month-name`, `year-grid`, `year-dow`, `year-day`, `year-day-pad`, `year-day-0` … `year-day-3`, `year-caption`, `field-<major slug>`, `field-none`. Defense page: `defense-kicker` plus the existing `defense-*` classes.
 
-- [ ] **Step 1: Write the failing Shell test**
+- [ ] **Step 1: Write the failing tests**
 
 Replace `test/components/Shell.test.tsx` with:
 
@@ -834,43 +838,57 @@ import { render, screen } from '@testing-library/react';
 import { Shell } from '../../src/components/Shell.tsx';
 
 describe('Shell', () => {
-  it('renders the masthead, the tagline and its children', () => {
+  it('renders the masthead and its children', () => {
     render(
       <Shell>
         <p>hello from the page</p>
       </Shell>,
     );
     expect(screen.getByRole('link', { name: 'PhD TV' }).getAttribute('href')).toBe('/');
-    expect(screen.getByText('The defense listings')).toBeTruthy();
     expect(screen.getByText('hello from the page')).toBeTruthy();
   });
 
-  it('links to the calendar and to the recordings under the base path', () => {
+  it('links to the calendar and to the recordings under the base path and marks the current page', () => {
     render(
-      <Shell base="/phdtv/">
+      <Shell base="/phdtv/" current="calendar">
         <p />
       </Shell>,
     );
-    expect(screen.getByRole('link', { name: 'Calendar' }).getAttribute('href')).toBe('/phdtv/');
-    expect(screen.getByRole('link', { name: 'Recordings' }).getAttribute('href')).toBe('/phdtv/?view=year&recorded=1');
+    const calendar = screen.getByRole('link', { name: 'Calendar' });
+    expect(calendar.getAttribute('href')).toBe('/phdtv/');
+    expect(calendar.getAttribute('aria-current')).toBe('page');
+    const recordings = screen.getByRole('link', { name: 'Recordings' });
+    expect(recordings.getAttribute('href')).toBe('/phdtv/?view=year&recorded=1');
+    expect(recordings.getAttribute('aria-current')).toBeNull();
     expect(screen.queryByRole('link', { name: 'Archive' })).toBeNull();
   });
 });
+```
+
+Add to `test/components/PageIntro.test.tsx`, inside the describe:
+
+```tsx
+  it('renders a kicker and a highlighted ending of the title', () => {
+    render(<PageIntro kicker="Special issue" title="PhD defenses you can" highlight="watch live" />);
+    expect(screen.getByRole('heading', { level: 1, name: 'PhD defenses you can watch live' })).toBeTruthy();
+    expect(screen.getByText('Special issue').className).toBe('kicker');
+    expect(screen.getByText('watch live').className).toBe('page-title-accent');
+  });
 ```
 
 In `test/site/pages.test.tsx`, change the last assertion of the defense page test from `expect(html).toContain('href="/phdtv/archive/"');` to `expect(html).toContain('href="/phdtv/?view=year&amp;recorded=1"');`.
 
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `/opt/homebrew/bin/npx vitest run test/components/Shell.test.tsx test/site/pages.test.tsx`
-Expected: FAIL — no "The defense listings", no link named "Calendar", the defense page still links to `/phdtv/archive/`.
+Run: `/opt/homebrew/bin/npx vitest run test/components/Shell.test.tsx test/components/PageIntro.test.tsx test/site/pages.test.tsx`
+Expected: FAIL — no link named "Calendar", `current` and `kicker` are unknown props, the defense page still links to `/phdtv/archive/`.
 
 - [ ] **Step 3: Install the fonts**
 
-Run: `/opt/homebrew/bin/npm install @fontsource/barlow-condensed@^5.3.0 @fontsource/ibm-plex-sans@^5.3.0`
-Expected: both appear under `dependencies` in `package.json`; `ls node_modules/@fontsource/barlow-condensed/400.css` exists.
+Run: `/opt/homebrew/bin/npm install @fontsource/archivo-black@^5.3.0 @fontsource/oswald@^5.3.0 @fontsource/archivo@^5.3.0`
+Expected: the three packages appear under `dependencies` in `package.json`; `ls node_modules/@fontsource/oswald/600.css` exists.
 
-- [ ] **Step 4: Write the masthead**
+- [ ] **Step 4: Write the masthead band and the page intro**
 
 Replace `src/components/Shell.tsx` with:
 
@@ -881,66 +899,115 @@ import { withBase } from '../lib/paths.ts';
 interface ShellProps {
   /** Site base path, e.g. /phdtv/. */
   base?: string;
+  /** Which navigation entry is the current page, if any. */
+  current?: 'calendar';
   children: ReactNode;
 }
 
-/** Layout chrome shared by every page: the masthead with navigation, main content, footer. */
-export function Shell({ base = '/', children }: ShellProps) {
+/**
+ * Layout chrome shared by every page. The masthead band and the footer are full width with an inner column;
+ * pages put their own content inside a <div className="column">.
+ */
+export function Shell({ base = '/', current, children }: ShellProps) {
   const home = withBase(base, '/');
   return (
     <div className="shell">
-      <header className="masthead">
-        <div className="masthead-brand">
+      <header className="masthead-band">
+        <div className="column masthead">
           <a className="masthead-logo" href={home} aria-label="PhD TV">
-            PhD<span className="masthead-tv">TV</span>
+            PhD TV
           </a>
-          <span className="masthead-tagline">The defense listings</span>
+          <nav className="masthead-nav" aria-label="Main">
+            <a href={home} aria-current={current === 'calendar' ? 'page' : undefined}>
+              Calendar
+            </a>
+            <a href={`${home}?view=year&recorded=1`}>Recordings</a>
+          </nav>
         </div>
-        <nav className="masthead-nav" aria-label="Main">
-          <a href={home}>Calendar</a>
-          <a href={`${home}?view=year&recorded=1`}>Recordings</a>
-        </nav>
       </header>
       <main className="shell-main">{children}</main>
       <footer className="shell-footer">
-        <p>
-          Public PhD defenses that are streamed for free. Listings come from university agendas and
-          from people who submit them.
-        </p>
+        <div className="column">
+          <p>
+            Public PhD defenses that are streamed for free. Listings come from university agendas and
+            from people who submit them.
+          </p>
+        </div>
       </footer>
     </div>
   );
 }
 ```
 
+Replace `src/components/PageIntro.tsx` with:
+
+```tsx
+interface PageIntroProps {
+  /** Small slanted label above the title, e.g. "Special issue". */
+  kicker?: string;
+  title: string;
+  /** Trailing words of the title set in the live red, e.g. "watch live". */
+  highlight?: string;
+  lede?: string;
+}
+
+export function PageIntro({ kicker, title, highlight, lede }: PageIntroProps) {
+  return (
+    <header className="page-intro">
+      {kicker && <span className="kicker">{kicker}</span>}
+      <h1 className="page-title">
+        {title}
+        {highlight && (
+          <>
+            {' '}
+            <span className="page-title-accent">{highlight}</span>
+          </>
+        )}
+      </h1>
+      {lede && <p className="page-lede">{lede}</p>}
+    </header>
+  );
+}
+```
+
+In `src/site/pages.tsx`, wrap each page's content in a column and mark the home page current. In `homePage`, change `<Shell base={base}>` to `<Shell base={base} current="calendar">` and wrap the `<PageIntro …/>` and the `<Island …/>` together in `<div className="column">…</div>`. In `archivePage`, wrap its `<PageIntro …/>` and `<Island …/>` in `<div className="column">…</div>`. In `defensePage`, wrap the `<Island …/>` in `<div className="column">…</div>`.
+
 - [ ] **Step 5: Rewrite the stylesheet**
 
 Replace `src/styles/global.css` with:
 
 ```css
-@import '@fontsource/barlow-condensed/400.css';
-@import '@fontsource/barlow-condensed/500.css';
-@import '@fontsource/barlow-condensed/600.css';
-@import '@fontsource/barlow-condensed/700.css';
-@import '@fontsource/ibm-plex-sans/400.css';
-@import '@fontsource/ibm-plex-sans/600.css';
-@import '@fontsource/ibm-plex-sans/700.css';
+@import '@fontsource/archivo-black/400.css';
+@import '@fontsource/oswald/400.css';
+@import '@fontsource/oswald/500.css';
+@import '@fontsource/oswald/600.css';
+@import '@fontsource/oswald/700.css';
+@import '@fontsource/archivo/400.css';
+@import '@fontsource/archivo/600.css';
+@import '@fontsource/archivo/700.css';
 
-/* tokens */
+/* tokens: the "spot ink" palette of a print TV guide */
 :root {
   color-scheme: light dark;
-  --page: #fbfbf9;
+  --page: #fbf7ea;
   --card: #ffffff;
   --chip: #ffffff;
-  --ink: #14140f;
-  --muted: #6b6b60;
-  --rule: #c9c9bf;
-  --hairline: #e4e4db;
+  --ink: #141210;
+  --muted: #615a4f;
+  --rule: #141210;
+  --hairline: #cdc4b0;
   --accent: #1d4ed8;
-  --live: #b91c1c;
-  --today: #fdf9ec;
-  --shade-1: #dde5fb;
-  --shade-2: #a9bef6;
+  --live: #d90429;
+  --yellow: #ffd400;
+  --yellow-fg: #141210;
+  --cyan: #00a9e0;
+  --today: #fff3b0;
+  --bar: #141210;
+  --bar-fg: #ffd400;
+  --band: #141210;
+  --band-fg: #ffffff;
+  --shade-1: #d3defb;
+  --shade-2: #8aa8f2;
   --shade-3: #1d4ed8;
   --shade-3-fg: #ffffff;
   --field-natural-sciences: #2563eb;
@@ -949,25 +1016,33 @@ Replace `src/styles/global.css` with:
   --field-agricultural-and-veterinary-sciences: #16a34a;
   --field-social-sciences: #7c3aed;
   --field-humanities-and-the-arts: #0d9488;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --condensed: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --sans: 'Archivo', Helvetica, Arial, sans-serif;
+  --condensed: 'Oswald', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --display: 'Archivo Black', 'Arial Black', Impact, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --page: #121210;
-    --card: #1b1b18;
-    --chip: #232320;
-    --ink: #f2f2ec;
-    --muted: #a3a398;
-    --rule: #3d3d35;
-    --hairline: #2a2a25;
+    --page: #15130f;
+    --card: #201d17;
+    --chip: #282418;
+    --ink: #f5eed9;
+    --muted: #b0a58f;
+    --rule: #7a705d;
+    --hairline: #3d3729;
     --accent: #93b4ff;
-    --live: #f87171;
-    --today: #1f1e19;
-    --shade-1: #22304d;
-    --shade-2: #3a5586;
+    --live: #ff4d5a;
+    --yellow: #ffd83d;
+    --yellow-fg: #15130f;
+    --cyan: #3cc7f5;
+    --today: #3d3410;
+    --bar: #ffd83d;
+    --bar-fg: #15130f;
+    --band: #0b0a08;
+    --band-fg: #f5eed9;
+    --shade-1: #2a3247;
+    --shade-2: #4c5c85;
     --shade-3: #93b4ff;
-    --shade-3-fg: #10121a;
+    --shade-3-fg: #15130f;
     --field-natural-sciences: #93b4ff;
     --field-engineering-and-technology: #fdba74;
     --field-medical-and-health-sciences: #fda4af;
@@ -984,67 +1059,80 @@ Replace `src/styles/global.css` with:
 .field-humanities-and-the-arts { --field: var(--field-humanities-and-the-arts); }
 .field-none { --field: var(--muted); }
 
-/* base */
+/* base: hard corners, flat inks, borders instead of whitespace */
 * { box-sizing: border-box; }
-html { font: 16px/1.5 var(--sans); color: var(--ink); background: var(--page); -webkit-font-smoothing: antialiased; }
+html { font: 15px/1.5 var(--sans); color: var(--ink); background: var(--page); -webkit-font-smoothing: antialiased; }
 body { margin: 0; }
 a { color: var(--accent); }
 a:hover { color: var(--live); }
-button, select, input { font: inherit; }
+button, select, input { font: inherit; border-radius: 0; }
 abbr[title] { text-decoration: none; }
-.label { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; color: var(--muted); }
+.column { max-width: 64rem; margin: 0 auto; padding: 0 1.25rem; }
+.label { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; color: var(--muted); }
 .link-button { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; }
 .link-button:hover { color: var(--live); }
 
-/* shell */
-.shell { max-width: 64rem; margin: 0 auto; padding: 0 1.25rem 5rem; }
-.masthead { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: .9rem 0 .6rem; border-bottom: 2px solid var(--ink); }
-.masthead-brand { display: flex; align-items: baseline; gap: .6rem; }
-.masthead-logo { font-family: var(--condensed); font-weight: 700; font-size: 2.75rem; line-height: .9; letter-spacing: -.01em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
-.masthead-logo:hover { color: var(--ink); }
-.masthead-tv { color: var(--live); }
-.masthead-tagline { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .14em; font-size: .7rem; color: var(--muted); }
-.masthead-nav { display: flex; gap: 1.1rem; padding-bottom: .35rem; }
-.masthead-nav a { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em; font-size: .9rem; font-weight: 600; color: var(--muted); text-decoration: none; }
-.masthead-nav a:hover { color: var(--ink); }
-.shell-main { padding-top: 1.75rem; }
-.shell-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
+/* masthead band */
+.masthead-band { background: var(--band); color: var(--band-fg); }
+.masthead { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: .9rem; padding-bottom: .9rem; }
+.masthead-logo { display: inline-block; background: var(--live); color: #fff; font-family: var(--display); font-size: 3.4rem; line-height: 1; letter-spacing: -.03em; text-transform: uppercase; padding: .5rem 1rem .375rem; text-decoration: none; box-shadow: 6px 6px 0 var(--yellow); }
+.masthead-logo:hover { color: #fff; }
+.masthead-nav { display: flex; gap: .6rem; padding-bottom: .4rem; }
+.masthead-nav a { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .14em; font-size: .8rem; font-weight: 600; color: var(--yellow); text-decoration: none; padding: .25rem .75rem; }
+.masthead-nav a:hover { color: var(--band-fg); }
+.masthead-nav a[aria-current="page"] { background: var(--yellow); color: var(--yellow-fg); }
+.shell-main { padding-top: 0; }
+.shell-footer { margin-top: 3rem; border-top: 6px double var(--ink); padding: 1rem 0; color: var(--muted); font-size: .85rem; }
+
+/* headline strip: three spot-colour blurbs continuing the band */
+.headlines-band { background: var(--band); }
+.headlines { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; margin: 0 auto; }
+.headline { padding: .6rem .9rem .75rem; }
+.headline-live { background: var(--live); color: #fff; }
+.headline-upcoming { background: var(--yellow); color: var(--yellow-fg); }
+.headline-recordings { background: var(--cyan); color: #fff; }
+.headline-kicker { display: block; font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .2em; font-size: .62rem; opacity: .85; }
+.headline-text { display: block; margin-top: .15rem; font-family: var(--display); font-size: 1.05rem; line-height: 1.15; text-transform: uppercase; letter-spacing: -.01em; text-wrap: pretty; }
 
 /* page intro */
-.page-intro { padding-bottom: 1.4rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--hairline); }
-.page-title { font-family: var(--condensed); font-weight: 700; font-size: 2.6rem; line-height: 1.02; margin: 0; text-wrap: pretty; }
-.page-lede { color: var(--muted); margin: .6rem 0 0; max-width: 44rem; font-size: .95rem; text-wrap: pretty; }
+.page-intro { padding: 1.6rem 0 1.25rem; margin-bottom: 1.25rem; border-bottom: 2px solid var(--ink); }
+.kicker { display: inline-block; background: var(--yellow); color: var(--yellow-fg); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .2em; font-size: .7rem; padding: .2rem .5rem; transform: rotate(-1.5deg); }
+.page-title { font-family: var(--display); font-weight: 400; font-size: 2.75rem; line-height: .98; letter-spacing: -.02em; text-transform: uppercase; margin: .6rem 0 0; text-wrap: pretty; }
+.page-title-accent { color: var(--live); }
+.page-lede { color: var(--muted); margin: .6rem 0 0; max-width: 44rem; font-size: .92rem; line-height: 1.6; text-wrap: pretty; }
 .redirect { padding: 3rem 0; }
 
 /* filters and legend */
-.filters { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: flex-end; margin: 0 0 .75rem; padding: .9rem 1rem; border: 1px solid var(--rule); background: var(--card); }
+.filters { display: flex; flex-wrap: wrap; gap: 1rem 1.25rem; align-items: flex-end; margin: 0 0 .75rem; padding: .9rem 1rem; border: 2px solid var(--ink); background: var(--card); }
 .filters label { display: flex; flex-direction: column; gap: .3rem; flex: 1 1 12rem; min-width: 12rem; }
-.filters select { appearance: none; color: var(--ink); background: var(--page); border: 1px solid var(--rule); padding: .45rem .55rem; font-size: .9rem; width: 100%; }
+.filters select { appearance: none; color: var(--ink); background: var(--page); border: 1px solid var(--ink); padding: .45rem .55rem; font-size: .9rem; width: 100%; }
 .filters .filters-check { flex-direction: row; align-items: center; gap: .5rem; flex: 0 0 auto; min-width: 0; padding-bottom: .4rem; font-size: .9rem; cursor: pointer; }
-.filters-check input { width: 1rem; height: 1rem; accent-color: var(--accent); }
-.legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin: 0 0 1.25rem; padding: 0; list-style: none; font-size: .78rem; color: var(--muted); }
+.filters-check input { width: 1rem; height: 1rem; accent-color: var(--live); }
+.legend { display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; margin: 0 0 1.25rem; padding: 0; list-style: none; font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; color: var(--ink); }
 .legend li { display: flex; align-items: center; gap: .4rem; }
-.legend-swatch { width: 10px; height: 10px; background: var(--field, var(--muted)); display: inline-block; }
+.legend-swatch { width: 10px; height: 10px; border: 1px solid var(--ink); background: var(--field, var(--muted)); display: inline-block; }
 
-/* badges and pills */
+/* badges, pills and the starburst */
 .badge-inst { display: inline-block; border: 1px solid var(--ink); color: var(--ink); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; line-height: 1.4; padding: 0 .35rem; }
 .pill-live { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; line-height: 1.5; padding: 0 .4rem; }
 .tag-now { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .6rem; line-height: 1.5; padding: 0 .3rem; margin-left: .3rem; vertical-align: middle; }
+.tag-centerfold { display: inline-block; background: var(--yellow); color: var(--yellow-fg); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .73rem; line-height: 1.5; padding: 0 .4rem; text-decoration: none; }
+.starburst { position: absolute; top: -1rem; right: 1.1rem; width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; text-align: center; background: var(--yellow); color: var(--live); font-family: var(--display); font-size: .8rem; line-height: 1; text-transform: uppercase; transform: rotate(8deg); clip-path: polygon(50% 0%, 61% 12%, 76% 6%, 80% 21%, 95% 25%, 89% 39%, 100% 50%, 89% 61%, 95% 75%, 80% 79%, 76% 94%, 61% 88%, 50% 100%, 39% 88%, 24% 94%, 20% 79%, 5% 75%, 11% 61%, 0% 50%, 11% 39%, 5% 25%, 20% 21%, 24% 6%, 39% 12%); }
 
 /* live strip and cards */
-.live { border: 2px solid var(--live); margin: 0 0 1.4rem; }
-.live-heading { display: flex; align-items: center; gap: .5rem; margin: 0; padding: .5rem .9rem; border-bottom: 1px solid var(--live); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .14em; font-size: .9rem; color: var(--live); }
-.live-heading::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--live); }
-.live .card { margin: 0 .9rem; }
+.live { position: relative; border: 2px solid var(--live); background: var(--card); margin: 0 0 1.4rem; }
+.live-heading { display: flex; align-items: center; gap: .5rem; margin: 0; padding: .4rem .9rem; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .2em; font-size: .85rem; }
+.live-heading::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #fff; }
+.live .card { margin: 0 .9rem; border-top: 1px solid var(--hairline); }
 .live .card:first-of-type { border-top: 0; }
-.card { padding: 1rem 0; border-top: 1px solid var(--rule); }
+.card { padding: 1rem 0; border-top: 1px solid var(--hairline); }
 .card-body { border-left: 3px solid var(--field, var(--muted)); padding-left: .75rem; }
 .card-past .card-body { opacity: .82; }
 .card-head { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
 .card-time { font-family: var(--condensed); font-weight: 700; font-size: 1.5rem; letter-spacing: .01em; }
 .card-time .time-viewer { font-family: var(--sans); font-weight: 400; font-size: .8rem; color: var(--muted); }
-.card-candidate { margin: .35rem 0 0; font-size: 1.05rem; font-weight: 700; }
-.card-candidate a { color: var(--accent); text-decoration: none; }
+.card-candidate { margin: .35rem 0 0; font-size: 1.1rem; font-weight: 700; }
+.card-candidate a { color: var(--ink); text-decoration: none; }
 .card-candidate a:hover { color: var(--live); text-decoration: underline; }
 .card-title { margin: .15rem 0 0; font-size: .9rem; line-height: 1.45; text-wrap: pretty; }
 .card-meta { margin: .2rem 0 0; color: var(--muted); font-size: .82rem; }
@@ -1055,37 +1143,38 @@ abbr[title] { text-decoration: none; }
 .time-viewer { color: var(--muted); }
 
 /* toolbar and empty periods */
-.toolbar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin: 0 0 1.1rem; padding: .6rem 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin: 0 0 1.1rem; padding: .6rem .75rem; background: var(--yellow); color: var(--yellow-fg); border: 2px solid var(--ink); }
 .toolbar-nav { display: flex; gap: .35rem; }
-.toolbar button { cursor: pointer; background: var(--card); color: var(--ink); border: 1px solid var(--rule); height: 1.9rem; padding: 0 .75rem; font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; font-weight: 600; }
+.toolbar button { cursor: pointer; background: #fff; color: #141210; border: 2px solid #141210; height: 1.9rem; padding: 0 .75rem; font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; font-weight: 600; }
 .toolbar button.toolbar-step { width: 2rem; padding: 0; font-size: 1rem; letter-spacing: 0; }
-.toolbar-period { font-family: var(--condensed); font-weight: 700; font-size: 1.6rem; letter-spacing: .01em; text-transform: uppercase; }
+.toolbar-period { font-family: var(--display); font-size: 1.5rem; letter-spacing: -.01em; text-transform: uppercase; }
 .toolbar-views { display: flex; }
-.toolbar-views button { margin-left: -1px; }
-.toolbar-views button[aria-pressed="true"] { background: var(--ink); color: var(--page); border-color: var(--ink); }
-.empty-period { margin: 0 0 1.1rem; padding: 1.1rem; border: 1px solid var(--rule); background: var(--card); }
-.empty-period p { margin: 0; font-family: var(--condensed); font-weight: 700; font-size: 1.35rem; }
+.toolbar-views button { margin-left: -2px; }
+.toolbar-views button[aria-pressed="true"] { background: var(--live); color: #fff; }
+.empty-period { margin: 0 0 1.1rem; padding: 1.1rem; border: 2px solid var(--ink); background: var(--card); }
+.empty-period p { margin: 0; font-family: var(--display); font-size: 1.25rem; line-height: 1.1; text-transform: uppercase; letter-spacing: -.01em; }
 .empty-period-links { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: .5rem; font-size: .9rem; }
 
-/* day view */
-.day-heading { font-family: var(--condensed); font-weight: 700; font-size: 1.75rem; text-transform: uppercase; letter-spacing: .02em; margin: 0 0 .25rem; }
+/* day view: a reversed bar marks the day break */
+.day-view { border-top: 6px double var(--ink); padding-top: .6rem; }
+.day-heading { margin: 0; padding: .4rem .6rem; background: var(--bar); color: var(--bar-fg); font-family: var(--condensed); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .16em; }
+.day-view .card { border-top: 0; border-bottom: 1px solid var(--hairline); }
 
 /* week view */
 .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-left: 1px solid var(--hairline); }
 .week-day { border-right: 1px solid var(--hairline); min-height: 14rem; }
 .week-day-today { background: var(--today); }
-.week-head { padding: .4rem .4rem .35rem; background: var(--ink); color: var(--page); }
+.week-head { padding: .4rem .4rem .35rem; background: var(--bar); color: var(--bar-fg); }
 .week-day-today .week-head { box-shadow: inset 0 0 0 2px var(--accent); }
-.week-head-dow { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; opacity: .8; }
+.week-head-dow { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; opacity: .75; }
 .week-head-num { font-family: var(--condensed); font-weight: 700; font-size: 1.25rem; line-height: 1; }
 .week-chips { padding: .4rem; display: flex; flex-direction: column; gap: .4rem; }
 
 /* month view */
-.month { border-top: 1px solid var(--rule); border-left: 1px solid var(--hairline); }
+.month { border-top: 2px solid var(--ink); border-left: 1px solid var(--hairline); }
 .month-dows, .month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.month-dow { padding: .3rem .4rem; background: var(--ink); color: var(--page); border-right: 1px solid var(--hairline); font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; }
+.month-dow { padding: .3rem .4rem; background: var(--bar); color: var(--bar-fg); border-right: 1px solid var(--hairline); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; }
 .month-cell { position: relative; border-right: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); min-height: 6.1rem; padding: .3rem; }
-.month-cell-pad { background: var(--page); }
 .month-cell-pad .month-num { color: var(--muted); }
 .month-cell-today { box-shadow: inset 0 0 0 2px var(--accent); background: var(--today); }
 .month-num { font-family: var(--condensed); font-weight: 700; font-size: .95rem; line-height: 1; }
@@ -1094,19 +1183,19 @@ abbr[title] { text-decoration: none; }
 
 /* chips */
 .chip { display: block; text-decoration: none; color: inherit; background: var(--chip); border: 1px solid var(--hairline); border-left: 3px solid var(--field, var(--muted)); padding: .3rem .4rem; }
-.chip:hover { color: inherit; border-color: var(--rule); border-left-color: var(--field, var(--muted)); }
+.chip:hover { color: inherit; border-color: var(--ink); border-left-color: var(--field, var(--muted)); }
 .chip-past { opacity: .55; }
 .chip-head { display: flex; align-items: baseline; justify-content: space-between; gap: .35rem; }
 .chip-time { font-family: var(--condensed); font-weight: 700; font-size: 1rem; line-height: 1.1; }
 .chip-name { display: block; font-size: .78rem; font-weight: 600; line-height: 1.25; margin-top: .15rem; }
 .chip-foot { display: block; margin-top: .25rem; }
-.chip .badge-inst { border-color: var(--rule); color: var(--muted); font-size: .62rem; }
+.chip .badge-inst { font-size: .62rem; }
 .chip-month .chip-time { font-size: .85rem; }
 .chip-month .chip-name { font-size: .72rem; }
 
 /* year view */
 .year { display: grid; gap: 1.4rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.year-month-name { cursor: pointer; background: none; border: 0; border-bottom: 1px solid var(--ink); padding: 0 0 .2rem; width: 100%; text-align: left; color: var(--ink); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: .95rem; }
+.year-month-name { cursor: pointer; background: none; border: 0; border-bottom: 1px solid var(--ink); padding: 0 0 .2rem; width: 100%; text-align: left; color: var(--ink); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 1rem; }
 .year-grid { margin-top: .4rem; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
 .year-dow { text-align: center; font-family: var(--condensed); font-size: .62rem; color: var(--muted); }
 .year-day { border: 0; padding: 0; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: transparent; color: var(--muted); font-family: var(--condensed); font-size: .7rem; line-height: 1; }
@@ -1117,21 +1206,25 @@ abbr[title] { text-decoration: none; }
 .year-caption { margin: .4rem 0 0; font-size: .78rem; color: var(--muted); }
 
 /* defense page */
+.defense { padding-top: 1.75rem; }
 .defense-head { margin-bottom: 1.25rem; }
 .defense-kicker { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin: 0 0 .5rem; }
 .defense-candidate { margin: 0; color: var(--muted); font-size: 1rem; }
-.defense-title { margin: .25rem 0 .5rem; font-family: var(--condensed); font-weight: 700; font-size: 2.1rem; line-height: 1.05; text-wrap: pretty; }
-.defense-facts { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.25rem; margin: 0 0 1.25rem; padding: .9rem 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-.defense-facts dt { color: var(--muted); font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; padding-top: .15rem; }
+.defense-title { margin: .25rem 0 .5rem; font-family: var(--display); font-weight: 400; font-size: 1.9rem; line-height: 1.05; letter-spacing: -.02em; text-transform: uppercase; text-wrap: pretty; }
+.defense-facts { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.25rem; margin: 0 0 1.25rem; padding: .9rem 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--hairline); }
+.defense-facts dt { color: var(--muted); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; font-size: .75rem; padding-top: .15rem; }
 .defense-facts dd { margin: 0; }
 .defense-actions { margin: 0 0 1.5rem; }
-.defense-abstract h2 { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; color: var(--muted); border-bottom: 1px solid var(--ink); padding-bottom: .25rem; margin: 1.5rem 0 .5rem; }
+.defense-abstract h2 { margin: 1.5rem 0 .5rem; padding: .35rem .6rem; background: var(--bar); color: var(--bar-fg); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .16em; font-size: .8rem; }
 .attribution { color: var(--muted); font-size: .9rem; border-top: 1px solid var(--hairline); padding-top: 1rem; }
 
 /* narrow screens */
 @media (max-width: 40rem) {
-  .masthead-logo { font-size: 2.2rem; }
-  .toolbar-period { font-size: 1.3rem; }
+  .masthead-logo { font-size: 2.4rem; box-shadow: 4px 4px 0 var(--yellow); }
+  .headlines { grid-template-columns: minmax(0, 1fr); }
+  .page-title { font-size: 2.1rem; }
+  .toolbar-period { font-size: 1.15rem; }
+  .starburst { width: 64px; height: 64px; font-size: .68rem; }
   .week { display: block; border-left: 0; }
   .week-day { display: flex; gap: .75rem; min-height: 0; border-right: 0; border-top: 1px solid var(--hairline); padding: .5rem 0; }
   .week-head { min-width: 3.25rem; height: fit-content; }
@@ -1148,15 +1241,15 @@ abbr[title] { text-decoration: none; }
 
 - [ ] **Step 6: Run the tests, the type check and the real build**
 
-Run: `/opt/homebrew/bin/npx vitest run test/components/Shell.test.tsx test/site/pages.test.tsx && /opt/homebrew/bin/npm run typecheck && /opt/homebrew/bin/npm run build`
+Run: `/opt/homebrew/bin/npx vitest run test/components/Shell.test.tsx test/components/PageIntro.test.tsx test/site/pages.test.tsx && /opt/homebrew/bin/npm run typecheck && /opt/homebrew/bin/npm run build`
 Expected: PASS; the build writes `dist/` and `ls dist/assets | grep -c woff2` is greater than 0 (the font files were bundled).
 
 - [ ] **Step 7: Commit**
 
 ```bash
-git add package.json package-lock.json src/styles/global.css src/components/Shell.tsx test/components/Shell.test.tsx test/site/pages.test.tsx
+git add package.json package-lock.json src/styles/global.css src/components/Shell.tsx src/components/PageIntro.tsx src/site/pages.tsx test/components/Shell.test.tsx test/components/PageIntro.test.tsx test/site/pages.test.tsx
 git commit -m "$(cat <<'EOF'
-Restyle the site as a TV guide: self-hosted condensed type, tokens and masthead
+Restyle the site as a print TV guide: spot-ink tokens, self-hosted type, masthead band
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01L3dwE9qGamJauAbeBCZ3U2
@@ -1515,15 +1608,15 @@ EOF
 
 ---
 
-### Task 5: Toolbar and empty period
+### Task 5: Toolbar, empty period and headline strip
 
 **Files:**
-- Create: `src/components/CalendarToolbar.tsx`, `src/components/EmptyPeriod.tsx`
-- Test: `test/components/CalendarToolbar.test.tsx`, `test/components/EmptyPeriod.test.tsx`
+- Create: `src/components/CalendarToolbar.tsx`, `src/components/EmptyPeriod.tsx`, `src/components/HeadlineStrip.tsx`
+- Test: `test/components/CalendarToolbar.test.tsx`, `test/components/EmptyPeriod.test.tsx`, `test/components/HeadlineStrip.test.tsx`
 
 **Interfaces:**
-- Consumes: `CALENDAR_VIEWS`, `periodLabel`, `shift`, `periodBounds`, `nearestDate`, `formatDateString`, `CalendarState`, `CalendarView`, `DateString` from `src/lib/calendar.ts`.
-- Produces: `CalendarToolbar({ state, today, onChange: (next: CalendarState) => void })`; `EmptyPeriod({ state, dates: Iterable<DateString>, onJump: (date: DateString) => void })`; `emptyMessage(state): string`.
+- Consumes: `CALENDAR_VIEWS`, `periodLabel`, `shift`, `periodBounds`, `nearestDate`, `formatDateString`, `CalendarState`, `CalendarView`, `DateString` from `src/lib/calendar.ts`; `defensePhase`, `institutionLabel`, `Defense` from `src/lib/defense.ts`; `formatDate` from `src/lib/time.ts`.
+- Produces: `CalendarToolbar({ state, today, onChange: (next: CalendarState) => void })`; `EmptyPeriod({ state, dates: Iterable<DateString>, onJump: (date: DateString) => void })`; `emptyMessage(state): string`; `headlines(defenses, now, zone: string | null): Headline[]` with `interface Headline { kind: 'live' | 'upcoming' | 'recordings'; kicker: string; text: string }`; `HeadlineStrip({ headlines: Headline[] })`, presentational, so a page without the viewer's clock can render it from headlines computed at build time.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -1601,9 +1694,55 @@ describe('EmptyPeriod', () => {
 });
 ```
 
+Create `test/components/HeadlineStrip.test.tsx`:
+
+```tsx
+// @vitest-environment jsdom
+import { render, screen, within } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { headlines, HeadlineStrip } from '../../src/components/HeadlineStrip.tsx';
+import { fixtureDefense, type DefenseOverrides } from '../fixtures/defenses.ts';
+
+const NOW = new Date('2026-09-07T11:20:00Z');
+const at = (key: string, candidate: string, startsAt: string, extra: DefenseOverrides = {}) =>
+  fixtureDefense({ key, candidate, startsAt, endsAt: new Date(new Date(startsAt).getTime() + 3_600_000).toISOString(), timezone: 'Europe/Amsterdam', durationMinutes: 60, ...extra });
+const live = at('live', 'Live Person', '2026-09-07T13:00:00+02:00', { university: { slug: 'kth', name: 'KTH Royal Institute of Technology', shortName: 'KTH', country: 'SE' } });
+const wed = at('wed', 'Wed Person', '2026-09-09T09:00:00+02:00');
+const october = at('october', 'October Person', '2026-10-02T12:15:00+02:00');
+const past = at('past', 'Past Person', '2026-07-01T11:00:00+02:00', { recording: { url: 'https://youtu.be/rec', platform: 'youtube' } });
+
+describe('headlines', () => {
+  it('leads with the defense on air, then counts what is still to come and what can be caught up', () => {
+    expect(headlines([live, wed, october, past], NOW, 'Europe/Amsterdam')).toEqual([
+      { kind: 'live', kicker: 'On air now', text: 'Live Person defends at KTH!' },
+      { kind: 'upcoming', kicker: 'Coming up', text: '2 defenses you can still catch live' },
+      { kind: 'recordings', kicker: 'Catch-up', text: '1 recording ready to watch' },
+    ]);
+  });
+
+  it('names the next defense when nothing is on air, with singular counts', () => {
+    expect(headlines([wed, past], NOW, 'Europe/Amsterdam')[0]).toEqual({ kind: 'live', kicker: 'Next up', text: 'Wed Person at TU Delft on Wed 9 Sep 2026' });
+    expect(headlines([wed, past], NOW, 'Europe/Amsterdam')[1]?.text).toBe('1 defense you can still catch live');
+  });
+
+  it('copes with an empty dataset', () => {
+    expect(headlines([], NOW, null).map((h) => h.text)).toEqual(['No defenses scheduled yet', '0 defenses you can still catch live', '0 recordings ready to watch']);
+  });
+});
+
+describe('HeadlineStrip', () => {
+  it('renders the three headlines as a list with one class per kind', () => {
+    render(<HeadlineStrip headlines={headlines([live, wed, past], NOW, 'Europe/Amsterdam')} />);
+    const items = within(screen.getByRole('list', { name: 'Headlines' })).getAllByRole('listitem');
+    expect(items.map((i) => i.className)).toEqual(['headline headline-live', 'headline headline-upcoming', 'headline headline-recordings']);
+    expect(items[0]?.textContent).toBe('On air nowLive Person defends at KTH!');
+  });
+});
+```
+
 - [ ] **Step 2: Run the tests to verify they fail**
 
-Run: `/opt/homebrew/bin/npx vitest run test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx`
+Run: `/opt/homebrew/bin/npx vitest run test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx test/components/HeadlineStrip.test.tsx`
 Expected: FAIL — modules not found.
 
 - [ ] **Step 3: Write the toolbar**
@@ -1705,17 +1844,77 @@ export function EmptyPeriod({ state, dates, onJump }: EmptyPeriodProps) {
 }
 ```
 
-- [ ] **Step 5: Run the tests**
+- [ ] **Step 5: Write the headline strip**
 
-Run: `/opt/homebrew/bin/npx vitest run test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx && /opt/homebrew/bin/npm run typecheck`
+Create `src/components/HeadlineStrip.tsx`:
+
+```tsx
+import { defensePhase, institutionLabel, type Defense } from '../lib/defense.ts';
+import { formatDate } from '../lib/time.ts';
+
+interface HeadlineStripProps {
+  /** From headlines(): the calendar island computes them from the viewer's clock, other pages at build time. */
+  headlines: Headline[];
+}
+
+export interface Headline {
+  kind: 'live' | 'upcoming' | 'recordings';
+  kicker: string;
+  text: string;
+}
+
+const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
+/**
+ * What is on air (or next), how many defenses are still to come, how many recordings exist. Describes the
+ * whole listing, never the filtered view; `zone` is the viewer's zone once known, for the date of the next defense.
+ */
+export function headlines(defenses: Defense[], now: Date, zone: string | null): Headline[] {
+  const byStart = [...defenses].sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
+  const live = byStart.find((d) => defensePhase(d, now) === 'live');
+  const upcoming = byStart.filter((d) => defensePhase(d, now) === 'upcoming');
+  const recordings = defenses.filter((d) => d.recording !== undefined && 'url' in d.recording).length;
+  const next = upcoming[0];
+  const first: Headline = live
+    ? { kind: 'live', kicker: 'On air now', text: `${live.candidate} defends at ${institutionLabel(live)}!` }
+    : next
+      ? { kind: 'live', kicker: 'Next up', text: `${next.candidate} at ${institutionLabel(next)} on ${formatDate(next.startsAt, zone ?? next.timezone)}` }
+      : { kind: 'live', kicker: 'Next up', text: 'No defenses scheduled yet' };
+  return [
+    first,
+    { kind: 'upcoming', kicker: 'Coming up', text: `${count(upcoming.length, 'defense', 'defenses')} you can still catch live` },
+    { kind: 'recordings', kicker: 'Catch-up', text: `${count(recordings, 'recording', 'recordings')} ready to watch` },
+  ];
+}
+
+/** The three spot-colour blurbs under the masthead, continuing its band across the full width. */
+export function HeadlineStrip({ headlines: items }: HeadlineStripProps) {
+  return (
+    <div className="headlines-band">
+      <ul className="column headlines" aria-label="Headlines">
+        {items.map((h) => (
+          <li key={h.kind} className={`headline headline-${h.kind}`}>
+            <span className="headline-kicker">{h.kicker}</span>
+            <span className="headline-text">{h.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+- [ ] **Step 6: Run the tests**
+
+Run: `/opt/homebrew/bin/npx vitest run test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx test/components/HeadlineStrip.test.tsx && /opt/homebrew/bin/npm run typecheck`
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/components/CalendarToolbar.tsx src/components/EmptyPeriod.tsx test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx
+git add src/components/CalendarToolbar.tsx src/components/EmptyPeriod.tsx src/components/HeadlineStrip.tsx test/components/CalendarToolbar.test.tsx test/components/EmptyPeriod.test.tsx test/components/HeadlineStrip.test.tsx
 git commit -m "$(cat <<'EOF'
-Add the calendar toolbar and the empty-period jump links
+Add the calendar toolbar, the empty-period jump links and the headline strip
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01L3dwE9qGamJauAbeBCZ3U2
@@ -1759,7 +1958,7 @@ describe('DayView', () => {
 
   it('gives each card the phase for the clock', () => {
     render(<DayView date="2026-09-15" defenses={[first, second]} now={NOW} zone={null} />);
-    expect(screen.getByText('No recording known')).toBeTruthy();
+    expect(screen.getByText('Recording not yet available')).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Watch the livestream' })).toBeTruthy();
   });
 });
@@ -2177,8 +2376,8 @@ EOF
 - Test: `test/components/DefenseCalendar.test.tsx`
 
 **Interfaces:**
-- Consumes: everything from Tasks 1 to 7.
-- Produces: `DefenseCalendar({ defenses, majors, renderedAt? })` and `DefenseCalendarProps`; `ISLAND_ENTRIES.DefenseCalendar`; `Document` prop `refresh?: string`; `homePage({ defenses, majors }, context)`; `archiveRedirectPage(context)`.
+- Consumes: everything from Tasks 1 to 7, including `headlines(defenses, now, zone)` with `HeadlineStrip({ headlines })` and `PageIntro({ kicker, title, highlight, lede })`.
+- Produces: `DefenseCalendar({ defenses, majors, renderedAt? })` and `DefenseCalendarProps`; `ISLAND_ENTRIES.DefenseCalendar`; `Document` prop `refresh?: string`; `homePage({ defenses, majors }, context)`; `archiveRedirectPage(context)`. The island renders the whole home page below the masthead: the headline strip (full width), then a column with the page intro, the filters, the legend, the live strip, the toolbar and the active view.
 
 - [ ] **Step 1: Write the failing island test**
 
@@ -2246,6 +2445,18 @@ describe('DefenseCalendar: month view on today', () => {
     expect(legend.map((l) => l.textContent)).toEqual(['Natural sciences', 'Engineering and technology', 'Social sciences']);
   });
 
+  it('heads the page with the headline strip and the intro', () => {
+    renderCalendar();
+    const items = within(screen.getByRole('list', { name: 'Headlines' })).getAllByRole('listitem');
+    expect(items.map((i) => i.textContent)).toEqual([
+      'On air nowLive Person defends at KTH!',
+      'Coming up3 defenses you can still catch live',
+      'Catch-up1 recording ready to watch',
+    ]);
+    expect(screen.getByRole('heading', { level: 1, name: 'PhD defenses you can watch live' })).toBeTruthy();
+    expect(screen.getByText('Special issue')).toBeTruthy();
+  });
+
   it('places chips on the viewer-local date as links to the defense pages', () => {
     renderCalendar();
     expect(screen.getByRole('link', { name: /Wed Person/ }).getAttribute('href')).toBe('/defenses/wed/');
@@ -2253,11 +2464,12 @@ describe('DefenseCalendar: month view on today', () => {
     expect(screen.queryByRole('link', { name: /Past Person/ })).toBeNull();
   });
 
-  it('surfaces the live defense above the toolbar with its stream link', () => {
+  it('surfaces the live defense above the toolbar with its stream link and the starburst', () => {
     renderCalendar();
     const strip = screen.getByRole('region', { name: 'Live now' });
     expect(within(strip).getByText('Live Person')).toBeTruthy();
     expect(within(strip).getByRole('link', { name: 'Watch the livestream' })).toBeTruthy();
+    expect(strip.querySelector('.starburst')?.textContent).toBe('On air!');
   });
 });
 
@@ -2285,12 +2497,13 @@ describe('DefenseCalendar: navigation and the URL', () => {
     expect(window.location.search).toBe('');
   });
 
-  it('applies the filters to every view, including the year counts', () => {
+  it('applies the filters to every view, including the year counts, but not to the headlines', () => {
     renderCalendar();
     fireEvent.click(screen.getByRole('button', { name: 'Year' }));
     fireEvent.change(screen.getByLabelText('Discipline'), { target: { value: 'law' } });
     expect(within(screen.getByRole('region', { name: 'September 2026' })).getByText('1 defense')).toBeTruthy();
     expect(window.location.search).toBe('?discipline=law&view=year');
+    expect(screen.getByText('3 defenses you can still catch live')).toBeTruthy();
   });
 
   it('offers jump links in an empty week and lands on the next defense', () => {
@@ -2328,6 +2541,7 @@ describe('DefenseCalendar: build-time markup and hydration', () => {
   it('renders the build month with institution-local dates and hydrates without mismatch', () => {
     const html = renderToString(<DefenseCalendar defenses={ALL} majors={MAJORS} renderedAt={RENDERED_AT} />);
     expect(html).toContain('September 2026');
+    expect(html).toContain('Special issue');
     expect(html).toContain('Midnight Person');
     const container = document.createElement('div');
     container.innerHTML = html;
@@ -2376,8 +2590,10 @@ import { DayView } from './DayView.tsx';
 import { DefenseCard } from './DefenseCard.tsx';
 import { EmptyPeriod } from './EmptyPeriod.tsx';
 import { FilterBar } from './FilterBar.tsx';
+import { HeadlineStrip, headlines } from './HeadlineStrip.tsx';
 import { MajorFieldLegend, type MajorField } from './MajorFieldLegend.tsx';
 import { MonthView } from './MonthView.tsx';
+import { PageIntro } from './PageIntro.tsx';
 import { useViewerClock } from './useViewerClock.ts';
 import { WeekView } from './WeekView.tsx';
 import { YearView } from './YearView.tsx';
@@ -2391,6 +2607,9 @@ export interface DefenseCalendarProps {
   renderedAt?: string;
 }
 
+const LEDE =
+  'Public defenses streamed for free by universities, shown in your local time. Browse by day, week, month or year. Past dates show where a recording exists. Subscribe to the calendar feed to get them in your own calendar.';
+
 function uniqueOptions(defenses: Defense[], pick: (d: Defense) => Array<{ slug: string; name: string }>) {
   const seen = new Map<string, string>();
   for (const d of defenses) for (const o of pick(d)) seen.set(o.slug, o.name);
@@ -2398,8 +2617,9 @@ function uniqueOptions(defenses: Defense[], pick: (d: Defense) => Array<{ slug: 
 }
 
 /**
- * The calendar island. Before mount (the build output and the no-script fallback) it shows the build month
- * with each defense on its institution-local date; after mount the viewer's clock, zone and URL take over.
+ * The home page below the masthead. Before mount (the build output and the no-script fallback) it shows the
+ * build month with each defense on its institution-local date; after mount the viewer's clock, zone and URL
+ * take over.
  */
 export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalendarProps) {
   const clock = useViewerClock();
@@ -2446,38 +2666,47 @@ export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalenda
 
   return (
     <div className="calendar">
-      <FilterBar filters={filters} disciplines={disciplines} universities={universities} onChange={updateFilters} />
-      <MajorFieldLegend majors={presentMajors} />
-      {live.length > 0 && (
-        <section className="live" aria-label="Live now">
-          <h2 className="live-heading">Live now</h2>
-          {live.map((d) => (
-            <DefenseCard key={d.key} defense={d} phase="live" now={now} viewerZone={zone} />
-          ))}
-        </section>
-      )}
-      <CalendarToolbar state={calendar} today={today} onChange={updateCalendar} />
-      {isEmpty && <EmptyPeriod state={calendar} dates={groups.keys()} onJump={(date) => updateCalendar({ ...calendar, date })} />}
-      {calendar.view === 'day' && !isEmpty && <DayView date={calendar.date} defenses={groups.get(calendar.date) ?? []} now={now} zone={zone} />}
-      {calendar.view === 'week' && <WeekView date={calendar.date} groups={groups} today={today} now={now} zone={zone} />}
-      {calendar.view === 'month' && (
-        <MonthView
-          date={calendar.date}
-          groups={groups}
-          today={today}
-          now={now}
-          zone={zone}
-          onOpenDay={(date) => updateCalendar({ view: 'day', date })}
-        />
-      )}
-      {calendar.view === 'year' && (
-        <YearView
-          date={calendar.date}
-          groups={groups}
-          onOpenMonth={(date) => updateCalendar({ view: 'month', date })}
-          onOpenDay={(date) => updateCalendar({ view: 'day', date })}
-        />
-      )}
+      <HeadlineStrip headlines={headlines(defenses, now, zone)} />
+      <div className="column">
+        <PageIntro kicker="Special issue" title="PhD defenses you can" highlight="watch live" lede={LEDE} />
+        <FilterBar filters={filters} disciplines={disciplines} universities={universities} onChange={updateFilters} />
+        <MajorFieldLegend majors={presentMajors} />
+        {live.length > 0 && (
+          <section className="live" aria-label="Live now">
+            <h2 className="live-heading">Live now</h2>
+            <span className="starburst" aria-hidden="true">
+              On air!
+            </span>
+            {live.map((d) => (
+              <DefenseCard key={d.key} defense={d} phase="live" now={now} viewerZone={zone} />
+            ))}
+          </section>
+        )}
+        <CalendarToolbar state={calendar} today={today} onChange={updateCalendar} />
+        {isEmpty && <EmptyPeriod state={calendar} dates={groups.keys()} onJump={(date) => updateCalendar({ ...calendar, date })} />}
+        {calendar.view === 'day' && !isEmpty && (
+          <DayView date={calendar.date} defenses={groups.get(calendar.date) ?? []} now={now} zone={zone} />
+        )}
+        {calendar.view === 'week' && <WeekView date={calendar.date} groups={groups} today={today} now={now} zone={zone} />}
+        {calendar.view === 'month' && (
+          <MonthView
+            date={calendar.date}
+            groups={groups}
+            today={today}
+            now={now}
+            zone={zone}
+            onOpenDay={(date) => updateCalendar({ view: 'day', date })}
+          />
+        )}
+        {calendar.view === 'year' && (
+          <YearView
+            date={calendar.date}
+            groups={groups}
+            onOpenMonth={(date) => updateCalendar({ view: 'month', date })}
+            onOpenDay={(date) => updateCalendar({ view: 'day', date })}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -2524,7 +2753,6 @@ import { renderToString } from 'react-dom/server';
 import { DefenseCalendar } from '../components/DefenseCalendar.tsx';
 import { DefensePage } from '../components/DefensePage.tsx';
 import type { MajorField } from '../components/MajorFieldLegend.tsx';
-import { PageIntro } from '../components/PageIntro.tsx';
 import { Shell } from '../components/Shell.tsx';
 import type { Defense } from '../lib/defense.ts';
 import { withBase } from '../lib/paths.ts';
@@ -2550,6 +2778,7 @@ export function renderDocument(element: ReactElement): string {
   return `<!doctype html>\n${renderToString(element)}\n`;
 }
 
+/** The home page: the calendar island renders everything below the masthead, headline strip included. */
 export function homePage({ defenses, majors }: HomeData, { base, manifest, renderedAt }: PageContext): string {
   return renderDocument(
     <Document
@@ -2558,11 +2787,7 @@ export function homePage({ defenses, majors }: HomeData, { base, manifest, rende
       base={base}
       assets={pageAssets(manifest, base, ['DefenseCalendar'])}
     >
-      <Shell base={base}>
-        <PageIntro
-          title="PhD defenses you can watch live"
-          lede="Public defenses streamed for free by universities, shown in your local time. Browse by day, week, month or year. Past dates show where a recording exists. Subscribe to the calendar feed to get them in your own calendar."
-        />
+      <Shell base={base} current="calendar">
         <Island name="DefenseCalendar" component={DefenseCalendar} props={{ defenses, majors, renderedAt }} />
       </Shell>
     </Document>,
@@ -2575,9 +2800,11 @@ export function archiveRedirectPage({ base, manifest }: PageContext): string {
   return renderDocument(
     <Document title="PhD TV: archive" base={base} assets={pageAssets(manifest, base, [])} refresh={target}>
       <Shell base={base}>
-        <p className="redirect">
-          The archive is now part of the calendar. <a href={target}>Continue to past defenses with recordings.</a>
-        </p>
+        <div className="column">
+          <p className="redirect">
+            The archive is now part of the calendar. <a href={target}>Continue to past defenses with recordings.</a>
+          </p>
+        </div>
       </Shell>
     </Document>,
   );
@@ -2592,7 +2819,9 @@ export function defensePage(defense: Defense, { base, manifest, renderedAt }: Pa
       assets={pageAssets(manifest, base, ['DefensePage'])}
     >
       <Shell base={base}>
-        <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
+        <div className="column">
+          <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
+        </div>
       </Shell>
     </Document>,
   );
@@ -2620,7 +2849,10 @@ In `test/site/pages.test.tsx`: in `manifest`, replace the `schedule.tsx` key wit
   it('home page: calendar island with the majors, its script, and the static month as fallback', () => {
     const html = homePage({ defenses: [defense], majors: [{ slug: 'natural-sciences', name: 'Natural sciences' }] }, ctx);
     expect(html).toContain('<title>PhD TV</title>');
-    expect(html).toContain('PhD defenses you can watch live');
+    expect(html).toContain('Special issue');
+    expect(html).toContain('PhD defenses you can');
+    expect(html).toContain('watch live');
+    expect(html).toContain('you can still catch live');
     expect(html).toContain('data-island="DefenseCalendar"');
     expect(html).toContain('"majors":[{"slug":"natural-sciences"');
     expect(html).toContain('"renderedAt":"2026-09-05T12:00:00.000Z"');
@@ -2628,6 +2860,7 @@ In `test/site/pages.test.tsx`: in `manifest`, replace the `schedule.tsx` key wit
     expect(html).toContain('href="/phdtv/assets/global-abc.css"');
     expect(html).toContain('September 2026');
     expect(html).toContain('Jane Doe');
+    expect(html).toContain('aria-current="page"');
   });
 
   it('archive page: a redirect to the year view with the recordings filter', () => {
@@ -2692,6 +2925,13 @@ In `test/components/DefensePage.test.tsx`, add inside the first test after the `
 
 ```tsx
     expect(screen.getByText('TU Delft')).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'University announcement' }).getAttribute('href')).toBe('https://www.tudelft.nl/en/events/2026/phd-defence-jane-doe');
+```
+
+and inside the `says how a listing arrived when there is no source url` test, after its existing assertion:
+
+```tsx
+    expect(screen.queryByRole('link', { name: 'University announcement' })).toBeNull();
 ```
 
 and add a test:
@@ -2710,11 +2950,21 @@ with `vi` added to the vitest import.
 - [ ] **Step 2: Run the test to verify it fails**
 
 Run: `/opt/homebrew/bin/npx vitest run test/components/DefensePage.test.tsx`
-Expected: FAIL — no "TU Delft" text; the live badge has class `badge-live`.
+Expected: FAIL — no "TU Delft" text; no link named "University announcement"; the live badge has class `badge-live`.
 
-- [ ] **Step 3: Add the badge**
+- [ ] **Step 3: Add the badge and the announcement link**
 
-In `src/components/DefensePage.tsx`, add `institutionLabel` to the import from `../lib/defense.ts` (`import { institutionLabel, type Defense } from '../lib/defense.ts';`) and replace the `<header className="defense-head">` block with:
+In `src/components/DefensePage.tsx`, add `institutionLabel` to the import from `../lib/defense.ts` (`import { institutionLabel, type Defense } from '../lib/defense.ts';`), then add a link to the page where the university announced the defense at the end of the `<p className="defense-actions">` block, after the thesis link:
+
+```tsx
+        {defense.source.url && (
+          <a className="action action-secondary" href={defense.source.url}>
+            University announcement
+          </a>
+        )}
+```
+
+and replace the `<header className="defense-head">` block with:
 
 ```tsx
       <header className="defense-head">
@@ -2766,7 +3016,7 @@ EOF
 kill %1
 ```
 
-Open each image (the Read tool shows images) and check against `blog/media/2026-09-06-01-calendar-views-designed/`: black weekday bars, condensed masthead with red TV, colour-striped chips, six-row mini-months with aligned captions, the phone month as dots. Note: headless Chrome will not open a window narrower than about 500px, which is why the phone capture goes through an iframe. Fix any CSS that is off, rerun the captures, and copy the final images into `blog/media/2026-09-NN-calendar-views-landed/` as `month.png`, `week.png`, `year.png`, `day.png`, `phone.png`.
+Open each image (the Read tool shows images) and check against the third-round renders in `blog/media/2026-09-06-01-calendar-views-designed/` (`month-v3.png`, `week-v3.png`, `year-v3.png`, `day-v3.png`): a black masthead band with the red "PHD TV" box and its yellow offset shadow, the Calendar link as a yellow box, the three-colour headline strip continuing the band, the slanted yellow "Special issue" kicker over the Archivo Black title with "watch live" in red, a 2px-bordered filter card, the red live strip with the yellow "On air!" starburst on its top right, the yellow toolbar with white buttons and the active view in red, black weekday bars with yellow text, cream cells with hairline borders, today outlined in blue on a pale yellow tint, colour-striped chips, six-row mini-months with aligned captions, the day view under a double rule with a black-and-yellow date bar, and the phone month as dots. Note: headless Chrome will not open a window narrower than about 500px, which is why the phone capture goes through an iframe. Fix any CSS that is off, rerun the captures, and copy the final images into `blog/media/2026-09-NN-calendar-views-landed/` as `month.png`, `week.png`, `year.png`, `day.png`, `phone.png`.
 
 - [ ] **Step 7: Run the whole suite and the build**
 

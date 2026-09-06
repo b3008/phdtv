@@ -58,4 +58,9 @@ describe('universitySchema', () => {
     expect(result.success).toBe(false);
     expect(result.error?.issues[0]?.message).toContain('mascot');
   });
+
+  it('accepts an optional short_name and rejects an empty one', () => {
+    expect(universitySchema.safeParse({ ...valid, short_name: 'TU Delft' }).success).toBe(true);
+    expect(firstIssuePath({ ...valid, short_name: '  ' })).toBe('short_name');
+  });
 });
