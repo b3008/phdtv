@@ -825,7 +825,7 @@ EOF
 
 **Interfaces:**
 - Produces: `Shell({ base?, current?: 'calendar', children })` — the masthead band with the Calendar link marked `aria-current="page"` when `current` is `'calendar'`; `PageIntro({ kicker?, title, highlight?, lede? })` — `highlight` is the trailing part of the title rendered in the live red. Every page's content sits inside a `<div className="column">` (max 64rem, centred); the header band and footer are full width with their own inner column.
-- Produces the class names every later task uses. Layout: `shell`, `column`, `masthead-band`, `masthead`, `masthead-logo`, `masthead-nav`, `shell-main`, `shell-footer`, `page-intro`, `kicker`, `page-title`, `page-title-accent`, `page-lede`, `label`, `link-button`, `redirect`. Headline strip (Task 5): `headlines-band`, `headlines`, `headline`, `headline-live`, `headline-upcoming`, `headline-recordings`, `headline-kicker`, `headline-text`. Calendar: `calendar`, `filters`, `filters-check`, `legend`, `legend-swatch`, `live`, `live-heading`, `starburst`, `card`, `card-body`, `card-head`, `card-time`, `card-candidate`, `card-title`, `card-meta`, `card-action`, `badge-inst`, `pill-live`, `tag-now`, `toolbar`, `toolbar-nav`, `toolbar-step`, `toolbar-period`, `toolbar-views`, `empty-period`, `empty-period-links`, `day-view`, `day-heading`, `week`, `week-day`, `week-day-today`, `week-head`, `week-head-dow`, `week-head-num`, `week-chips`, `month`, `month-dows`, `month-dow`, `month-grid`, `month-cell`, `month-cell-pad`, `month-cell-today`, `month-num`, `month-chips`, `month-dots`, `month-dot`, `month-dot-past`, `month-open`, `chip`, `chip-week`, `chip-month`, `chip-past`, `chip-head`, `chip-time`, `chip-name`, `chip-foot`, `year`, `year-month`, `year-month-name`, `year-grid`, `year-dow`, `year-day`, `year-day-pad`, `year-day-0` … `year-day-3`, `year-caption`, `field-<major slug>`, `field-none`. Defense page: `defense-kicker` plus the existing `defense-*` classes.
+- Produces the class names every later task uses. Layout: `shell`, `column`, `masthead-band`, `masthead`, `masthead-logo`, `masthead-nav`, `shell-main`, `shell-footer`, `page-intro`, `kicker`, `page-title`, `page-title-accent`, `page-lede`, `label`, `link-button`, `redirect`. Headline strip (Task 5): `headlines-band`, `headlines`, `headline`, `headline-live`, `headline-upcoming`, `headline-recordings`, `headline-kicker`, `headline-text`. Calendar: `calendar`, `filters`, `filters-check`, `legend`, `legend-swatch`, `live`, `live-heading`, `starburst`, `card`, `card-body`, `card-head`, `card-time`, `card-candidate`, `card-title`, `card-meta`, `card-action`, `badge-inst`, `pill-live`, `tag-now`, `tag-centerfold` (reserved for the sibling centerfold branch; nothing on this branch uses it), `toolbar`, `toolbar-nav`, `toolbar-step`, `toolbar-period`, `toolbar-views`, `empty-period`, `empty-period-links`, `day-view`, `day-heading`, `week`, `week-day`, `week-day-today`, `week-head`, `week-head-dow`, `week-head-num`, `week-chips`, `month`, `month-dows`, `month-dow`, `month-grid`, `month-cell`, `month-cell-pad`, `month-cell-today`, `month-num`, `month-chips`, `month-dots`, `month-dot`, `month-dot-past`, `month-open`, `chip`, `chip-week`, `chip-month`, `chip-past`, `chip-head`, `chip-time`, `chip-name`, `chip-foot`, `year`, `year-month`, `year-month-name`, `year-grid`, `year-dow`, `year-day`, `year-day-pad`, `year-day-0` … `year-day-3`, `year-caption`, `field-<major slug>`, `field-none`. Defense page: `defense-kicker` plus the existing `defense-*` classes.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -1116,6 +1116,7 @@ abbr[title] { text-decoration: none; }
 .badge-inst { display: inline-block; border: 1px solid var(--ink); color: var(--ink); font-family: var(--condensed); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; font-size: .7rem; line-height: 1.4; padding: 0 .35rem; }
 .pill-live { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .68rem; line-height: 1.5; padding: 0 .4rem; }
 .tag-now { display: inline-block; background: var(--live); color: #fff; font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .6rem; line-height: 1.5; padding: 0 .3rem; margin-left: .3rem; vertical-align: middle; }
+.tag-centerfold { display: inline-block; background: var(--yellow); color: var(--yellow-fg); font-family: var(--condensed); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; font-size: .73rem; line-height: 1.5; padding: 0 .4rem; text-decoration: none; }
 .starburst { position: absolute; top: -1rem; right: 1.1rem; width: 78px; height: 78px; display: flex; align-items: center; justify-content: center; text-align: center; background: var(--yellow); color: var(--live); font-family: var(--display); font-size: .8rem; line-height: 1; text-transform: uppercase; transform: rotate(8deg); clip-path: polygon(50% 0%, 61% 12%, 76% 6%, 80% 21%, 95% 25%, 89% 39%, 100% 50%, 89% 61%, 95% 75%, 80% 79%, 76% 94%, 61% 88%, 50% 100%, 39% 88%, 24% 94%, 20% 79%, 5% 75%, 11% 61%, 0% 50%, 11% 39%, 5% 25%, 20% 21%, 24% 6%, 39% 12%); }
 
 /* live strip and cards */
@@ -1615,7 +1616,7 @@ EOF
 
 **Interfaces:**
 - Consumes: `CALENDAR_VIEWS`, `periodLabel`, `shift`, `periodBounds`, `nearestDate`, `formatDateString`, `CalendarState`, `CalendarView`, `DateString` from `src/lib/calendar.ts`; `defensePhase`, `institutionLabel`, `Defense` from `src/lib/defense.ts`; `formatDate` from `src/lib/time.ts`.
-- Produces: `CalendarToolbar({ state, today, onChange: (next: CalendarState) => void })`; `EmptyPeriod({ state, dates: Iterable<DateString>, onJump: (date: DateString) => void })`; `emptyMessage(state): string`; `HeadlineStrip({ defenses, now, zone: string | null })`; `headlines(defenses, now, zone): Headline[]` with `interface Headline { kind: 'live' | 'upcoming' | 'recordings'; kicker: string; text: string }`.
+- Produces: `CalendarToolbar({ state, today, onChange: (next: CalendarState) => void })`; `EmptyPeriod({ state, dates: Iterable<DateString>, onJump: (date: DateString) => void })`; `emptyMessage(state): string`; `headlines(defenses, now, zone: string | null): Headline[]` with `interface Headline { kind: 'live' | 'upcoming' | 'recordings'; kicker: string; text: string }`; `HeadlineStrip({ headlines: Headline[] })`, presentational, so a page without the viewer's clock can render it from headlines computed at build time.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -1731,7 +1732,7 @@ describe('headlines', () => {
 
 describe('HeadlineStrip', () => {
   it('renders the three headlines as a list with one class per kind', () => {
-    render(<HeadlineStrip defenses={[live, wed, past]} now={NOW} zone="Europe/Amsterdam" />);
+    render(<HeadlineStrip headlines={headlines([live, wed, past], NOW, 'Europe/Amsterdam')} />);
     const items = within(screen.getByRole('list', { name: 'Headlines' })).getAllByRole('listitem');
     expect(items.map((i) => i.className)).toEqual(['headline headline-live', 'headline headline-upcoming', 'headline headline-recordings']);
     expect(items[0]?.textContent).toBe('On air nowLive Person defends at KTH!');
@@ -1852,11 +1853,8 @@ import { defensePhase, institutionLabel, type Defense } from '../lib/defense.ts'
 import { formatDate } from '../lib/time.ts';
 
 interface HeadlineStripProps {
-  /** Every published defense: the headlines describe the whole listing, not the filtered view. */
-  defenses: Defense[];
-  now: Date;
-  /** Viewer zone once known, for the date of the next defense. */
-  zone: string | null;
+  /** From headlines(): the calendar island computes them from the viewer's clock, other pages at build time. */
+  headlines: Headline[];
 }
 
 export interface Headline {
@@ -1867,7 +1865,10 @@ export interface Headline {
 
 const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 
-/** What is on air (or next), how many defenses are still to come, how many recordings exist. */
+/**
+ * What is on air (or next), how many defenses are still to come, how many recordings exist. Describes the
+ * whole listing, never the filtered view; `zone` is the viewer's zone once known, for the date of the next defense.
+ */
 export function headlines(defenses: Defense[], now: Date, zone: string | null): Headline[] {
   const byStart = [...defenses].sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
   const live = byStart.find((d) => defensePhase(d, now) === 'live');
@@ -1887,11 +1888,11 @@ export function headlines(defenses: Defense[], now: Date, zone: string | null): 
 }
 
 /** The three spot-colour blurbs under the masthead, continuing its band across the full width. */
-export function HeadlineStrip({ defenses, now, zone }: HeadlineStripProps) {
+export function HeadlineStrip({ headlines: items }: HeadlineStripProps) {
   return (
     <div className="headlines-band">
       <ul className="column headlines" aria-label="Headlines">
-        {headlines(defenses, now, zone).map((h) => (
+        {items.map((h) => (
           <li key={h.kind} className={`headline headline-${h.kind}`}>
             <span className="headline-kicker">{h.kicker}</span>
             <span className="headline-text">{h.text}</span>
@@ -2375,7 +2376,7 @@ EOF
 - Test: `test/components/DefenseCalendar.test.tsx`
 
 **Interfaces:**
-- Consumes: everything from Tasks 1 to 7, including `HeadlineStrip({ defenses, now, zone })` and `PageIntro({ kicker, title, highlight, lede })`.
+- Consumes: everything from Tasks 1 to 7, including `headlines(defenses, now, zone)` with `HeadlineStrip({ headlines })` and `PageIntro({ kicker, title, highlight, lede })`.
 - Produces: `DefenseCalendar({ defenses, majors, renderedAt? })` and `DefenseCalendarProps`; `ISLAND_ENTRIES.DefenseCalendar`; `Document` prop `refresh?: string`; `homePage({ defenses, majors }, context)`; `archiveRedirectPage(context)`. The island renders the whole home page below the masthead: the headline strip (full width), then a column with the page intro, the filters, the legend, the live strip, the toolbar and the active view.
 
 - [ ] **Step 1: Write the failing island test**
@@ -2589,7 +2590,7 @@ import { DayView } from './DayView.tsx';
 import { DefenseCard } from './DefenseCard.tsx';
 import { EmptyPeriod } from './EmptyPeriod.tsx';
 import { FilterBar } from './FilterBar.tsx';
-import { HeadlineStrip } from './HeadlineStrip.tsx';
+import { HeadlineStrip, headlines } from './HeadlineStrip.tsx';
 import { MajorFieldLegend, type MajorField } from './MajorFieldLegend.tsx';
 import { MonthView } from './MonthView.tsx';
 import { PageIntro } from './PageIntro.tsx';
@@ -2665,7 +2666,7 @@ export function DefenseCalendar({ defenses, majors, renderedAt }: DefenseCalenda
 
   return (
     <div className="calendar">
-      <HeadlineStrip defenses={defenses} now={now} zone={zone} />
+      <HeadlineStrip headlines={headlines(defenses, now, zone)} />
       <div className="column">
         <PageIntro kicker="Special issue" title="PhD defenses you can" highlight="watch live" lede={LEDE} />
         <FilterBar filters={filters} disciplines={disciplines} universities={universities} onChange={updateFilters} />
