@@ -1,11 +1,12 @@
 // One function per page type: a data-bearing header around one component tree.
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
+import { DefenseCalendar } from '../components/DefenseCalendar.tsx';
 import { DefensePage } from '../components/DefensePage.tsx';
-import { DefenseSchedule } from '../components/DefenseSchedule.tsx';
-import { PageIntro } from '../components/PageIntro.tsx';
+import type { MajorField } from '../components/MajorFieldLegend.tsx';
 import { Shell } from '../components/Shell.tsx';
 import type { Defense } from '../lib/defense.ts';
+import { withBase } from '../lib/paths.ts';
 import { pageAssets, type AssetManifest } from './assets.ts';
 import { Document } from './document.tsx';
 import { Island } from './islands.tsx';
@@ -18,47 +19,42 @@ export interface PageContext {
   renderedAt: string;
 }
 
+export interface HomeData {
+  defenses: Defense[];
+  majors: MajorField[];
+}
+
 /** A complete HTML document. React does not emit the doctype, so it is added here. */
 export function renderDocument(element: ReactElement): string {
   return `<!doctype html>\n${renderToString(element)}\n`;
 }
 
-export function homePage(defenses: Defense[], { base, manifest, renderedAt }: PageContext): string {
+/** The home page: the calendar island renders everything below the masthead, headline strip included. */
+export function homePage({ defenses, majors }: HomeData, { base, manifest, renderedAt }: PageContext): string {
   return renderDocument(
     <Document
       title="PhD TV"
       description="A calendar of PhD defenses that are livestreamed for free."
       base={base}
-      assets={pageAssets(manifest, base, ['DefenseSchedule'])}
+      assets={pageAssets(manifest, base, ['DefenseCalendar'])}
     >
       <Shell base={base} current="calendar">
-        <div className="column">
-          <PageIntro
-            title="PhD defenses you can watch live"
-            lede="Public defenses streamed for free by universities, shown in your local time. Subscribe to the calendar feed to get them in your own calendar."
-          />
-          <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'upcoming' as const, defenses, renderedAt }} />
-        </div>
+        <Island name="DefenseCalendar" component={DefenseCalendar} props={{ defenses, majors, renderedAt }} />
       </Shell>
     </Document>,
   );
 }
 
-export function archivePage(defenses: Defense[], { base, manifest, renderedAt }: PageContext): string {
+/** The old archive URL: a meta refresh to the calendar's year view with the recordings filter on. */
+export function archiveRedirectPage({ base, manifest }: PageContext): string {
+  const target = `${withBase(base, '/')}?view=year&recorded=1`;
   return renderDocument(
-    <Document
-      title="PhD TV: archive"
-      description="Past PhD defenses, with recordings where they exist."
-      base={base}
-      assets={pageAssets(manifest, base, ['DefenseSchedule'])}
-    >
+    <Document title="PhD TV: archive" base={base} assets={pageAssets(manifest, base, [])} refresh={target}>
       <Shell base={base}>
         <div className="column">
-          <PageIntro
-            title="Past defenses"
-            lede="Recordings where a university published one. Where none exists, we say so rather than showing a dead link."
-          />
-          <Island name="DefenseSchedule" component={DefenseSchedule} props={{ mode: 'archive' as const, defenses, renderedAt }} />
+          <p className="redirect">
+            The archive is now part of the calendar. <a href={target}>Continue to past defenses with recordings.</a>
+          </p>
         </div>
       </Shell>
     </Document>,

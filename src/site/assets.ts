@@ -3,7 +3,7 @@ import { withBase } from '../lib/paths.ts';
 
 /** Client entry per hydrated component, keyed by island name. Paths are relative to the project root. */
 export const ISLAND_ENTRIES = {
-  DefenseSchedule: 'src/site/client/schedule.tsx',
+  DefenseCalendar: 'src/site/client/calendar.tsx',
   DefensePage: 'src/site/client/defense.tsx',
 } as const;
 export type IslandName = keyof typeof ISLAND_ENTRIES;
