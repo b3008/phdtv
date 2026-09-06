@@ -21,47 +21,61 @@ The purpose is that a visitor can see not only the details of each defense but w
 | Year layout | Twelve mini-month grids with day cells shaded by count. |
 | Chip colour | Left border coloured by the discipline's OECD major field, with a legend. |
 | Build approach | Hand-built. No calendar library, no date library. |
-| Visual style | A TV-guide look, prototyped in Claude Design (see Look below), replacing the current quiet styling site-wide. |
+| Visual style | A print TV-guide look, prototyped in Claude Design over three rounds and documented in its "TV Guide Style Reference" page (see Look below), replacing the current quiet styling site-wide. |
 
 ## Out of scope
 
-Popovers, colour by country, keyboard shortcuts, remembering the last view, a history entry per navigation, a time-grid week, a second taxonomy level in the filters, a light/dark toggle button (the site keeps following the system preference), and the prototype's redesigned defense detail card (the detail page keeps its structure and picks up the new type and tokens).
+Popovers, colour by country, keyboard shortcuts, remembering the last view, a history entry per navigation, a time-grid week, a second taxonomy level in the filters, a light/dark toggle button (the site keeps following the system preference), the prototype's redesigned defense detail card (the detail page keeps its structure and picks up the new type and tokens), and the prototype's "centerfold" pages per thesis with portraits, pull quotes, questions and facts, which need content no record carries and an image-source decision, so they get their own spec later.
 
 ## Look
 
-The user asked for the calendar to reflect the aesthetics of a TV guide, and approved the second round of a Claude Design prototype as the reference. The prototype file, a standalone render of it and screenshots of every view are under `blog/media/2026-09-06-01-calendar-views-designed/`. The look applies to the whole site, not only the calendar, because the header, type and tokens are global.
+The user asked for the calendar to reflect the aesthetics of a TV guide and, after three rounds in Claude Design, approved a print system: "80s/90s print TV guide", hard lines, high contrast, flat spot inks, ruthless grid alignment, without paper textures, micro-type or colour-on-colour text. The reference is the project's "TV Guide Style Reference" page; a copy of it, the third-round calendar page, a standalone render and screenshots of every view are under `blog/media/2026-09-06-01-calendar-views-designed/`. The look applies to the whole site because the header, type and tokens are global.
 
-**Type.** Barlow Condensed (weights 400 to 700) for headings, numbers, labels, badges and buttons, mostly uppercase with letter-spacing between 0.06em and 0.14em; IBM Plex Sans (400 to 700) for running text. Both self-hosted from the `@fontsource/barlow-condensed` and `@fontsource/ibm-plex-sans` packages, latin and latin-ext subsets, imported in `global.css` so Vite bundles the woff2 files with hashed names. No request to Google Fonts. Body text stays 16px with line-height 1.5; the page title is 42px condensed, the toolbar period label 26px, chip times 13px to 15px.
+**Type.** Archivo Black (weight 400, all caps, letter-spacing about -0.02em, line-height 0.98 to 1.15) for the masthead, the page title, the headline strip, the toolbar's period label and the empty-period message. Oswald (weights 400 to 700) for times, day names, labels, badges, buttons and reversed bars, in caps with 0.08em to 0.2em tracking, never below 10px. Archivo (400, 600, 700) for running text at 13px to 15px, ragged right. All three self-hosted from `@fontsource/archivo-black`, `@fontsource/oswald` and `@fontsource/archivo`, imported in `global.css` so Vite bundles the woff2 files with hashed names. No request to Google Fonts. The base font size is 15px with line-height 1.5.
 
 **Tokens**, as CSS custom properties with light and dark values:
 
 | Token | Light | Dark |
 |---|---|---|
-| page | #fbfbf9 | #121210 |
-| card | #ffffff | #1b1b18 |
-| chip | #ffffff | #232320 |
-| ink | #14140f | #f2f2ec |
-| muted | #6b6b60 | #a3a398 |
-| rule | #c9c9bf | #3d3d35 |
-| hairline | #e4e4db | #2a2a25 |
-| accent | #1d4ed8 | #93b4ff |
-| live | #b91c1c | #f87171 |
-| today | #fdf9ec | #1f1e19 |
-| year shading 1, 2, 3+ | #dde5fb, #a9bef6, #1d4ed8 | #22304d, #3a5586, #93b4ff |
+| page (newsprint cream) | #fbf7ea | #15130f |
+| card | #ffffff | #201d17 |
+| chip | #ffffff | #282418 |
+| ink (rich black) | #141210 | #f5eed9 |
+| muted | #615a4f | #b0a58f |
+| rule | #141210 | #7a705d |
+| hairline | #cdc4b0 | #3d3729 |
+| accent (links, today outline) | #1d4ed8 | #93b4ff |
+| live (warm red) | #d90429 | #ff4d5a |
+| yellow / yellow-fg (process yellow) | #ffd400 / #141210 | #ffd83d / #15130f |
+| cyan (process cyan) | #00a9e0 | #3cc7f5 |
+| today | #fff3b0 | #3d3410 |
+| bar / bar-fg (reversed bars) | #141210 / #ffd400 | #ffd83d / #15130f |
+| band / band-fg (masthead band) | #141210 / #ffffff | #0b0a08 / #f5eed9 |
+| year shading 1, 2, 3+ | #d3defb, #8aa8f2, #1d4ed8 | #2a3247, #4c5c85, #93b4ff |
 
-**Header.** A masthead: "PhD" in ink and "TV" in the live red, condensed 700 at 44px, uppercase, with the tagline "The defense listings" in small letter-spaced capitals beside it. Navigation links "Calendar" and "Recordings" in condensed uppercase. A 2px ink rule closes the header. Links are the accent colour and turn live red on hover.
+The six major-field colours stay as before, cooler than the masthead palette so they do not compete with it. Text on a spot colour is always white or rich black. Corners are hard everywhere; the only round shapes are the starburst and the phone month's dots.
 
-**Filter bar and legend.** A card with a rule border; labels in condensed uppercase muted text; selects on the page background with a rule border. The legend is a row of 10px colour squares with names in muted text.
+**Rules and borders.** Structure comes from borders, not whitespace: 1px hairline for cells, 2px ink for regions (the filter card, the toolbar, the empty-period box, the page intro's bottom rule), 6px double ink for major section breaks (above the day view, above the footer). No gradients, no shadows other than the masthead's hard offset.
 
-**Live strip.** A 2px live-red border; a header row with a red dot and "LIVE NOW" in condensed letter-spaced red; full cards inside, each with a 3px major-field stripe, the time at 24px condensed, an institution badge and a red "LIVE" pill on the time line.
+**Masthead band.** A full-width rich-black band. The logo "PHD TV" is Archivo Black at 54px, white, reversed out of a live-red box with a hard 6px offset shadow in yellow. Navigation links "Calendar" and "Recordings" sit at the right in Oswald caps, yellow on the band; the current page's link is a yellow box with black text. No tagline.
 
-**Toolbar.** A 2px ink rule above and a 1px rule below. Previous, next and Today are small rule-bordered buttons in condensed uppercase; the period label is centred, 26px condensed uppercase; the view switcher is a joined group of four buttons with the active one inverted (ink background, page text).
+**Headline strip.** Directly under the masthead, continuing the band, three equal blurbs across the column: red "On air now: <candidate> defends at <institution>!" (or "Next up: <candidate> at <institution> on <date>" when nothing is live, or "Next up: No defenses scheduled yet"), yellow "Coming up: <n> defenses you can still catch live", cyan "Catch-up: <n> recordings ready to watch". Kickers in Oswald caps with 0.2em tracking, texts in Archivo Black caps. The strip describes the whole listing, not the filtered view, and updates with the viewer's clock, so it lives in the calendar island. On narrow screens the three blurbs stack.
 
-**Badges and chips.** The institution badge is the short name in condensed uppercase 10px to 12px inside a 1px border, like a channel tag. A chip is a card-coloured box with a hairline border and a 3px left stripe in the major-field colour. Week chips put the time and the badge on the first line, the candidate on the second, and a red "LIVE" pill on a third when live. Month chips show the time and, when live, the pill on the first line and the candidate on the second. Past chips render at 55% opacity.
+**Page intro.** A small yellow "Special issue" kicker rotated -1.5° (the only rotated element besides the starburst), then the title "PhD defenses you can watch live" in Archivo Black caps with "watch live" in red, the lede in muted text, and a 2px ink rule below.
 
-**Grids.** The month's weekday header and the week's day headers are inverted bars: ink background, page-coloured condensed uppercase text. Today's header carries a red "NOW" tag beside the day number and a 2px accent inset outline; today's week column and month cell take the today background. Month cells have hairline borders, a condensed day number top-left and a minimum height of about 98px; padding days from adjacent months sit on the page background with muted numbers. The year's mini-months have the month name as a button with an ink bottom rule, weekday initials, six rows always, day cells shaded on the year scale, and a muted caption. The day view heads with the date spelled out ("Monday 7 September 2026") in 28px condensed uppercase, then cards with the same anatomy as the live strip's.
+**Filter bar and legend.** A card with a 2px ink border; labels in Oswald caps; selects on the page colour with a 1px ink border and no rounding. The legend is a row of 10px swatches with a 1px ink border and names in Oswald caps.
 
-**Defense page and footer.** They keep their structure and pick up the type, tokens and header. The institution badge appears on the defense page beside the candidate.
+**Live strip.** A 2px live-red border with a red header bar reading "LIVE NOW" in white Oswald caps behind a white dot, and a yellow 24-point starburst rotated 8° reading "On air!" in red overlapping the top-right corner. Full cards inside, each with a 3px major-field stripe, the time in Oswald 700 at 24px, the institution badge and a red "LIVE" pill on the time line, the candidate in Archivo 700.
+
+**Toolbar.** A yellow bar with a 2px ink border. Previous, next and Today are white buttons with 2px ink borders in Oswald caps; the period label is centred in Archivo Black caps; the view switcher is a joined group with the active view red with white text.
+
+**Badges and chips.** The institution badge ("channel bug") is the short name in Oswald caps at 10px to 12px inside a 1px ink border. A chip is a card-coloured box with a hairline border and a 3px left stripe in the major-field colour. Week chips put the time and the badge on the first line, the candidate on the second, and a red "LIVE" pill on a third when live. Month chips show the time and, when live, the pill on the first line and the candidate on the second. Past chips render at 55% opacity.
+
+**Grids.** The month's weekday header and the week's day headers are reversed bars: black with yellow Oswald caps. Today's header carries a red "NOW" tag beside the day number and a 2px accent inset outline; today's week column and month cell take the pale yellow today tint. Month cells have hairline borders, an Oswald day number top-left and a minimum height of about 98px; padding days show muted numbers. The year's mini-months have the month name as an Oswald button with an ink bottom rule, weekday initials, six rows always, day cells shaded on the year scale, and a muted caption. The day view sits under a 6px double rule and heads with a reversed bar carrying the date spelled out ("Monday 7 September 2026"), then cards separated by hairlines.
+
+**Empty period.** A box with a 2px ink border and the message in Archivo Black caps, then the Previous and Next links.
+
+**Defense page and footer.** They keep their structure and pick up the type, tokens and header: the title in Archivo Black caps, fact labels in Oswald caps, the abstract heading as a reversed bar, the institution badge beside the candidate, and the footer under a 6px double rule. The defense page also links to the page where the university announced the defense ("University announcement", the record's source URL) among its actions, whenever the record has one.
 
 ## Structure
 
@@ -90,8 +104,9 @@ Island props: `defenses` (every published defense, as today), `majors` (slug and
 New:
 
 - `src/lib/calendar.ts`. Pure helpers on `YYYY-MM-DD` strings, with no instants and no zones inside, so daylight-saving time cannot affect them. Arithmetic goes through `Date.UTC` and the UTC getters. Exports, subject to refinement in the plan: the `CalendarView` type; `addDays`; `startOfWeek` (Monday); `daysOfWeek`; `weeksOfMonth` (rows of seven dates covering the month, padded with adjacent-month days); `monthsOfYear`; `shift(date, view, delta)` with month and year shifts clamping to the last day of the target month; `periodBounds(view, date)`; `periodLabel(view, date)`; `groupByDate(defenses, zone)` returning a map from date to defenses sorted by start; `nearestDate(dates, bounds, direction)` for the jump links; and the query-parameter encoding of view and date.
-- `src/components/DefenseCalendar.tsx`. The island. Renders `FilterBar`, `MajorFieldLegend`, the live strip, `CalendarToolbar` and the active view.
+- `src/components/DefenseCalendar.tsx`. The island. Renders everything below the masthead: `HeadlineStrip`, then a column with `PageIntro`, `FilterBar`, `MajorFieldLegend`, the live strip, `CalendarToolbar` and the active view.
 - `src/components/CalendarToolbar.tsx`. Previous, next and Today buttons, the period label, and the view switcher.
+- `src/components/HeadlineStrip.tsx`. The three headlines under the masthead, computed from every published defense and the viewer's clock.
 - `src/components/DayView.tsx`, `WeekView.tsx`, `MonthView.tsx`, `YearView.tsx`. One per view, each a pure function of the grouped defenses, the anchor date, today and the zone.
 - `src/components/DefenseChip.tsx`. The compact link used by the week and month views.
 - `src/components/MajorFieldLegend.tsx`. The colour legend.
@@ -108,10 +123,10 @@ Changed:
 - `src/site/assets.ts`. `ISLAND_ENTRIES` maps `DefenseCalendar` to the new client entry and drops `DefenseSchedule`.
 - `src/site/pages.tsx`. `homePage` renders the calendar island with the new props. `archivePage` becomes a redirect page. `defensePage` is unchanged.
 - `src/site/generate.ts`. Passes `majors` to the home page and emits the redirect at `archive/index.html`. The JSON export carries the new `major` and `shortName` fields, which is additive, so the schema version stays 1.
-- `src/components/Shell.tsx`. The masthead and tagline described under Look. Navigation is "Calendar", linking to the home page, and "Recordings", linking to the home page with `view=year` and `recorded=1`.
-- `src/components/PageIntro.tsx` usage in `pages.tsx`. New lede, see Copy.
+- `src/components/Shell.tsx`. The masthead band described under Look, with an inner column; pages put their content in a `column` too. Navigation is "Calendar", linking to the home page and marked current there, and "Recordings", linking to the home page with `view=year` and `recorded=1`.
+- `src/components/PageIntro.tsx`. Gains an optional kicker and a highlighted ending of the title; rendered by the calendar island on the home page with the lede under Copy.
 - `src/styles/global.css`. The font imports, the new tokens, the restyled header, filters, cards and defense page, and the grid, chip, toolbar, mini-month, legend and responsive rules. Most of the work is here.
-- `package.json`. Adds `@fontsource/barlow-condensed` and `@fontsource/ibm-plex-sans`.
+- `package.json`. Adds `@fontsource/archivo-black`, `@fontsource/oswald` and `@fontsource/archivo`.
 - `universities/*.yaml`. `short_name` where the full name is long. Optional and gradual.
 
 Deleted:

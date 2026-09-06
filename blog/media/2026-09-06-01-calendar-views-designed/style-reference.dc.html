@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Black&family=Archivo:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="./doc-page.js"></script>
+<style>
+  doc-page:not(:defined) { visibility: hidden; }
+  a { color: #1d4ed8; }
+  a:hover { color: #d90429; }
+  .keep { break-inside: avoid; orphans: 3; widows: 3; }
+</style>
+</helmet>
+<doc-page margin="0.8in" style="font-family:'Archivo',Helvetica,sans-serif;color:#141210;font-size:14px;line-height:1.6">
+
+  <div style="display:flex;align-items:center;gap:14px;border-bottom:3px solid #141210;padding-bottom:12px">
+    <span style="background:#d90429;color:#fff;font-family:'Archivo Black',sans-serif;font-size:26px;line-height:1;padding:6px 10px 4px;text-transform:uppercase;letter-spacing:-.03em;box-shadow:4px 4px 0 #ffd400">PhD TV</span>
+    <span style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:#615a4f">Web application design system</span>
+  </div>
+
+  <h1 style="font-family:'Archivo Black',sans-serif;font-weight:400;font-size:36px;line-height:1;letter-spacing:-.02em;text-transform:uppercase;margin:22px 0 8px">PhD TV: Web Application Design System</h1>
+  <p style="font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:#615a4f;margin:0 0 10px">Theme: 80s/90s Print TV Guide Aesthetic</p>
+  <p style="font-size:15px;margin:0 0 26px;max-width:42rem"><strong>Core Philosophy:</strong> Hard lines, high contrast, flat inks, and ruthless grid alignment. We embrace the visual language of cheap print media without sacrificing modern screen legibility.</p>
+
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:20px;margin:0 0 10px;border-bottom:2px solid #141210;padding-bottom:4px">1. Color Palette: The "Spot Ink" System</h2>
+  <p style="margin:0 0 10px">The palette mimics the four-color process and cheap spot inks used in weekly digests. Colors must always meet edge-to-edge or be separated by a black hairline. <strong>Rule:</strong> No gradients, no opacity fades, no soft shadows.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:10px">
+    <thead>
+      <tr style="background:#141210;color:#ffd400;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:11px">
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Role</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Color</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Hex</th>
+        <th style="text-align:left;padding:6px 8px;font-weight:600">Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #cdc4b0"><td style="padding:7px 8px;vertical-align:top;font-weight:700">Page / Canvas</td><td style="padding:7px 8px;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#fbf7ea;border:2px solid #141210;display:inline-block"></span>Newsprint Cream</span></td><td style="padding:7px 8px;vertical-align:top;font-family:'IBM Plex Mono',monospace">#fbf7ea</td><td style="padding:7px 8px;vertical-align:top">The base background layer. Warm to reduce eye strain.</td></tr>
+      <tr style="border-bottom:1px solid #cdc4b0"><td style="padding:7px 8px;vertical-align:top;font-weight:700">Type &amp; Rules</td><td style="padding:7px 8px;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#141210;border:2px solid #141210;display:inline-block"></span>Rich Black</span></td><td style="padding:7px 8px;vertical-align:top;font-family:'IBM Plex Mono',monospace">#141210</td><td style="padding:7px 8px;vertical-align:top">All borders, body text, and heavy structural rules.</td></tr>
+      <tr style="border-bottom:1px solid #cdc4b0"><td style="padding:7px 8px;vertical-align:top;font-weight:700">Primary Accent</td><td style="padding:7px 8px;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#d90429;border:2px solid #141210;display:inline-block"></span>Warm Red</span></td><td style="padding:7px 8px;vertical-align:top;font-family:'IBM Plex Mono',monospace">#d90429</td><td style="padding:7px 8px;vertical-align:top">Masthead logo box, "LIVE NOW" states, active view toggles.</td></tr>
+      <tr style="border-bottom:1px solid #cdc4b0"><td style="padding:7px 8px;vertical-align:top;font-weight:700">Utility Accent</td><td style="padding:7px 8px;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#ffd400;border:2px solid #141210;display:inline-block"></span>Process Yellow</span></td><td style="padding:7px 8px;vertical-align:top;font-family:'IBM Plex Mono',monospace">#ffd400</td><td style="padding:7px 8px;vertical-align:top">Toolbar backgrounds, offset drop shadows, filter tags.</td></tr>
+      <tr><td style="padding:7px 8px;vertical-align:top;font-weight:700">Tertiary Accent</td><td style="padding:7px 8px;vertical-align:top"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#00a9e0;border:2px solid #141210;display:inline-block"></span>Process Cyan</span></td><td style="padding:7px 8px;vertical-align:top;font-family:'IBM Plex Mono',monospace">#00a9e0</td><td style="padding:7px 8px;vertical-align:top">Third-tier blurbs, catch-up states.</td></tr>
+    </tbody>
+  </table>
+  <p style="margin:0 0 6px;font-size:13px;color:#615a4f">(Note: The five calendar field colors are kept separate and cooler so they do not compete with this primary masthead palette).</p>
+
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:20px;margin:26px 0 10px;border-bottom:2px solid #141210;padding-bottom:4px">2. Typography: Dense and Utilitarian</h2>
+  <p style="margin:0 0 10px">Typefaces mimic the heavy grotesques of magazine covers and the condensed utilitarian fonts used to cram data into small columns.</p>
+  <div class="keep" style="border:2px solid #141210;background:#fff">
+    <div style="display:grid;grid-template-columns:200px minmax(0,1fr);border-bottom:1px solid #cdc4b0">
+      <div style="padding:12px 14px;border-right:1px solid #cdc4b0;font-family:'Archivo Black',sans-serif;font-size:22px;line-height:.98;text-transform:uppercase;letter-spacing:-.02em">Display &amp; Cover Lines</div>
+      <div style="padding:12px 14px"><strong>Display &amp; Cover Lines (Archivo Black):</strong> Weight 400, All Caps, -0.02em tracking, 0.98 - 1.15 line-height. Used for the Masthead, H1s, and one-word callouts.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px minmax(0,1fr);border-bottom:1px solid #cdc4b0">
+      <div style="padding:12px 14px;border-right:1px solid #cdc4b0;font-family:'Oswald',sans-serif;font-weight:700;font-size:24px;line-height:1;font-variant-numeric:tabular-nums">13:00 · 16:15</div>
+      <div style="padding:12px 14px"><strong>Listings, Times &amp; Channels (Oswald):</strong> Weight 600–700. Tabular figures, flush left. Used for times (13–24px) to ensure columns of chips read as a clean time list.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px minmax(0,1fr);border-bottom:1px solid #cdc4b0">
+      <div style="padding:12px 14px;border-right:1px solid #cdc4b0;display:flex;align-items:center"><span style="background:#141210;color:#ffd400;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:11px;padding:4px 8px">Mon · Tue · Wed</span></div>
+      <div style="padding:12px 14px"><strong>Small Caps Labels (Oswald):</strong> Weight 600, 10–11px, All Caps, 0.12 - 0.2em tracking. Used for day names, section heads, and "reversed bars" (yellow text on black backgrounds).</div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px minmax(0,1fr)">
+      <div style="padding:12px 14px;border-right:1px solid #cdc4b0;font-size:13px;line-height:1.5"><strong>Anders Enqvist</strong><br />Analytical Foundations of Energy-Efficient Wireless Communication</div>
+      <div style="padding:12px 14px"><strong>Body &amp; Descriptions (Archivo):</strong> Weight 400 (titles in 600), 13–15px, ragged right. Line-height 1.45 - 1.6. Never drops below 11px.</div>
+    </div>
+  </div>
+
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:20px;margin:26px 0 10px;border-bottom:2px solid #141210;padding-bottom:4px">3. Layout Elements &amp; "Print" Devices</h2>
+  <p style="margin:0 0 12px">These components translate physical print habits into web UI patterns.</p>
+
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="background:#141210;padding:18px 14px;display:flex;align-items:center;justify-content:center"><span style="background:#d90429;color:#fff;font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1;padding:6px 10px 4px;text-transform:uppercase;letter-spacing:-.03em;box-shadow:5px 5px 0 #ffd400">PhD TV</span></div>
+    <div><strong>The Masthead:</strong> Fixed block. Archivo Black 54px reversed white out of a #d90429 red box. The box must have a hard, unblurred 6px offset shadow in #ffd400 yellow to mimic misregistered ink.</div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="background:#141210;color:#ffd400;padding:6px 10px;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:11px">Monday 7 September</div>
+    <div><strong>The Reversed Bar:</strong> A full-column-width #141210 black rectangle with #ffd400 yellow small-caps text inside. Used to mark day breaks.</div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="border:1px solid #141210;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0 5px">KTH</span><span style="border:1px solid #141210;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0 5px">TU Delft</span><span style="border:1px solid #141210;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:11px;padding:0 5px">UEF</span></div>
+    <div><strong>Institution Badges (The "Channel Bug"):</strong> Replaces the classic channel number box. Must always be the same size: 10–11px caps inside a 1px black border box.</div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="padding:6px 0"><span style="display:inline-block;background:#ffd400;color:#141210;font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:11px;padding:3px 8px;transform:rotate(-1.5deg)">Special issue</span></div>
+    <div><strong>The Slanted Kicker:</strong> A small #ffd400 rectangle rotated -1.5° with black caps inside, placed over a corner of the H1. (Strict rule: Max one rotated element per screen to avoid looking like a bug).</div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="display:flex;justify-content:center;padding:4px 0"><div style="width:78px;height:78px;background:#ffd400;clip-path:polygon(50% 0%,61% 12%,76% 6%,80% 21%,95% 25%,89% 39%,100% 50%,89% 61%,95% 75%,80% 79%,76% 94%,61% 88%,50% 100%,39% 88%,24% 94%,20% 79%,5% 75%,11% 61%,0% 50%,11% 39%,5% 25%,20% 21%,24% 6%,39% 12%);display:flex;align-items:center;justify-content:center;text-align:center;font-family:'Archivo Black',sans-serif;font-size:12px;line-height:1;text-transform:uppercase;color:#d90429;transform:rotate(8deg)">On<br />air!</div></div>
+    <div><strong>The Starburst:</strong> Reserved exclusively for the "Live Now" strip. A 24-point star rotated 8°, yellow fill, red text. Max one per screen.</div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px"><div style="border-top:1px solid #cdc4b0"></div><div style="border-top:2px solid #141210"></div><div style="border-top:6px double #141210"></div></div>
+    <div><strong>Rules &amp; Borders:</strong> Structure is dictated by strict borders, not whitespace.
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>1px #cdc4b0 (hairline) for cells.</li>
+        <li>2px #141210 for regions (filter card, toolbar).</li>
+        <li>6px double #141210 for major section breaks.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="keep" style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:14px">
+    <div style="display:flex;gap:8px;align-items:center;padding-top:2px"><span style="width:44px;height:28px;border:2px solid #141210;background:#fff;display:inline-block"></span><span style="width:44px;height:28px;border:2px solid #141210;background:#ffd400;display:inline-block"></span><span style="width:12px;height:12px;border-radius:50%;background:#2563eb;display:inline-block"></span></div>
+    <div><strong>Corners:</strong> Hard, always. Boxes, bars, buttons, selects, chips, badges and cards use a 0 radius; print was cut and ruled square, and rounding reads as generic modern UI. The only round shapes are the starburst and small circular dot indicators (phone month view), which are shapes, not containers.</div>
+  </div>
+
+  <h2 style="font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:20px;margin:26px 0 10px;border-bottom:2px solid #141210;padding-bottom:4px">4. Anti-Patterns (What stays in the 90s)</h2>
+  <p style="margin:0 0 8px">To keep the app functional and modern, we intentionally abandon these print realities:</p>
+  <ul style="margin:0;padding-left:18px">
+    <li><strong>No Textures:</strong> Skip the paper grain, halftone dots, and misregistration blur. They read as noise on a screen and destroy legibility for small UI text.</li>
+    <li><strong>No Micro-type:</strong> Print used 7pt type to save paper. We never drop below 11px, and keep body text at a comfortable 13–15px.</li>
+    <li><strong>No Justified Columns:</strong> Print forced text to stretch edge-to-edge. We use ragged right to avoid awkward CSS text rivers.</li>
+    <li><strong>No Color-on-Color:</strong> Red text on cyan backgrounds hurts accessibility. Text on a spot color must always be pure white or rich black.</li>
+  </ul>
+
+</doc-page>
+</x-dc>
+</body>
+</html>
