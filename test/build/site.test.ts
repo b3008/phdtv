@@ -11,6 +11,7 @@ const manifest: AssetManifest = {
   'src/styles/global.css': { file: 'assets/global-test.css' },
   'src/site/client/calendar.tsx': { file: 'assets/calendar-test.js' },
   'src/site/client/defense.tsx': { file: 'assets/defense-test.js' },
+  'src/site/client/centerfold.tsx': { file: 'assets/centerfold-test.js', css: ['assets/centerfold-test.css'] },
 };
 // Pinned so the feed-window assertions below do not drift as the seed defenses age.
 const NOW = new Date('2026-09-05T12:00:00Z');
@@ -31,6 +32,9 @@ function events(file: string) {
 const records = loadRecordFiles('.').map((f) => ({ path: f.path, record: recordSchema.parse(f.data) }));
 const published = records.filter((r) => r.record.status === 'published');
 const hiddenOrUnverified = records.filter((r) => r.record.status !== 'published').map((r) => r.record.candidate);
+const featured = published.filter((r) => r.record.centerfold);
+const idOf = (path: string) => path.replace(/^records\//, '').replace(/\.md$/, '');
+const ANDERS = '2026/2026-09-07-kth-anders-enqvist';
 
 describe('pages', () => {
   it('generates each path once', () => {
@@ -53,6 +57,36 @@ describe('pages', () => {
     expect(page).toContain('href="/phdtv/assets/global-test.css"');
     expect(page).toContain('href="/phdtv/feeds/all.ics"');
     expect(page).toContain('"renderedAt":"2026-09-05T12:00:00.000Z"');
+  });
+});
+
+describe('centerfold pages', () => {
+  it('generates one for each published defense with a centerfold block, and no others', () => {
+    const pages = [...output.keys()].filter((p) => p.startsWith('centerfold/'));
+    expect(featured.length).toBeGreaterThan(0);
+    expect(pages).toHaveLength(featured.length);
+    for (const r of featured) expect(output.has(`centerfold/${idOf(r.path)}/index.html`)).toBe(true);
+  });
+
+  it('gives a centerfold page its title, island and stylesheet, and keeps the listing page beside it', () => {
+    const page = read(`centerfold/${ANDERS}/index.html`);
+    expect(page).toContain('<title>Centerfold: Anders Enqvist</title>');
+    expect(page).toContain('data-island="CenterfoldPage"');
+    expect(page).toContain('src="/phdtv/assets/centerfold-test.js"');
+    expect(page).toContain('href="/phdtv/assets/centerfold-test.css"');
+    expect(page).toContain(`href="/phdtv/defenses/${ANDERS}/"`);
+    expect(output.has(`defenses/${ANDERS}/index.html`)).toBe(true);
+  });
+
+  it('is the page the feed presents for a defense that has one', () => {
+    const e = events('feeds/all.ics').find((x) => x.summary.startsWith('Anders Enqvist:'));
+    expect(e?.component.getFirstPropertyValue('url')).toBe(`https://example.test/phdtv/centerfold/${ANDERS}/`);
+  });
+
+  it('hides empty editorial slots unless the build is a preview', () => {
+    expect(read(`centerfold/${ANDERS}/index.html`)).not.toContain('cf-slot');
+    const preview = generate({ rootDir: '.', site: 'https://example.test', base: '/phdtv/', manifest, now: NOW, preview: true });
+    expect(preview.find((f) => f.path === `centerfold/${ANDERS}/index.html`)?.body).toContain('cf-slot');
   });
 });
 
@@ -101,6 +135,7 @@ interface Export {
     key: string;
     candidate: string;
     url: string;
+    listingUrl: string;
     university: { name: string; shortName?: string };
     disciplines: Array<{ slug: string; major: string }>;
     status: string;
@@ -123,5 +158,12 @@ describe('api/defenses.json', () => {
     expect(one?.url).toBe('https://example.test/phdtv/defenses/2026/2026-09-15-utrecht-chris-ten-dam/');
     expect(one?.university.shortName).toBe('UU');
     expect(one?.disciplines.map((d) => d.major)).toContain('social-sciences');
+    expect(one?.listingUrl).toBe(one?.url);
+  });
+
+  it('presents the centerfold as the URL of a defense that has one, with the listing page alongside', () => {
+    const anders = data.defenses.find((d) => d.key === ANDERS);
+    expect(anders?.url).toBe(`https://example.test/phdtv/centerfold/${ANDERS}/`);
+    expect(anders?.listingUrl).toBe(`https://example.test/phdtv/defenses/${ANDERS}/`);
   });
 });

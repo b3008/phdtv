@@ -58,9 +58,14 @@ describe('toDefense', () => {
     expect(majorFieldName({ ...defense, disciplines: [] })).toBeUndefined();
   });
 
-  it('carries the centerfold with its images resolved under the base, and a centerfold page URL', () => {
+  it('presents the centerfold page as its URL when it has one, keeping the listing page alongside', () => {
     const featured = toDefense({ ...input, record: { ...input.record, centerfold } });
-    expect(featured.centerfoldUrl).toBe('/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+    expect(featured.url).toBe('/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/');
+    expect(featured.listingUrl).toBe('/phdtv/defenses/2026/2026-09-15-tudelft-jane-doe/');
+  });
+
+  it('carries the centerfold with its images resolved under the base', () => {
+    const featured = toDefense({ ...input, record: { ...input.record, centerfold } });
     expect(featured.centerfold).toEqual({
       issue: 'No. 37',
       standfirst: 'Every phone call costs energy somewhere in the network.',
@@ -71,10 +76,10 @@ describe('toDefense', () => {
     });
   });
 
-  it('has no centerfold fields at all when the record has no centerfold', () => {
+  it('presents the listing page itself when the record has no centerfold', () => {
     expect(defense.centerfold).toBeUndefined();
-    expect(defense.centerfoldUrl).toBeUndefined();
-    expect('centerfoldUrl' in defense).toBe(false);
+    expect('centerfold' in defense).toBe(false);
+    expect(defense.listingUrl).toBe(defense.url);
   });
 
   it('carries the scheduling fields as ISO strings', () => {

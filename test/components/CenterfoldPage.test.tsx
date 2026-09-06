@@ -18,7 +18,7 @@ const centerfold: DefenseCenterfold = {
 };
 
 const featured = (overrides: Parameters<typeof fixtureDefense>[0] = {}) =>
-  fixtureDefense({ centerfold, centerfoldUrl: '/centerfold/2026/2026-09-15-tudelft-jane-doe/', ...overrides });
+  fixtureDefense({ centerfold, url: '/centerfold/2026/2026-09-15-tudelft-jane-doe/', ...overrides });
 
 const RENDERED_AT = '2026-09-15T08:00:00.000Z';
 

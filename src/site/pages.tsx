@@ -1,6 +1,7 @@
 // One function per page type: a data-bearing header around one component tree.
 import type { ReactElement } from 'react';
 import { renderToString } from 'react-dom/server';
+import { CenterfoldPage } from '../components/CenterfoldPage.tsx';
 import { DefenseCalendar } from '../components/DefenseCalendar.tsx';
 import { DefensePage } from '../components/DefensePage.tsx';
 import type { MajorField } from '../components/MajorFieldLegend.tsx';
@@ -17,6 +18,8 @@ export interface PageContext {
   manifest: AssetManifest;
   /** Build time as ISO 8601; the first client render uses it so hydration matches the server markup. */
   renderedAt: string;
+  /** Preview builds show labelled slots for editorial fields that are still empty; the deploy hides them. */
+  preview?: boolean;
 }
 
 export interface HomeData {
@@ -73,6 +76,22 @@ export function defensePage(defense: Defense, { base, manifest, renderedAt }: Pa
         <div className="column">
           <Island name="DefensePage" component={DefensePage} props={{ defense, base, renderedAt }} />
         </div>
+      </Shell>
+    </Document>,
+  );
+}
+
+/** The feature page of a defense that has a centerfold; its stylesheet rides on the island's manifest entry. */
+export function centerfoldPage(defense: Defense, { base, manifest, renderedAt, preview = false }: PageContext): string {
+  return renderDocument(
+    <Document
+      title={`Centerfold: ${defense.candidate}`}
+      description={defense.centerfold?.standfirst ?? `PhD defense at ${defense.university.name}.`}
+      base={base}
+      assets={pageAssets(manifest, base, ['CenterfoldPage'])}
+    >
+      <Shell base={base}>
+        <Island name="CenterfoldPage" component={CenterfoldPage} props={{ defense, base, renderedAt, preview }} />
       </Shell>
     </Document>,
   );

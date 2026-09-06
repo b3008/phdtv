@@ -5,6 +5,7 @@ import { withBase } from '../lib/paths.ts';
 export const ISLAND_ENTRIES = {
   DefenseCalendar: 'src/site/client/calendar.tsx',
   DefensePage: 'src/site/client/defense.tsx',
+  CenterfoldPage: 'src/site/client/centerfold.tsx',
 } as const;
 export type IslandName = keyof typeof ISLAND_ENTRIES;
 

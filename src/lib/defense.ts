@@ -52,7 +52,10 @@ export interface DefenseCenterfold {
 /** Serialisable view of one defense, as handed to React components. */
 export interface Defense {
   key: string;
+  /** The page presented for this defense: its centerfold when it has one, otherwise the listing page. */
   url: string;
+  /** The listing page, /defenses/<id>/, which every defense has. */
+  listingUrl: string;
   candidate: string;
   title: string;
   university: { slug: string; name: string; shortName?: string; country: string; website?: string };
@@ -69,9 +72,8 @@ export interface Defense {
   status: RecordStatus;
   source: { channel: DefenseRecord['source']['channel']; url?: string };
   abstract?: string;
-  /** Present only for defenses that have a centerfold page, together with `centerfoldUrl`. */
+  /** Present only for defenses that have a centerfold page, which is then their `url`. */
   centerfold?: DefenseCenterfold;
-  centerfoldUrl?: string;
 }
 
 /** The same object type with every `| undefined` property made optional, matching exactOptionalPropertyTypes. */
@@ -115,7 +117,8 @@ export function toDefense({ id, body, record, university, disciplineIndex, base 
     : undefined;
   return defined({
     key: id,
-    url: withBase(base, defensePath(id)),
+    url: withBase(base, record.centerfold ? centerfoldPath(id) : defensePath(id)),
+    listingUrl: withBase(base, defensePath(id)),
     candidate: record.candidate,
     title: record.title,
     university: defined({
@@ -144,7 +147,6 @@ export function toDefense({ id, body, record, university, disciplineIndex, base 
     source: defined({ channel: record.source.channel, url: record.source.url }),
     abstract: body.trim() || undefined,
     centerfold: record.centerfold ? toCenterfold(record.centerfold, base) : undefined,
-    centerfoldUrl: record.centerfold ? withBase(base, centerfoldPath(id)) : undefined,
   });
 }
 

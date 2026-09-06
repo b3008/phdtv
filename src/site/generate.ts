@@ -6,7 +6,7 @@ import { readFileHistories } from '../lib/git-meta.ts';
 import { renderCalendar } from '../lib/ics.ts';
 import type { AssetManifest } from './assets.ts';
 import { loadSiteData } from './data.ts';
-import { archiveRedirectPage, defensePage, homePage } from './pages.tsx';
+import { archiveRedirectPage, centerfoldPage, defensePage, homePage } from './pages.tsx';
 
 export const SCHEMA_VERSION = 1;
 
@@ -20,6 +20,8 @@ export interface GenerateOptions {
   manifest: AssetManifest;
   /** Build time; defaults to the current time. */
   now?: Date;
+  /** Preview builds (the dev server) show slots for empty editorial fields; the deploy hides them. */
+  preview?: boolean;
 }
 
 export interface OutputFile {
@@ -28,16 +30,19 @@ export interface OutputFile {
   body: string;
 }
 
-export function generate({ rootDir, site, base, manifest, now = new Date() }: GenerateOptions): OutputFile[] {
+export function generate({ rootDir, site, base, manifest, now = new Date(), preview = false }: GenerateOptions): OutputFile[] {
   const { defenses, disciplineSlugs, majors } = loadSiteData(rootDir, base);
   const histories = readFileHistories(rootDir);
   const renderedAt = now.toISOString();
-  const context = { base, manifest, renderedAt };
+  const context = { base, manifest, renderedAt, preview };
   const files: OutputFile[] = [];
 
   files.push({ path: 'index.html', body: homePage({ defenses, majors }, context) });
   files.push({ path: 'archive/index.html', body: archiveRedirectPage(context) });
-  for (const defense of defenses) files.push({ path: `defenses/${defense.key}/index.html`, body: defensePage(defense, context) });
+  for (const defense of defenses) {
+    files.push({ path: `defenses/${defense.key}/index.html`, body: defensePage(defense, context) });
+    if (defense.centerfold) files.push({ path: `centerfold/${defense.key}/index.html`, body: centerfoldPage(defense, context) });
+  }
 
   const calendar = (name: string, keep: (d: Defense) => boolean) =>
     renderCalendar(feedEvents(defenses.filter(keep), { histories, now, site }), { name });
@@ -46,7 +51,7 @@ export function generate({ rootDir, site, base, manifest, now = new Date() }: Ge
     files.push({ path: `feeds/${slug}.ics`, body: calendar(`PhD TV: ${slug}`, (d) => d.disciplines.some((x) => x.slug === slug)) });
   }
 
-  const exported = defenses.map((d) => ({ ...d, url: new URL(d.url, site).href }));
+  const exported = defenses.map((d) => ({ ...d, url: new URL(d.url, site).href, listingUrl: new URL(d.listingUrl, site).href }));
   const body = { schemaVersion: SCHEMA_VERSION, generatedAt: renderedAt, defenses: exported };
   files.push({ path: 'api/defenses.json', body: `${JSON.stringify(body, null, 2)}\n` });
 

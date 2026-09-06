@@ -11,6 +11,18 @@ stream:
   url: https://kth-se.zoom.us/j/65424362099
   platform: zoom
 thesis_url: https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-387269
+centerfold:
+  issue: "No. 37"
+  kicker: "This week's centerfold"
+  standfirst: "Every phone call, video stream and sensor reading costs energy somewhere in the network. This defense asks how little a wireless link can get away with."
+  questions:
+    - q: "Why this topic?"
+    - q: "What surprised you?"
+    - q: "What happens after the defense?"
+  facts:
+    - [Faculty, "Electrical Engineering and Computer Science"]
+    - [Format, "Public defense, livestreamed"]
+    - [Language, English]
 status: published
 source:
   channel: curated

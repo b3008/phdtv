@@ -161,7 +161,7 @@ export function CenterfoldPage({ defense, base = '/', renderedAt, preview = fals
             ) : (
               <span className="cf-tunein-note">{action.text}</span>
             )}
-            <a className="cf-listing" href={defense.url}>
+            <a className="cf-listing" href={defense.listingUrl}>
               Listing ›
             </a>
           </div>

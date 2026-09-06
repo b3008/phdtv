@@ -11,6 +11,7 @@ export function fixtureDefense(overrides: DefenseOverrides = {}): Defense {
   return withoutUndefined({
     key: '2026/2026-09-15-tudelft-jane-doe',
     url: '/defenses/2026/2026-09-15-tudelft-jane-doe/',
+    listingUrl: '/defenses/2026/2026-09-15-tudelft-jane-doe/',
     candidate: 'Jane Doe',
     title: 'Learning to schedule under uncertainty',
     university: { slug: 'tudelft', name: 'Delft University of Technology', shortName: 'TU Delft', country: 'NL', website: 'https://www.tudelft.nl/' },

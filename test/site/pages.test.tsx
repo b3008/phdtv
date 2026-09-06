@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import type { AssetManifest } from '../../src/site/assets.ts';
 import { Document } from '../../src/site/document.tsx';
-import { archiveRedirectPage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
+import { archiveRedirectPage, centerfoldPage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
 const manifest: AssetManifest = {
   'src/styles/global.css': { file: 'assets/global-abc.css' },
   'src/site/client/calendar.tsx': { file: 'assets/calendar-123.js', imports: ['_react-xyz.js'] },
   'src/site/client/defense.tsx': { file: 'assets/defense-456.js', imports: ['_react-xyz.js'] },
+  'src/site/client/centerfold.tsx': { file: 'assets/centerfold-789.js', css: ['assets/centerfold-789.css'], imports: ['_react-xyz.js'] },
   '_react-xyz.js': { file: 'assets/react-xyz.js' },
 };
 const ctx = { base: '/phdtv/', manifest, renderedAt: '2026-09-05T12:00:00.000Z' };
@@ -66,5 +67,24 @@ describe('pages', () => {
     expect(html).toContain('"base":"/phdtv/"');
     expect(html).toContain('src="/phdtv/assets/defense-456.js"');
     expect(html).toContain('href="/phdtv/?view=year&amp;recorded=1"');
+  });
+
+  it('centerfold page: the candidate in the title, the standfirst as description, the island with its own stylesheet', () => {
+    const featured = fixtureDefense({ url: '/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: { issue: 'No. 37', standfirst: 'Framing.' } });
+    const html = centerfoldPage(featured, { ...ctx, preview: true });
+    expect(html).toContain('<title>Centerfold: Jane Doe</title>');
+    expect(html).toContain('<meta name="description" content="Framing."/>');
+    expect(html).toContain('data-island="CenterfoldPage"');
+    expect(html).toContain('"preview":true');
+    expect(html).toContain('src="/phdtv/assets/centerfold-789.js"');
+    expect(html).toContain('href="/phdtv/assets/centerfold-789.css"');
+    expect(html).toContain('class="cf-slot');
+  });
+
+  it('centerfold page: falls back to a generic description and hides slots outside preview builds', () => {
+    const featured = fixtureDefense({ url: '/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: {} });
+    const html = centerfoldPage(featured, ctx);
+    expect(html).toContain('<meta name="description" content="PhD defense at Delft University of Technology."/>');
+    expect(html).not.toContain('cf-slot');
   });
 });
