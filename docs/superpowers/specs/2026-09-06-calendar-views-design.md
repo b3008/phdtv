@@ -1,7 +1,7 @@
 # Calendar views for the defense schedule
 
 Date: 2026-09-06
-Status: approved in conversation, awaiting review of this document
+Status: approved in conversation on 2026-09-06, including the TV-guide look added after the Claude Design prototype
 
 ## Summary
 
@@ -21,10 +21,47 @@ The purpose is that a visitor can see not only the details of each defense but w
 | Year layout | Twelve mini-month grids with day cells shaded by count. |
 | Chip colour | Left border coloured by the discipline's OECD major field, with a legend. |
 | Build approach | Hand-built. No calendar library, no date library. |
+| Visual style | A TV-guide look, prototyped in Claude Design (see Look below), replacing the current quiet styling site-wide. |
 
 ## Out of scope
 
-Popovers, colour by country, keyboard shortcuts, remembering the last view, a history entry per navigation, a time-grid week, a second taxonomy level in the filters.
+Popovers, colour by country, keyboard shortcuts, remembering the last view, a history entry per navigation, a time-grid week, a second taxonomy level in the filters, a light/dark toggle button (the site keeps following the system preference), and the prototype's redesigned defense detail card (the detail page keeps its structure and picks up the new type and tokens).
+
+## Look
+
+The user asked for the calendar to reflect the aesthetics of a TV guide, and approved the second round of a Claude Design prototype as the reference. The prototype file, a standalone render of it and screenshots of every view are under `blog/media/2026-09-06-01-calendar-views-designed/`. The look applies to the whole site, not only the calendar, because the header, type and tokens are global.
+
+**Type.** Barlow Condensed (weights 400 to 700) for headings, numbers, labels, badges and buttons, mostly uppercase with letter-spacing between 0.06em and 0.14em; IBM Plex Sans (400 to 700) for running text. Both self-hosted from the `@fontsource/barlow-condensed` and `@fontsource/ibm-plex-sans` packages, latin and latin-ext subsets, imported in `global.css` so Vite bundles the woff2 files with hashed names. No request to Google Fonts. Body text stays 16px with line-height 1.5; the page title is 42px condensed, the toolbar period label 26px, chip times 13px to 15px.
+
+**Tokens**, as CSS custom properties with light and dark values:
+
+| Token | Light | Dark |
+|---|---|---|
+| page | #fbfbf9 | #121210 |
+| card | #ffffff | #1b1b18 |
+| chip | #ffffff | #232320 |
+| ink | #14140f | #f2f2ec |
+| muted | #6b6b60 | #a3a398 |
+| rule | #c9c9bf | #3d3d35 |
+| hairline | #e4e4db | #2a2a25 |
+| accent | #1d4ed8 | #93b4ff |
+| live | #b91c1c | #f87171 |
+| today | #fdf9ec | #1f1e19 |
+| year shading 1, 2, 3+ | #dde5fb, #a9bef6, #1d4ed8 | #22304d, #3a5586, #93b4ff |
+
+**Header.** A masthead: "PhD" in ink and "TV" in the live red, condensed 700 at 44px, uppercase, with the tagline "The defense listings" in small letter-spaced capitals beside it. Navigation links "Calendar" and "Recordings" in condensed uppercase. A 2px ink rule closes the header. Links are the accent colour and turn live red on hover.
+
+**Filter bar and legend.** A card with a rule border; labels in condensed uppercase muted text; selects on the page background with a rule border. The legend is a row of 10px colour squares with names in muted text.
+
+**Live strip.** A 2px live-red border; a header row with a red dot and "LIVE NOW" in condensed letter-spaced red; full cards inside, each with a 3px major-field stripe, the time at 24px condensed, an institution badge and a red "LIVE" pill on the time line.
+
+**Toolbar.** A 2px ink rule above and a 1px rule below. Previous, next and Today are small rule-bordered buttons in condensed uppercase; the period label is centred, 26px condensed uppercase; the view switcher is a joined group of four buttons with the active one inverted (ink background, page text).
+
+**Badges and chips.** The institution badge is the short name in condensed uppercase 10px to 12px inside a 1px border, like a channel tag. A chip is a card-coloured box with a hairline border and a 3px left stripe in the major-field colour. Week chips put the time and the badge on the first line, the candidate on the second, and a red "LIVE" pill on a third when live. Month chips show the time and, when live, the pill on the first line and the candidate on the second. Past chips render at 55% opacity.
+
+**Grids.** The month's weekday header and the week's day headers are inverted bars: ink background, page-coloured condensed uppercase text. Today's header carries a red "NOW" tag beside the day number and a 2px accent inset outline; today's week column and month cell take the today background. Month cells have hairline borders, a condensed day number top-left and a minimum height of about 98px; padding days from adjacent months sit on the page background with muted numbers. The year's mini-months have the month name as a button with an ink bottom rule, weekday initials, six rows always, day cells shaded on the year scale, and a muted caption. The day view heads with the date spelled out ("Monday 7 September 2026") in 28px condensed uppercase, then cards with the same anatomy as the live strip's.
+
+**Defense page and footer.** They keep their structure and pick up the type, tokens and header. The institution badge appears on the defense page beside the candidate.
 
 ## Structure
 
@@ -71,9 +108,10 @@ Changed:
 - `src/site/assets.ts`. `ISLAND_ENTRIES` maps `DefenseCalendar` to the new client entry and drops `DefenseSchedule`.
 - `src/site/pages.tsx`. `homePage` renders the calendar island with the new props. `archivePage` becomes a redirect page. `defensePage` is unchanged.
 - `src/site/generate.ts`. Passes `majors` to the home page and emits the redirect at `archive/index.html`. The JSON export carries the new `major` and `shortName` fields, which is additive, so the schema version stays 1.
-- `src/components/Shell.tsx`. Navigation is "Calendar", linking to the home page, and "Recordings", linking to the home page with `view=year` and `recorded=1`.
+- `src/components/Shell.tsx`. The masthead and tagline described under Look. Navigation is "Calendar", linking to the home page, and "Recordings", linking to the home page with `view=year` and `recorded=1`.
 - `src/components/PageIntro.tsx` usage in `pages.tsx`. New lede, see Copy.
-- `src/styles/global.css`. Grid, chip, toolbar, mini-month, legend and responsive rules.
+- `src/styles/global.css`. The font imports, the new tokens, the restyled header, filters, cards and defense page, and the grid, chip, toolbar, mini-month, legend and responsive rules. Most of the work is here.
+- `package.json`. Adds `@fontsource/barlow-condensed` and `@fontsource/ibm-plex-sans`.
 - `universities/*.yaml`. `short_name` where the full name is long. Optional and gradual.
 
 Deleted:
