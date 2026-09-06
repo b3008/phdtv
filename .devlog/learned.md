@@ -50,7 +50,6 @@
 
 ## Open threads
 
-- About page built and committed on branch `worktree-about-page` (2026-09-06), not yet merged into `main`; it will conflict on one line each in `Shell`, `pages.tsx` and the end of `global.css` with the calendar-views redesign. See `blog/2026-09-06-02-about-page.md`.
 - The user said `npm run dev` "should not be serving dist"; today it does by design (build, serve `dist/`, rebuild on change). Whether to change it to render on request is undecided.
 - Calendar views for the home page: spec approved in conversation and committed (`docs/superpowers/specs/2026-09-06-calendar-views-design.md`), awaiting the user's review of the file, then plan and implementation; see `blog/2026-09-06-01-calendar-views-designed.md`. A Claude Design prototype of the four views, two rounds reviewed, exists at `https://claude.ai/design/p/bb0e7e04-46a2-494a-9fde-2f52f1383849` (copy and renders under `blog/media/2026-09-06-01-calendar-views-designed/`). It carries a **TV-guide aesthetic** the user asked for mid-session; whether that look replaces the spec's quiet styling in the implementation is undecided.
 - Subscribe to `https://phdtv.net/feeds/all.ics` from a calendar app and confirm an edited event updates in place (a first attempt via Calendar.app's webcal sheet was never completed); the validate workflow has run on a push but not yet on a real pull request (the ownership rule path).
