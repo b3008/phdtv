@@ -61,7 +61,6 @@
 ## Open threads
 
 - The user said `npm run dev` "should not be serving dist"; today it does by design (build, serve `dist/`, rebuild on change). Whether to change it to render on request is undecided.
-- Storybook (84 stories over the 19 components) sits on branch `storybook` in worktree `.claude/worktrees/storybook`, rebased onto `main` after the day's merges and awaiting the user's merge; see `blog/2026-09-06-05-storybook.md`.
 - Centerfold pages merged into `main` on 2026-09-06 (see `blog/2026-09-06-03-centerfold-pages.md`). Still open: the editorial copy, answers, pull quotes and photos for the Anders Enqvist and Shayne Longpre centerfolds (no `public/img/` yet); a "Live now" tag in the top bar has not been seen live outside tests; `main` is unpushed, and pushing deploys the redesign to phdtv.net.
 - Subscribe to `https://phdtv.net/feeds/all.ics` from a calendar app and confirm an edited event updates in place (a first attempt via Calendar.app's webcal sheet was never completed); the validate workflow has run on a push but not yet on a real pull request (the ownership rule path).
 - Deferred design questions: second taxonomy level in the UI (partly answered — the six OECD majors now colour the chips and appear as a legend, but they are still not a filter), the 30-day recording window.
