@@ -3,6 +3,7 @@ import { useState, type ComponentProps } from 'react';
 import { fn } from 'storybook/test';
 import { FilterBar } from '../src/components/FilterBar.tsx';
 import type { Filters } from '../src/lib/filters.ts';
+import { inColumn } from './support.tsx';
 
 const disciplines = [
   { slug: 'computer-and-information-sciences', name: 'Computer and information sciences' },
@@ -15,7 +16,7 @@ const universities = [
   { slug: 'uu', name: 'Utrecht University' },
 ];
 
-/** The bar is controlled; this wrapper holds the filters so the selects change in the story, and still reports every change. */
+/** The bar is controlled; this wrapper holds the filters so the controls change in the story, and still reports every change. */
 function StatefulFilterBar(props: ComponentProps<typeof FilterBar>) {
   const [filters, setFilters] = useState<Filters>(props.filters);
   const onChange = (next: Filters) => {
@@ -27,21 +28,14 @@ function StatefulFilterBar(props: ComponentProps<typeof FilterBar>) {
 
 const meta = {
   component: FilterBar,
-  args: { filters: {}, disciplines, universities, showRecordedOnly: false, onChange: fn() },
+  decorators: [inColumn],
+  args: { filters: {}, disciplines, universities, onChange: fn() },
 } satisfies Meta<typeof FilterBar>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** As on the upcoming view: no recordings checkbox. */
-export const Upcoming: Story = {};
+export const Default: Story = {};
 
-export const Archive: Story = { args: { showRecordedOnly: true } };
+export const WithSelection: Story = { args: { filters: { discipline: 'law', university: 'uu', recordedOnly: true } } };
 
-export const WithSelection: Story = {
-  args: { filters: { discipline: 'law', university: 'uu', recordedOnly: true }, showRecordedOnly: true },
-};
-
-export const Interactive: Story = {
-  args: { showRecordedOnly: true },
-  render: (args) => <StatefulFilterBar {...args} />,
-};
+export const Interactive: Story = { render: (args) => <StatefulFilterBar {...args} /> };

@@ -103,7 +103,11 @@ npm run typecheck
 npm run validate     # records and registry
 npm run schema       # regenerate schema/*.json after changing src/schema/
 npm run build        # static site into dist/; SITE_PREVIEW=1 shows the centerfold editorial slots
+npm run storybook    # every component in its states, at http://localhost:6006/
+npm run build-storybook   # the same as a static site into storybook-static/
 ```
+
+Every component in `src/components/` has a stories file under `stories/`, and `npm test` renders every story once, so a component without stories or a story that no longer renders fails the build. The stories reuse the test fixtures and the site stylesheet, so a restyle shows up in Storybook without any change there.
 
 ## Deployment
 

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AboutPage } from '../src/components/AboutPage.tsx';
 import type { University } from '../src/schema/university.ts';
+import { inColumn } from './support.tsx';
 
 const universities: University[] = [
   { slug: 'aalto', name: 'Aalto University', country: 'FI', timezone: 'Europe/Helsinki', website: 'https://www.aalto.fi/', agenda_url: 'https://www.aalto.fi/en/events' },
@@ -13,6 +14,7 @@ const universities: University[] = [
 
 const meta = {
   component: AboutPage,
+  decorators: [inColumn],
   args: { universities },
 } satisfies Meta<typeof AboutPage>;
 export default meta;
