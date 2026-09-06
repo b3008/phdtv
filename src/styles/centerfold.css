@@ -1,0 +1,86 @@
+/* The centerfold page. Tokens (--page, --card, --ink, --muted, --hairline, --live, --yellow, --yellow-fg, --bar,
+   --bar-fg, --accent) and the font stacks (--display, --condensed, --sans) come from global.css. Bundled as the
+   centerfold island's own stylesheet, so only that page loads it. */
+
+.cf, .cf * { border-radius: 0; }
+.cf { padding-top: 28px; }
+.cf-back { margin: 0; }
+.cf-back a { font: 600 13px/1.3 var(--condensed); text-transform: uppercase; letter-spacing: .1em; color: var(--accent); text-decoration: none; }
+.cf-back a:hover { color: var(--live); }
+.cf-box { margin-top: 18px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); }
+
+/* small labels: reversed bars, kickers, section labels */
+.cf-label { display: block; font: 600 11px/1.4 var(--condensed); text-transform: uppercase; letter-spacing: .2em; }
+
+/* top bar */
+.cf-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 6px 14px; background: var(--bar); color: var(--bar-fg); font: 600 11px/1.5 var(--condensed); text-transform: uppercase; letter-spacing: .16em; }
+.cf-topbar-tags { display: flex; align-items: center; gap: 8px; }
+.cf-badge { display: inline-block; border: 1px solid currentColor; padding: 0 5px; letter-spacing: .08em; }
+.cf-tag-live { display: inline-block; background: var(--live); color: #fff; padding: 1px 6px; letter-spacing: .1em; }
+
+/* hero */
+.cf-hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-bottom: 2px solid var(--ink); }
+.cf-hero-media { position: relative; min-height: 380px; border-right: 1px solid var(--hairline); }
+.cf-portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.cf-hero-text { padding: 22px 24px 24px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.cf-kicker { display: inline-block; background: var(--yellow); color: var(--yellow-fg); font: 600 11px/1.4 var(--condensed); text-transform: uppercase; letter-spacing: .2em; padding: 3px 8px; transform: rotate(-1.5deg); }
+.cf-name { margin: 12px 0 0; font: 400 46px/.95 var(--display); letter-spacing: -.025em; text-transform: uppercase; text-wrap: pretty; }
+.cf-meta { margin: 8px 0 0; font: 600 12px/1.4 var(--condensed); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+.cf-standfirst { margin: 16px 0 0; font: 400 15px/1.55 var(--sans); text-wrap: pretty; }
+
+/* thesis banner */
+.cf-thesis { padding: 26px 24px 28px; background: var(--live); color: #fff; border-bottom: 2px solid var(--ink); }
+.cf-thesis .cf-label { opacity: .9; }
+.cf-thesis-title { margin: 6px 0 0; max-width: 52rem; font: 400 34px/1 var(--display); letter-spacing: -.02em; text-transform: uppercase; text-wrap: pretty; }
+
+/* body */
+.cf-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.cf-main { padding: 20px 24px 24px; border-right: 1px solid var(--hairline); }
+.cf-heading { margin: 0; padding-bottom: 4px; border-bottom: 2px solid var(--ink); font: 700 18px/1.2 var(--condensed); text-transform: uppercase; letter-spacing: .06em; }
+.cf-qa { list-style: none; margin: 0; padding: 0; }
+.cf-q { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--hairline); }
+.cf-q-num { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--ink); color: var(--yellow); font: 400 18px/1 var(--display); }
+.cf-q-text { margin: 0; font: 400 16px/1.15 var(--display); }
+.cf-q-answer { margin: 6px 0 0; font: 400 14px/1.55 var(--sans); }
+.cf-quote { margin: 18px 0 0; padding: 18px 20px; background: var(--yellow); color: var(--yellow-fg); }
+.cf-quote .cf-label { font-size: 10px; }
+.cf-quote-text { margin: 4px 0 0; font: 400 22px/1.05 var(--display); letter-spacing: -.01em; text-transform: uppercase; text-wrap: pretty; }
+.cf-quote-by { margin-top: 8px; font: italic 400 12px/1.4 var(--sans); }
+
+/* side column */
+.cf-side { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 18px; }
+.cf-wide { display: block; width: 100%; height: 190px; object-fit: cover; }
+.cf-detail { display: block; width: 100%; height: 120px; object-fit: cover; }
+.cf-closeup { border: 2px solid var(--ink); }
+.cf-closeup-head { padding: 4px 10px; background: var(--bar); color: var(--bar-fg); font: 600 11px/1.5 var(--condensed); text-transform: uppercase; letter-spacing: .16em; }
+.cf-facts { margin: 0; }
+.cf-fact { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; padding: 7px 10px; border-top: 1px solid var(--hairline); font-size: 13px; line-height: 1.45; }
+.cf-fact dt { padding-top: 2px; font: 600 11px/1.4 var(--condensed); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.cf-fact dd { margin: 0; font-family: var(--sans); }
+
+/* tune-in bar */
+.cf-tunein { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 14px 24px; background: var(--ink); color: var(--page); }
+.cf-live .cf-tunein { background: var(--live); color: #fff; }
+.cf-tunein .cf-label { font-size: 10px; opacity: .85; }
+.cf-tunein-line { display: block; margin-top: 2px; font: 400 20px/1 var(--display); text-transform: uppercase; }
+.cf-tunein-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cf-button { display: inline-block; padding: 8px 14px; background: var(--yellow); color: var(--yellow-fg); font: 700 14px/1.3 var(--condensed); text-transform: uppercase; letter-spacing: .08em; text-decoration: none; }
+.cf-button:hover { color: var(--yellow-fg); text-decoration: underline; }
+.cf-tunein-note { font-size: 13px; opacity: .85; }
+.cf-listing { color: inherit; font: 600 12px/1.3 var(--condensed); text-transform: uppercase; letter-spacing: .1em; }
+.cf-listing:hover { color: inherit; }
+
+/* editorial slots, preview builds only */
+.cf-slot { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 12px; border: 1px solid var(--hairline); background: var(--page); color: var(--muted); font: 400 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; text-align: center; text-transform: none; letter-spacing: 0; transform: none; }
+.cf-slot.cf-kicker-slot { display: inline-flex; min-height: 0; padding: 3px 8px; }
+.cf-slot.cf-q-answer { justify-content: flex-start; text-align: left; }
+.cf-slot.cf-quote-text { justify-content: flex-start; text-align: left; }
+
+/* narrow screens: the auto-fit grids stack on their own; the column rules turn into row rules */
+@media (max-width: 639px) {
+  .cf-hero-media, .cf-main { border-right: 0; border-bottom: 1px solid var(--hairline); }
+}
+@media (max-width: 479px) {
+  .cf-name { font-size: 38px; }
+  .cf-thesis-title { font-size: 28px; }
+}
