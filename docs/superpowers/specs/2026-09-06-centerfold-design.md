@@ -18,7 +18,7 @@ Status: approved in conversation on 2026-09-06. The handoff below came from the 
 | Blurb strip | Owned by calendar-views as the headline strip. Whether the centerfold page can render it statically at build time is a request to that session; until then the page sits under the masthead alone. |
 | Back link | Reads the referrer's `view` parameter when the referrer is the calendar page, then a `from` query parameter, then falls back to the month view. The first client render matches the server render. |
 | Discipline rows | The meta line and the Close-up "Discipline" row show the major field's name, as in the prototype. |
-| Design references | The calendar prototype with the centerfold route and the design system are `prototype-v3.dc.html` and `style-reference.dc.html` under `blog/media/2026-09-06-01-calendar-views-designed/`, copied by the calendar session; the frozen calendar styling the page sits inside is `blog/media/2026-09-06-02-centerfold-pages/design10.dc.html`. They are Claude Design `.dc.html` templates, not runnable HTML. |
+| Design references | The calendar prototype with the centerfold route and the design system are `prototype-v3.dc.html` and `style-reference.dc.html` under `blog/media/2026-09-06-01-calendar-views-designed/`, copied by the calendar session; the frozen calendar styling the page sits inside is `blog/media/2026-09-06-03-centerfold-pages/design10.dc.html`. They are Claude Design `.dc.html` templates, not runnable HTML. |
 
 ## The handoff, as received
 

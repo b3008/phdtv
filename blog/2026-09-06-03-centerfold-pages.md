@@ -19,9 +19,9 @@ The user handed over a Claude Design brief for a "Centerfold": a magazine-style 
 
 Fifty-one tests were added across the schema, the view model, the helpers, the component, the page functions and the build. The suite stands at 256 plus the real-build test.
 
-![The Anders Enqvist centerfold on a preview build: portrait slot, kicker, the thesis banner, three questions with answer slots, the pull-quote box, the Close-up facts and the tune-in bar](media/2026-09-06-02-centerfold-pages/anders-light.png)
+![The Anders Enqvist centerfold on a preview build: portrait slot, kicker, the thesis banner, three questions with answer slots, the pull-quote box, the Close-up facts and the tune-in bar](media/2026-09-06-03-centerfold-pages/anders-light.png)
 
-![The same page in the dark palette: the reversed bars turn yellow with dark text, the thesis banner stays red on white](media/2026-09-06-02-centerfold-pages/anders-dark.png)
+![The same page in the dark palette: the reversed bars turn yellow with dark text, the thesis banner stays red on white](media/2026-09-06-03-centerfold-pages/anders-dark.png)
 
 ## Why it matters
 
@@ -47,9 +47,9 @@ The bigger structural point is how it was built. The calendar views were being i
 - The editorial content: answers, pull quotes and photos for the two sample centerfolds, and a `public/img/` directory to serve them from.
 - Merging: `calendar-views` first, then `centerfold`.
 
-![After the rebase: the day view of 7 September, with the KTH badge and the yellow Centerfold tag on the card's time line, in the dark palette](media/2026-09-06-02-centerfold-pages/dayview-tag-dark.png)
+![After the rebase: the day view of 7 September, with the KTH badge and the yellow Centerfold tag on the card's time line, in the dark palette](media/2026-09-06-03-centerfold-pages/dayview-tag-dark.png)
 
-![After the rebase: the centerfold under the masthead and the headline strip, in the dark palette](media/2026-09-06-02-centerfold-pages/anders-strip-dark.png)
+![After the rebase: the centerfold under the masthead and the headline strip, in the dark palette](media/2026-09-06-03-centerfold-pages/anders-strip-dark.png)
 
 ## Surprises
 
