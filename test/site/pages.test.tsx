@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { AssetManifest } from '../../src/site/assets.ts';
 import { Document } from '../../src/site/document.tsx';
+import { headlines } from '../../src/components/HeadlineStrip.tsx';
 import { archiveRedirectPage, centerfoldPage, defensePage, homePage, renderDocument } from '../../src/site/pages.tsx';
 import { fixtureDefense } from '../fixtures/defenses.ts';
 
@@ -79,6 +80,14 @@ describe('pages', () => {
     expect(html).toContain('src="/phdtv/assets/centerfold-789.js"');
     expect(html).toContain('href="/phdtv/assets/centerfold-789.css"');
     expect(html).toContain('class="cf-slot');
+  });
+
+  it('centerfold page: carries the headline strip under the masthead when the context has headlines', () => {
+    const featured = fixtureDefense({ url: '/phdtv/centerfold/2026/2026-09-15-tudelft-jane-doe/', centerfold: {} });
+    const html = centerfoldPage(featured, { ...ctx, headlines: headlines([featured], new Date(ctx.renderedAt), null) });
+    expect(html).toContain('class="headlines-band"');
+    expect(html).toContain('1 defense you can still catch live');
+    expect(html.indexOf('class="headlines-band"')).toBeLessThan(html.indexOf('data-island="CenterfoldPage"'));
   });
 
   it('centerfold page: falls back to a generic description and hides slots outside preview builds', () => {

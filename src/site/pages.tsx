@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { CenterfoldPage } from '../components/CenterfoldPage.tsx';
 import { DefenseCalendar } from '../components/DefenseCalendar.tsx';
 import { DefensePage } from '../components/DefensePage.tsx';
+import { HeadlineStrip, type Headline } from '../components/HeadlineStrip.tsx';
 import type { MajorField } from '../components/MajorFieldLegend.tsx';
 import { Shell } from '../components/Shell.tsx';
 import type { Defense } from '../lib/defense.ts';
@@ -20,6 +21,8 @@ export interface PageContext {
   renderedAt: string;
   /** Preview builds show labelled slots for editorial fields that are still empty; the deploy hides them. */
   preview?: boolean;
+  /** The headline strip's blurbs, computed once per build for pages that carry the strip statically. */
+  headlines?: Headline[];
 }
 
 export interface HomeData {
@@ -81,8 +84,11 @@ export function defensePage(defense: Defense, { base, manifest, renderedAt }: Pa
   );
 }
 
-/** The feature page of a defense that has a centerfold; its stylesheet rides on the island's manifest entry. */
-export function centerfoldPage(defense: Defense, { base, manifest, renderedAt, preview = false }: PageContext): string {
+/**
+ * The feature page of a defense that has a centerfold; its stylesheet rides on the island's manifest entry. The
+ * headline strip is rendered at build time here, so it is as fresh as the daily rebuild rather than the viewer's clock.
+ */
+export function centerfoldPage(defense: Defense, { base, manifest, renderedAt, preview = false, headlines }: PageContext): string {
   return renderDocument(
     <Document
       title={`Centerfold: ${defense.candidate}`}
@@ -91,6 +97,7 @@ export function centerfoldPage(defense: Defense, { base, manifest, renderedAt, p
       assets={pageAssets(manifest, base, ['CenterfoldPage'])}
     >
       <Shell base={base}>
+        {headlines && <HeadlineStrip headlines={headlines} />}
         <div className="column">
           <Island name="CenterfoldPage" component={CenterfoldPage} props={{ defense, base, renderedAt, preview }} />
         </div>

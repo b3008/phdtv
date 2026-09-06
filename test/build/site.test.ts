@@ -75,6 +75,8 @@ describe('centerfold pages', () => {
     expect(page).toContain('src="/phdtv/assets/centerfold-test.js"');
     expect(page).toContain('href="/phdtv/assets/centerfold-test.css"');
     expect(page).toContain(`href="/phdtv/defenses/${ANDERS}/"`);
+    expect(page).toContain('class="headlines-band"');
+    expect(page).toContain('you can still catch live');
     expect(output.has(`defenses/${ANDERS}/index.html`)).toBe(true);
   });
 

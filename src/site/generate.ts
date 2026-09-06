@@ -1,5 +1,6 @@
 // Everything the site consists of apart from the bundled assets, as an in-memory list. Pure apart from reading
 // the repository and its git history; the orchestrator in build.ts writes the result to disk.
+import { headlines } from '../components/HeadlineStrip.tsx';
 import type { Defense } from '../lib/defense.ts';
 import { feedEvents } from '../lib/feed.ts';
 import { readFileHistories } from '../lib/git-meta.ts';
@@ -34,7 +35,8 @@ export function generate({ rootDir, site, base, manifest, now = new Date(), prev
   const { defenses, disciplineSlugs, majors } = loadSiteData(rootDir, base);
   const histories = readFileHistories(rootDir);
   const renderedAt = now.toISOString();
-  const context = { base, manifest, renderedAt, preview };
+  // The strip describes the whole listing at build time; the calendar island recomputes it from the viewer's clock.
+  const context = { base, manifest, renderedAt, preview, headlines: headlines(defenses, now, null) };
   const files: OutputFile[] = [];
 
   files.push({ path: 'index.html', body: homePage({ defenses, majors }, context) });

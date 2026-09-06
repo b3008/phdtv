@@ -43,9 +43,13 @@ The bigger structural point is how it was built. The calendar views were being i
 
 ## What's next
 
-- The final rebase once the calendar branch is complete, then two small re-applications: the "Centerfold ›" tag after the pill in the rewritten card and defense page, and the headline strip (`HeadlineStrip`, calendar Task 5) rendered statically on the centerfold page, which is the "masthead + blurb strip" the brief describes.
+- Done later the same evening, once the calendar branch was complete: the final rebase (four conflicting files, all resolved by keeping the calendar branch's rewrites and re-adding the tag after the pill), and the headline strip rendered statically on the centerfold page from headlines computed once per build, which completes the "masthead + blurb strip" the brief describes. The two devlog entries had both taken index 02; the calendar entry, the later one, became 03.
 - The editorial content: answers, pull quotes and photos for the two sample centerfolds, and a `public/img/` directory to serve them from.
 - Merging: `calendar-views` first, then `centerfold`.
+
+![After the rebase: the day view of 7 September, with the KTH badge and the yellow Centerfold tag on the card's time line, in the dark palette](media/2026-09-06-02-centerfold-pages/dayview-tag-dark.png)
+
+![After the rebase: the centerfold under the masthead and the headline strip, in the dark palette](media/2026-09-06-02-centerfold-pages/anders-strip-dark.png)
 
 ## Surprises
 
